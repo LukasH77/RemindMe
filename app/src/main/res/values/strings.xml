@@ -4,4 +4,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home_fragment_placeholder">Home Fragment</string>
     <string name="about_fragment_placeholder">About Fragment</string>
+    <string name="intro_text">We humans like to give our precious numbers some meaning, so why not times? This app reminds you to celebrate the small moments where the numbers on your watch pretend to have meaning. Use the pre-made, obvious ones like 07:07 or add your own.
+        \nWhat\'s your Fancy Time?</string>
 </resources>
