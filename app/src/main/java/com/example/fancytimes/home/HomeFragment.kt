@@ -18,6 +18,7 @@ import com.example.fancytimes.FancyTimeBroadcast
 import com.example.fancytimes.R
 import com.example.fancytimes.databinding.FragmentHomeBinding
 import java.util.*
+import kotlin.math.min
 
 class HomeFragment : Fragment() {
 
@@ -47,9 +48,12 @@ class HomeFragment : Fragment() {
             binding.bSwitchNotifications
         )
 
-        timePicker.setIs24HourView(DateFormat.is24HourFormat(requireContext()))
+        val system24hrs = DateFormat.is24HourFormat(requireContext())
+        timePicker.setIs24HourView(system24hrs)
+
         addCustomTimeButton.setOnClickListener {
             val calendar = Calendar.getInstance()
+
             timePicker.hour = calendar.get(Calendar.HOUR_OF_DAY)
             timePicker.minute = calendar.get(Calendar.MINUTE)
 
@@ -75,6 +79,17 @@ class HomeFragment : Fragment() {
                 timePicker.minute,
                 0
             )
+
+            val hourIsTooEarly = timePicker.hour < Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+            val hourIsEqual = timePicker.hour == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+            val minuteIsTooEarly = hourIsEqual && timePicker.minute < Calendar.getInstance().get(Calendar.MINUTE)
+            if (hourIsTooEarly || minuteIsTooEarly) {
+                    Toast.makeText(requireContext(), "Invalid time...for now.", Toast.LENGTH_SHORT).show()
+                    timePicker.visibility = View.GONE
+                    binding.bConfirmPick.visibility = View.GONE
+                    binding.ibExitTimePicker.visibility = View.GONE
+                    return@setOnClickListener
+            }
 
             Toast.makeText(requireContext(), "Time set.", Toast.LENGTH_SHORT).show()
             setAlarm(calendar.timeInMillis)
