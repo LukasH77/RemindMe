@@ -40,11 +40,11 @@ class HomeFragment : Fragment() {
         val addCustomTimeButton = binding.bAddCustomTime
         val standardLayout = arrayOf(
             binding.tvIntro,
-            binding.tvHowEarly,
+//            binding.tvHowEarly,
             addCustomTimeButton,
             binding.bShowAndEdit,
-            binding.button2,
-            binding.button3,
+//            binding.button2,
+//            binding.button3,
             binding.bSwitchNotifications
         )
 

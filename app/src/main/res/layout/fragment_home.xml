@@ -21,33 +21,34 @@
             android:padding="15dp"
             android:text="@string/intro_text"
             android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/tvHowEarly"
+            app:layout_constraintBottom_toTopOf="@+id/bAddCustomTime"
             app:layout_constraintEnd_toEndOf="@+id/bSwitchNotifications"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/bSwitchNotifications"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="spread" />
 
-        <TextView
-            android:id="@+id/tvHowEarly"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#00E676"
-            android:gravity="center"
-            android:padding="15dp"
-            android:text="How early would you like to be reminded?"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/bAddCustomTime"
-            app:layout_constraintEnd_toEndOf="@+id/bSwitchNotifications"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/bSwitchNotifications"
-            app:layout_constraintTop_toBottomOf="@+id/tvIntro" />
+<!--        <TextView-->
+<!--            android:id="@+id/tvHowEarly"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="#00E676"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="15dp"-->
+<!--            android:text="How early would you like to be reminded?"-->
+<!--            android:visibility="visible"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/bAddCustomTime"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/bSwitchNotifications"-->
+<!--            app:layout_constraintHorizontal_bias="0.0"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/bSwitchNotifications"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/tvIntro" />-->
 
         <Button
             android:id="@+id/bAddCustomTime"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="15dp"
+            android:paddingTop="40dp"
+            android:paddingBottom="40dp"
             android:text="Add custom time"
             android:visibility="visible"
             app:backgroundTint="#2196F3"
@@ -55,13 +56,14 @@
             app:layout_constraintEnd_toEndOf="@+id/bShowAndEdit"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/bShowAndEdit"
-            app:layout_constraintTop_toBottomOf="@+id/tvHowEarly" />
+            app:layout_constraintTop_toBottomOf="@+id/tvIntro" />
 
         <Button
             android:id="@+id/bShowAndEdit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="15dp"
+            android:paddingTop="40dp"
+            android:paddingBottom="40dp"
             android:text="Show and edit list of times"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/bSwitchNotifications"
@@ -70,40 +72,41 @@
             app:layout_constraintStart_toStartOf="@+id/bSwitchNotifications"
             app:layout_constraintTop_toBottomOf="@+id/bAddCustomTime" />
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="2dp"
-            android:padding="15dp"
-            android:text="24hrs"
-            android:visibility="gone"
-            app:backgroundTint="#CDDC39"
-            app:layout_constraintBottom_toTopOf="@+id/bSwitchNotifications"
-            app:layout_constraintEnd_toStartOf="@+id/button3"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/bShowAndEdit" />
+<!--        <Button-->
+<!--            android:id="@+id/button2"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="2dp"-->
+<!--            android:padding="15dp"-->
+<!--            android:text="24hrs"-->
+<!--            android:visibility="gone"-->
+<!--            app:backgroundTint="#CDDC39"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/bSwitchNotifications"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/button3"-->
+<!--            app:layout_constraintHorizontal_chainStyle="packed"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/guideline2"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/bShowAndEdit" />-->
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:padding="15dp"
-            android:text="am/pm"
-            android:visibility="gone"
-            app:backgroundTint="#673AB7"
-            app:layout_constraintBottom_toTopOf="@+id/bSwitchNotifications"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintStart_toEndOf="@+id/button2"
-            app:layout_constraintTop_toBottomOf="@+id/bShowAndEdit" />
+<!--        <Button-->
+<!--            android:id="@+id/button3"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="2dp"-->
+<!--            android:padding="15dp"-->
+<!--            android:text="am/pm"-->
+<!--            android:visibility="gone"-->
+<!--            app:backgroundTint="#673AB7"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/bSwitchNotifications"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/guideline"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/button2"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/bShowAndEdit" />-->
 
         <Button
             android:id="@+id/bSwitchNotifications"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="15dp"
+            android:paddingTop="40dp"
+            android:paddingBottom="40dp"
             android:text="Disable Notifications"
             android:visibility="visible"
             app:backgroundTint="#009688"

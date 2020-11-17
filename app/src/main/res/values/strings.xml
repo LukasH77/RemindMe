@@ -4,6 +4,18 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home_fragment_placeholder">Home Fragment</string>
     <string name="about_fragment_placeholder">About Fragment</string>
-    <string name="intro_text">We humans like to give our precious numbers some meaning, so why not times? This app reminds you to celebrate the small moments where the numbers on your watch pretend to have meaning. Use the pre-made, obvious ones like 07:07 or add your own.
+    <string name="intro_text">We humans like to give our precious numbers some significance, so why not times? This app reminds you to celebrate the small moments where the numbers on your watch pretend to have meaning. Use the pre-made, obvious ones like 07:07 and 12:12 or add your own.
         \nWhat\'s your Fancy Time?</string>
+
+    <string name="about_the_app_title">About the App</string>
+    <string name="about_me_title">About Me</string>
+    <string name="about_the_app">This app is based on the habit of being mildly excited about more or less special times, and thus serves mainly for learning purposes through its development as well as some short term entertainment through its use.
+        Aside from that you may find it useful as a reminder of daily task around the same time as you can fully customize the times you want to be reminded of.</string>
+
+    <string name="about_me">I\'m from Germany and, as of November 2020, am studying and developing on my own after recently finishing school and soon starting to study at university.
+        \n
+        \nYou can find me on <a href="https://github.com/LukasH77">GitHub</a>.
+        \n
+        \nBug reports, feedback or other messages can be either left as a review in the Play Store or sent via E-mail to:</string>
+    <string name="email"><a href="">LHendeavours@gmail.com</a></string>
 </resources>
