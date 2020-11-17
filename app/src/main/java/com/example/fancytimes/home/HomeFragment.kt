@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -97,6 +98,7 @@ class HomeFragment : Fragment() {
             timePicker.visibility = View.GONE
             binding.bConfirmPick.visibility = View.GONE
             binding.ibExitTimePicker.visibility = View.GONE
+            hideSoftKeyboard()
         }
 
         binding.ibExitTimePicker.setOnClickListener {
@@ -106,6 +108,7 @@ class HomeFragment : Fragment() {
             timePicker.visibility = View.GONE
             binding.bConfirmPick.visibility = View.GONE
             binding.ibExitTimePicker.visibility = View.GONE
+            hideSoftKeyboard()
         }
 
 
@@ -121,6 +124,11 @@ class HomeFragment : Fragment() {
         val pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, 0)
 
         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent)
+    }
+
+    private fun hideSoftKeyboard() {
+        val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
     private fun createNotificationChannel() {

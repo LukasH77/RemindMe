@@ -138,6 +138,7 @@
             android:id="@+id/tpTimePicker"
             android:layout_width="0dp"
             android:layout_height="445dp"
+            android:foregroundGravity="center"
             android:timePickerMode="clock"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
