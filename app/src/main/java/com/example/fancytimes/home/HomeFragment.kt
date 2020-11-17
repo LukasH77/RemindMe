@@ -2,50 +2,110 @@ package com.example.fancytimes.home
 
 import android.app.*
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.view.*
+import android.widget.TimePicker
+import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import com.example.fancytimes.FancyTimeBroadcast
 import com.example.fancytimes.R
 import com.example.fancytimes.databinding.FragmentHomeBinding
+import java.util.*
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
+
+    private lateinit var timePicker: TimePicker
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        createNotificationChannel()
+
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_home, container, false)
         setHasOptionsMenu(true)
 
+        val timePicker = binding.tpTimePicker
+        val addCustomTimeButton = binding.bAddCustomTime
+        val standardLayout = arrayOf(
+            binding.tvIntro,
+            binding.tvHowEarly,
+            addCustomTimeButton,
+            binding.bShowAndEdit,
+            binding.button2,
+            binding.button3,
+            binding.bSwitchNotifications
+        )
 
+        timePicker.setIs24HourView(DateFormat.is24HourFormat(requireContext()))
+        addCustomTimeButton.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            timePicker.hour = calendar.get(Calendar.HOUR_OF_DAY)
+            timePicker.minute = calendar.get(Calendar.MINUTE)
 
-
-
-        val instantNotificationButton = binding.bInstantNotification
-
-        createNotificationChannel()
-
-        val notification =
-            Notification.Builder(requireActivity(), "FancyTimes notifications")
-                .setSmallIcon(R.drawable.access_time_24px)
-                .setContentTitle("Fancy Time!!").setContentText("It's time, it is fancy o'clock!")
-
-        instantNotificationButton.setOnClickListener {
-            with(NotificationManagerCompat.from(requireActivity())) {
-                notify(1, notification.build())
+            for (view in standardLayout) {
+                view.visibility = View.GONE
             }
+            timePicker.visibility = View.VISIBLE
+            binding.bConfirmPick.visibility = View.VISIBLE
+            binding.ibExitTimePicker.visibility = View.VISIBLE
         }
 
+        binding.bConfirmPick.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            for (view in standardLayout) {
+                view.visibility = View.VISIBLE
+            }
+
+            calendar.set(
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH),
+                timePicker.hour,
+                timePicker.minute,
+                0
+            )
+
+            Toast.makeText(requireContext(), "Time set.", Toast.LENGTH_SHORT).show()
+            setAlarm(calendar.timeInMillis)
+
+            timePicker.visibility = View.GONE
+            binding.bConfirmPick.visibility = View.GONE
+            binding.ibExitTimePicker.visibility = View.GONE
+        }
+
+        binding.ibExitTimePicker.setOnClickListener {
+            for (view in standardLayout) {
+                view.visibility = View.VISIBLE
+            }
+            timePicker.visibility = View.GONE
+            binding.bConfirmPick.visibility = View.GONE
+            binding.ibExitTimePicker.visibility = View.GONE
+        }
+
+
         return binding.root
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun setAlarm(timeInMillis: Long) {
+        val alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
+
+        val pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, 0)
+
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent)
     }
 
     private fun createNotificationChannel() {

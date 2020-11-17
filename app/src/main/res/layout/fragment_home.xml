@@ -13,7 +13,22 @@
         tools:context=".home.HomeFragment">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tvIntro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#FFE57F"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="@string/intro_text"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/tvHowEarly"
+            app:layout_constraintEnd_toEndOf="@+id/button3"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/button2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvHowEarly"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="#00E676"
@@ -21,30 +36,28 @@
             android:padding="15dp"
             android:text="How early would you like to be reminded?"
             android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/button5"
+            app:layout_constraintBottom_toTopOf="@+id/bAddCustomTime"
             app:layout_constraintEnd_toEndOf="@+id/button3"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/button2"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toBottomOf="@+id/tvIntro" />
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/bAddCustomTime"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="15dp"
             android:text="Add custom time"
             android:visibility="visible"
             app:backgroundTint="#2196F3"
-            app:layout_constraintBottom_toTopOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
+            app:layout_constraintBottom_toTopOf="@+id/bShowAndEdit"
+            app:layout_constraintEnd_toEndOf="@+id/bShowAndEdit"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toBottomOf="@+id/textView2"
-            tools:visibility="visible" />
+            app:layout_constraintStart_toStartOf="@+id/bShowAndEdit"
+            app:layout_constraintTop_toBottomOf="@+id/tvHowEarly" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/bShowAndEdit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="15dp"
@@ -54,8 +67,7 @@
             app:layout_constraintEnd_toEndOf="@+id/button3"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/button2"
-            app:layout_constraintTop_toBottomOf="@+id/button5"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toBottomOf="@+id/bAddCustomTime" />
 
         <Button
             android:id="@+id/button2"
@@ -66,12 +78,11 @@
             android:text="24hrs"
             android:visibility="visible"
             app:backgroundTint="#CDDC39"
-            app:layout_constraintBottom_toTopOf="@+id/bInstantNotification"
+            app:layout_constraintBottom_toTopOf="@+id/bSwitchNotifications"
             app:layout_constraintEnd_toStartOf="@+id/button3"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/button"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toBottomOf="@+id/bShowAndEdit" />
 
         <Button
             android:id="@+id/button3"
@@ -82,42 +93,24 @@
             android:text="am/pm"
             android:visibility="visible"
             app:backgroundTint="#673AB7"
-            app:layout_constraintBottom_toTopOf="@+id/bInstantNotification"
+            app:layout_constraintBottom_toTopOf="@+id/bSwitchNotifications"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintStart_toEndOf="@+id/button2"
-            app:layout_constraintTop_toBottomOf="@+id/button"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toBottomOf="@+id/bShowAndEdit" />
 
         <Button
-            android:id="@+id/bInstantNotification"
+            android:id="@+id/bSwitchNotifications"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="15dp"
-            android:text="Instant notification (placeholder)"
+            android:text="Disable Notifications"
             android:visibility="visible"
             app:backgroundTint="#009688"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/button3"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/button2"
-            app:layout_constraintTop_toBottomOf="@+id/button3"
-            tools:visibility="visible" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#FFE57F"
-            android:gravity="center"
-            android:padding="15dp"
-            android:text="@string/intro_text"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/textView2"
-            app:layout_constraintEnd_toEndOf="@+id/button3"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/button2"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toBottomOf="@+id/button3" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -138,14 +131,40 @@
             tools:visibility="visible" />
 
         <TimePicker
+            android:id="@+id/tpTimePicker"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="445dp"
             android:timePickerMode="clock"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/bConfirmPick"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Confirm"
+            android:visibility="gone"
+            app:backgroundTint="#03DAC6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tpTimePicker" />
+
+        <ImageButton
+            android:id="@+id/ibExitTimePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@android:drawable/ic_delete" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
