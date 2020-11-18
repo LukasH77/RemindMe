@@ -3,6 +3,7 @@ package com.example.fancytimes.home
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
@@ -49,6 +50,18 @@ class HomeFragment : Fragment() {
             binding.bSwitchNotifications
         )
 
+        val preferences =  activity?.getSharedPreferences(getString(R.string.notification_preferences_key), Context.MODE_PRIVATE)
+
+        if (preferences?.getInt(getString(R.string.request_code_key), 0) == null) {
+            println("Request code doesn't exist")
+            with(preferences?.edit()) {
+                this?.putInt(getString(R.string.request_code_key), 1)
+                this?.apply()
+            }
+        }
+        println("Request code: ${preferences?.getInt(getString(R.string.request_code_key), 0)}")
+
+
         val system24hrs = DateFormat.is24HourFormat(requireContext())
         timePicker.setIs24HourView(system24hrs)
 
@@ -67,6 +80,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.bConfirmPick.setOnClickListener {
+            println("Request code: ${preferences?.getInt(getString(R.string.request_code_key), 0)}")
             val calendar = Calendar.getInstance()
             for (view in standardLayout) {
                 view.visibility = View.VISIBLE
@@ -93,7 +107,7 @@ class HomeFragment : Fragment() {
             }
 
             Toast.makeText(requireContext(), "Time set.", Toast.LENGTH_SHORT).show()
-            setAlarm(calendar.timeInMillis)
+            setAlarm(calendar.timeInMillis, preferences)
 
             timePicker.visibility = View.GONE
             binding.bConfirmPick.visibility = View.GONE
@@ -111,19 +125,25 @@ class HomeFragment : Fragment() {
             hideSoftKeyboard()
         }
 
-
         return binding.root
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun setAlarm(timeInMillis: Long) {
+    private fun setAlarm(timeInMillis: Long, preferences: SharedPreferences?) {
+        val requestCode = preferences!!.getInt(getString(R.string.request_code_key), 0)
+
         val alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
 
-        val pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, 0)
+        val pendingIntent = PendingIntent.getBroadcast(requireContext(), requestCode, intent, 0)
 
         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent)
+
+        with(preferences.edit()) {
+            this.putInt(getString(R.string.request_code_key), requestCode + 1)
+            this.apply()
+        }
     }
 
     private fun hideSoftKeyboard() {

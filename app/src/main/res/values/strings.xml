@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">FancyTimes</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="notification_preferences_key">notificationPreferences</string>
+    <string name="request_code_key">requestCode</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home_fragment_placeholder">Home Fragment</string>
     <string name="about_fragment_placeholder">About Fragment</string>
