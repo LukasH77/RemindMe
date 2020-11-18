@@ -99,16 +99,12 @@ class HomeFragment : Fragment() {
             val hourIsEqual = timePicker.hour == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
             val minuteIsTooEarly = hourIsEqual && timePicker.minute < Calendar.getInstance().get(Calendar.MINUTE)
             if (hourIsTooEarly || minuteIsTooEarly) {
-                    Toast.makeText(requireContext(), "Invalid time...for now.", Toast.LENGTH_SHORT).show()
-                    timePicker.visibility = View.GONE
-                    binding.bConfirmPick.visibility = View.GONE
-                    binding.ibExitTimePicker.visibility = View.GONE
-                    return@setOnClickListener
+                println("Next day")
+                calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1)
             }
 
             Toast.makeText(requireContext(), "Time set.", Toast.LENGTH_SHORT).show()
             setAlarm(calendar.timeInMillis, preferences)
-
             timePicker.visibility = View.GONE
             binding.bConfirmPick.visibility = View.GONE
             binding.ibExitTimePicker.visibility = View.GONE
