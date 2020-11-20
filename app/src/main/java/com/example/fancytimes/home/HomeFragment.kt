@@ -74,10 +74,10 @@ class HomeFragment : Fragment() {
             val calendar = Calendar.getInstance()
 
             val notificationTitle =
-                if (notificationTitleField.text.isBlank()) "I'm here to remind you:" else notificationTitleField.text.toString()
+                if (notificationTitleField.text.isBlank()) notificationTitleField.hint.toString() else notificationTitleField.text.toString()
 
             val notificationText =
-                if (notificationTextField.text.isBlank()) "There's something you should think of!" else notificationTextField.text.toString()
+                if (notificationTextField.text.isBlank()) notificationTitleField.hint.toString() else notificationTextField.text.toString()
 
             calendar.set(
                 calendar.get(Calendar.YEAR),
@@ -96,7 +96,6 @@ class HomeFragment : Fragment() {
 //                println("Next day")
                 calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1)
             }
-            Toast.makeText(requireContext(), "Time set.", Toast.LENGTH_SHORT).show()
             setAlarm(calendar.timeInMillis, preferences, notificationTitle, notificationText)
             swapVisibility(true)
             hideSoftKeyboard()
@@ -133,6 +132,7 @@ class HomeFragment : Fragment() {
             this.putInt(getString(R.string.request_code_key), requestCode + 1)
             this.apply()
         }
+        Toast.makeText(requireContext(), "Reminder set.", Toast.LENGTH_SHORT).show()
     }
 
     private fun hideSoftKeyboard() {

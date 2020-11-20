@@ -8,7 +8,6 @@ import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
-import com.example.fancytimes.home.HomeFragment
 
 class FancyTimeBroadcast : BroadcastReceiver() {
 
