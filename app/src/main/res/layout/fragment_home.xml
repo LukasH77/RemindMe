@@ -137,15 +137,36 @@
         <TimePicker
             android:id="@+id/tpTimePicker"
             android:layout_width="0dp"
-            android:layout_height="445dp"
+            android:layout_height="wrap_content"
             android:foregroundGravity="center"
-            android:timePickerMode="clock"
+            android:timePickerMode="spinner"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
+
+        <EditText
+            android:id="@+id/etNotificationTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Set notification title"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tpTimePicker" />
+
+        <EditText
+            android:id="@+id/etNotificationText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Set notification text"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etNotificationTitle" />
 
         <Button
             android:id="@+id/bConfirmPick"
@@ -155,8 +176,9 @@
             android:visibility="gone"
             app:backgroundTint="#03DAC6"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tpTimePicker" />
+            app:layout_constraintTop_toBottomOf="@+id/etNotificationText" />
 
         <ImageButton
             android:id="@+id/ibExitTimePicker"

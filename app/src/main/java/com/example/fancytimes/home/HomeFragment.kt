@@ -20,7 +20,6 @@ import com.example.fancytimes.FancyTimeBroadcast
 import com.example.fancytimes.R
 import com.example.fancytimes.databinding.FragmentHomeBinding
 import java.util.*
-import kotlin.math.min
 
 class HomeFragment : Fragment() {
 
@@ -34,32 +33,28 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         createNotificationChannel()
+        setHasOptionsMenu(true)
 
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_home, container, false)
-        setHasOptionsMenu(true)
 
         val timePicker = binding.tpTimePicker
         val addCustomTimeButton = binding.bAddCustomTime
-        val standardLayout = arrayOf(
-            binding.tvIntro,
-//            binding.tvHowEarly,
-            addCustomTimeButton,
-            binding.bShowAndEdit,
-//            binding.button2,
-//            binding.button3,
-            binding.bSwitchNotifications
+        val notificationTitleField = binding.etNotificationTitle
+        val notificationTextField = binding.etNotificationText
+
+        val preferences = activity?.getSharedPreferences(
+            getString(R.string.notification_preferences_key),
+            Context.MODE_PRIVATE
         )
 
-        val preferences =  activity?.getSharedPreferences(getString(R.string.notification_preferences_key), Context.MODE_PRIVATE)
-
         if (preferences?.getInt(getString(R.string.request_code_key), 0) == null) {
-            println("Request code doesn't exist")
+//            println("Request code doesn't exist")
             with(preferences?.edit()) {
                 this?.putInt(getString(R.string.request_code_key), 1)
                 this?.apply()
             }
         }
-        println("Request code: ${preferences?.getInt(getString(R.string.request_code_key), 0)}")
+//        println("Request code: ${preferences?.getInt(getString(R.string.request_code_key), 0)}")
 
 
         val system24hrs = DateFormat.is24HourFormat(requireContext())
@@ -71,20 +66,18 @@ class HomeFragment : Fragment() {
             timePicker.hour = calendar.get(Calendar.HOUR_OF_DAY)
             timePicker.minute = calendar.get(Calendar.MINUTE)
 
-            for (view in standardLayout) {
-                view.visibility = View.GONE
-            }
-            timePicker.visibility = View.VISIBLE
-            binding.bConfirmPick.visibility = View.VISIBLE
-            binding.ibExitTimePicker.visibility = View.VISIBLE
+            swapVisibility(false)
         }
 
         binding.bConfirmPick.setOnClickListener {
-            println("Request code: ${preferences?.getInt(getString(R.string.request_code_key), 0)}")
+//            println("Request code: ${preferences?.getInt(getString(R.string.request_code_key), 0)}")
             val calendar = Calendar.getInstance()
-            for (view in standardLayout) {
-                view.visibility = View.VISIBLE
-            }
+
+            val notificationTitle =
+                if (notificationTitleField.text.isBlank()) "I'm here to remind you:" else notificationTitleField.text.toString()
+
+            val notificationText =
+                if (notificationTextField.text.isBlank()) "There's something you should think of!" else notificationTextField.text.toString()
 
             calendar.set(
                 calendar.get(Calendar.YEAR),
@@ -97,27 +90,20 @@ class HomeFragment : Fragment() {
 
             val hourIsTooEarly = timePicker.hour < Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
             val hourIsEqual = timePicker.hour == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-            val minuteIsTooEarly = hourIsEqual && timePicker.minute < Calendar.getInstance().get(Calendar.MINUTE)
+            val minuteIsTooEarly =
+                hourIsEqual && timePicker.minute < Calendar.getInstance().get(Calendar.MINUTE)
             if (hourIsTooEarly || minuteIsTooEarly) {
-                println("Next day")
+//                println("Next day")
                 calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1)
             }
-
             Toast.makeText(requireContext(), "Time set.", Toast.LENGTH_SHORT).show()
-            setAlarm(calendar.timeInMillis, preferences)
-            timePicker.visibility = View.GONE
-            binding.bConfirmPick.visibility = View.GONE
-            binding.ibExitTimePicker.visibility = View.GONE
+            setAlarm(calendar.timeInMillis, preferences, notificationTitle, notificationText)
+            swapVisibility(true)
             hideSoftKeyboard()
         }
 
         binding.ibExitTimePicker.setOnClickListener {
-            for (view in standardLayout) {
-                view.visibility = View.VISIBLE
-            }
-            timePicker.visibility = View.GONE
-            binding.bConfirmPick.visibility = View.GONE
-            binding.ibExitTimePicker.visibility = View.GONE
+            swapVisibility(true)
             hideSoftKeyboard()
         }
 
@@ -125,12 +111,19 @@ class HomeFragment : Fragment() {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun setAlarm(timeInMillis: Long, preferences: SharedPreferences?) {
+    private fun setAlarm(
+        timeInMillis: Long,
+        preferences: SharedPreferences?,
+        notificationTitle: String,
+        notificationText: String
+    ) {
         val requestCode = preferences!!.getInt(getString(R.string.request_code_key), 0)
 
         val alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
+        intent.putExtra(getString(R.string.notification_title_extra_name), notificationTitle)
+        intent.putExtra(getString(R.string.notification_text_extra_name), notificationText)
 
         val pendingIntent = PendingIntent.getBroadcast(requireContext(), requestCode, intent, 0)
 
@@ -143,21 +136,61 @@ class HomeFragment : Fragment() {
     }
 
     private fun hideSoftKeyboard() {
-        val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager =
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Notification Channel"
-            val text = "Fancy Time notifications"
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel("FancyTimes notifications", name, importance).apply {
-                description = text
+            val channel = NotificationChannel(
+                getString(R.string.notification_channel_id),
+                "Notification Channel",
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                description = "Reminders"
             }
             val notificationManager: NotificationManager =
                 activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun swapVisibility(timePickerIsVisible: Boolean) {
+        val mainLayout = arrayOf(
+            binding.tvIntro,
+//            binding.tvHowEarly,
+            binding.bAddCustomTime,
+            binding.bShowAndEdit,
+//            binding.button2,
+//            binding.button3,
+            binding.bSwitchNotifications
+        )
+
+        val notificationCreationLayout = arrayOf(
+            binding.tpTimePicker,
+            binding.etNotificationTitle,
+            binding.etNotificationText,
+            binding.bConfirmPick,
+            binding.ibExitTimePicker
+        )
+
+        if (timePickerIsVisible) {
+            for (view in mainLayout) {
+                view.visibility = View.VISIBLE
+            }
+            for (view in notificationCreationLayout) {
+                view.visibility = View.GONE
+            }
+            binding.etNotificationTitle.text.clear()
+            binding.etNotificationText.text.clear()
+        } else {
+            for (view in mainLayout) {
+                view.visibility = View.GONE
+            }
+            for (view in notificationCreationLayout) {
+                view.visibility = View.VISIBLE
+            }
         }
     }
 

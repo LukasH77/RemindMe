@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">FancyTimes</string>
 
+    <string name="notification_channel_id">reminders</string>
+    <string name="notification_text_extra_name">notificationText</string>
+    <string name="notification_title_extra_name">notificationTitle</string>
+
     <string name="notification_preferences_key">notificationPreferences</string>
     <string name="request_code_key">requestCode</string>
 
