@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.TimePicker
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -25,7 +24,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
 
-    private lateinit var timePicker: TimePicker
+//    private lateinit var timePicker: TimePicker
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -38,9 +37,10 @@ class HomeFragment : Fragment() {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_home, container, false)
 
         val timePicker = binding.tpTimePicker
-        val addCustomTimeButton = binding.bAddCustomTime
+        val addCustomTimeButton = binding.bSetReminder
         val notificationTitleField = binding.etNotificationTitle
         val notificationTextField = binding.etNotificationText
+        val repeatingCheckBox = binding.cbRepeating
 
         val preferences = activity?.getSharedPreferences(
             getString(R.string.notification_preferences_key),
@@ -70,14 +70,15 @@ class HomeFragment : Fragment() {
         }
 
         binding.bConfirmPick.setOnClickListener {
-//            println("Request code: ${preferences?.getInt(getString(R.string.request_code_key), 0)}")
             val calendar = Calendar.getInstance()
 
             val notificationTitle =
                 if (notificationTitleField.text.isBlank()) notificationTitleField.hint.toString() else notificationTitleField.text.toString()
 
             val notificationText =
-                if (notificationTextField.text.isBlank()) notificationTitleField.hint.toString() else notificationTextField.text.toString()
+                if (notificationTextField.text.isBlank()) notificationTextField.hint.toString() else notificationTextField.text.toString()
+
+            val isNotificationRepeating = repeatingCheckBox.isChecked
 
             calendar.set(
                 calendar.get(Calendar.YEAR),
@@ -96,7 +97,13 @@ class HomeFragment : Fragment() {
 //                println("Next day")
                 calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1)
             }
-            setAlarm(calendar.timeInMillis, preferences, notificationTitle, notificationText)
+            handleAlarms(
+                calendar.timeInMillis,
+                preferences,
+                notificationTitle,
+                notificationText,
+                isNotificationRepeating
+            )
             swapVisibility(true)
             hideSoftKeyboard()
         }
@@ -110,29 +117,46 @@ class HomeFragment : Fragment() {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun setAlarm(
-        timeInMillis: Long,
+    private fun handleAlarms(
+        notificationTime: Long,
         preferences: SharedPreferences?,
         notificationTitle: String,
-        notificationText: String
+        notificationText: String,
+        isNotificationRepeating: Boolean
     ) {
-        val requestCode = preferences!!.getInt(getString(R.string.request_code_key), 0)
+        val notificationRequestCode = preferences!!.getInt(getString(R.string.request_code_key), 0)
+        println("Request code: ${preferences.getInt(getString(R.string.request_code_key), 0)}")
 
         val alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
         intent.putExtra(getString(R.string.notification_title_extra_name), notificationTitle)
         intent.putExtra(getString(R.string.notification_text_extra_name), notificationText)
+        intent.putExtra(getString(R.string.notification_repeat_extra_name), isNotificationRepeating)
+        intent.putExtra(
+            getString(R.string.notification_requestCode_extra_name),
+            notificationRequestCode
+        )
+        intent.putExtra(getString(R.string.notification_time_extra_name), notificationTime)
 
-        val pendingIntent = PendingIntent.getBroadcast(requireContext(), requestCode, intent, 0)
+        val pendingIntent =
+            PendingIntent.getBroadcast(requireContext(), notificationRequestCode, intent, 0)
 
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent)
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            notificationTime,
+            pendingIntent
+        )
 
         with(preferences.edit()) {
-            this.putInt(getString(R.string.request_code_key), requestCode + 1)
+            this.putInt(getString(R.string.request_code_key), notificationRequestCode + 1)
             this.apply()
         }
         Toast.makeText(requireContext(), "Reminder set.", Toast.LENGTH_SHORT).show()
+
+        binding.bCancel.setOnClickListener {
+            alarmManager.cancel(pendingIntent)
+        }
     }
 
     private fun hideSoftKeyboard() {
@@ -160,11 +184,11 @@ class HomeFragment : Fragment() {
         val mainLayout = arrayOf(
             binding.tvIntro,
 //            binding.tvHowEarly,
-            binding.bAddCustomTime,
+            binding.bSetReminder,
             binding.bShowAndEdit,
 //            binding.button2,
 //            binding.button3,
-            binding.bSwitchNotifications
+            binding.bCancel
         )
 
         val notificationCreationLayout = arrayOf(
@@ -172,7 +196,8 @@ class HomeFragment : Fragment() {
             binding.etNotificationTitle,
             binding.etNotificationText,
             binding.bConfirmPick,
-            binding.ibExitTimePicker
+            binding.ibExitTimePicker,
+            binding.cbRepeating
         )
 
         if (timePickerIsVisible) {

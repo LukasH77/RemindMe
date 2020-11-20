@@ -4,9 +4,14 @@
     <string name="notification_channel_id">reminders</string>
     <string name="notification_text_extra_name">notificationText</string>
     <string name="notification_title_extra_name">notificationTitle</string>
+    <string name="notification_repeat_extra_name">isNotificationRepeating</string>
+    <string name="notification_exact_extra_name">isNotificationExact</string>
+    <string name="notification_requestCode_extra_name">notificationRequestCode</string>
+    <string name="notification_time_extra_name">notificationTime</string>
+    <string name="context_extra_name">context</string>
 
     <string name="notification_preferences_key">notificationPreferences</string>
-    <string name="request_code_key">requestCode</string>
+    <string name="request_code_key">notificationRequestCode</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home_fragment_placeholder">Home Fragment</string>
