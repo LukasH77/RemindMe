@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.os.Parcel
 import android.text.format.DateFormat
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -22,8 +23,20 @@ import java.util.*
 
 class HomeFragment : Fragment() {
 
+
+    // TODO 1.
+    //  -> counter preference goes up with each set alarm
+    //  -> each set alarm gets its own preference with the current counter value as key & value
+
+    // TODO 3.
+    //  -> allow manual cancelling of alarms via their preference key, deleting the corresponding preference
+
+    // TODO 4.
+    //  -> visualize all active alarms using a database and recycler view
+
     private lateinit var binding: FragmentHomeBinding
 
+    private lateinit var alarmManager: AlarmManager
 //    private lateinit var timePicker: TimePicker
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -35,6 +48,8 @@ class HomeFragment : Fragment() {
         setHasOptionsMenu(true)
 
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_home, container, false)
+
+        alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val timePicker = binding.tpTimePicker
         val addCustomTimeButton = binding.bSetReminder
@@ -113,6 +128,19 @@ class HomeFragment : Fragment() {
             hideSoftKeyboard()
         }
 
+        binding.bCancel.setOnClickListener {
+            Toast.makeText(requireContext(), "Reminder canceled", Toast.LENGTH_SHORT).show()
+            println(preferences!!.getInt(getString(R.string.request_code_key), 0) - 1)
+            alarmManager.cancel(
+                PendingIntent.getBroadcast(
+                    requireContext(),
+                    preferences!!.getInt(getString(R.string.request_code_key), 0) - 1,
+                    Intent(requireContext(), FancyTimeBroadcast::class.java),
+                    0
+                )
+            )
+        }
+
         return binding.root
     }
 
@@ -126,8 +154,6 @@ class HomeFragment : Fragment() {
     ) {
         val notificationRequestCode = preferences!!.getInt(getString(R.string.request_code_key), 0)
         println("Request code: ${preferences.getInt(getString(R.string.request_code_key), 0)}")
-
-        val alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
         intent.putExtra(getString(R.string.notification_title_extra_name), notificationTitle)
@@ -153,10 +179,6 @@ class HomeFragment : Fragment() {
             this.apply()
         }
         Toast.makeText(requireContext(), "Reminder set.", Toast.LENGTH_SHORT).show()
-
-        binding.bCancel.setOnClickListener {
-            alarmManager.cancel(pendingIntent)
-        }
     }
 
     private fun hideSoftKeyboard() {

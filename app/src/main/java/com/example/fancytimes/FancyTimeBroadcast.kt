@@ -13,8 +13,20 @@ import androidx.core.app.NotificationManagerCompat
 
 class FancyTimeBroadcast() : BroadcastReceiver() {
 
+
+    // TODO 2.
+    //  -> Non-repeating alarms delete their preference after triggering
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(callingContext: Context?, callingIntent: Intent?) {
+
+        val preferences = callingContext?.getSharedPreferences(callingContext.getString(R.string.notification_preferences_key), Context.MODE_PRIVATE)
+
+        with(preferences!!.edit()) {
+            this.remove("requestCode")
+            this.apply()
+        }
 
         val notificationClickIntent = Intent(callingContext, MainActivity::class.java)
 
