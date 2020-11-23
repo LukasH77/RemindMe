@@ -84,6 +84,11 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
                 notificationTime,
                 pendingIntent
             )
+        } else {
+            with(preferences.edit()) {
+                this.remove(notificationRequestCode.toString())
+                this.apply()
+            }
         }
     }
 }

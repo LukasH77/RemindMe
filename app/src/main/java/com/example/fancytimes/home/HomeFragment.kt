@@ -19,6 +19,7 @@ import androidx.navigation.ui.NavigationUI
 import com.example.fancytimes.FancyTimeBroadcast
 import com.example.fancytimes.R
 import com.example.fancytimes.databinding.FragmentHomeBinding
+import java.lang.Exception
 import java.util.*
 
 class HomeFragment : Fragment() {
@@ -62,13 +63,18 @@ class HomeFragment : Fragment() {
             Context.MODE_PRIVATE
         )
 
-        if (preferences?.getInt(getString(R.string.request_code_key), 0) == null) {
+//        with(preferences?.edit()) {
+//            this!!.remove(getString(R.string.request_code_key))
+//            this.apply()
+//        }
+
+//        if (preferences?.getInt(getString(R.string.request_code_key), 0) == null) {
 //            println("Request code doesn't exist")
-            with(preferences?.edit()) {
-                this?.putInt(getString(R.string.request_code_key), 1)
-                this?.apply()
-            }
-        }
+//            with(preferences?.edit()) {
+//                this?.putInt(getString(R.string.request_code_key), 0)
+//                this?.apply()
+//            }
+//        }
 //        println("Request code: ${preferences?.getInt(getString(R.string.request_code_key), 0)}")
 
 
@@ -82,6 +88,12 @@ class HomeFragment : Fragment() {
             timePicker.minute = calendar.get(Calendar.MINUTE)
 
             swapVisibility(false)
+
+            hideSoftKeyboard()
+        }
+
+        binding.bShowAndEdit.setOnClickListener {
+            hideSoftKeyboard()
         }
 
         binding.bConfirmPick.setOnClickListener {
@@ -129,18 +141,28 @@ class HomeFragment : Fragment() {
         }
 
         binding.bCancel.setOnClickListener {
-            Toast.makeText(requireContext(), "Reminder canceled", Toast.LENGTH_SHORT).show()
-            println(preferences!!.getInt(getString(R.string.request_code_key), 0) - 1)
-            alarmManager.cancel(
-                PendingIntent.getBroadcast(
-                    requireContext(),
-                    preferences!!.getInt(getString(R.string.request_code_key), 0) - 1,
-                    Intent(requireContext(), FancyTimeBroadcast::class.java),
-                    0
+            val toCancel = binding.etToCancel.text.toString()
+            try {
+                alarmManager.cancel(
+                    PendingIntent.getBroadcast(
+                        requireContext(),
+                        toCancel.toInt(),
+                        Intent(requireContext(), FancyTimeBroadcast::class.java),
+                        PendingIntent.FLAG_NO_CREATE
+                    )
                 )
-            )
+                Toast.makeText(requireContext(), "Reminder canceled", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Nothing to cancel there", Toast.LENGTH_SHORT)
+                    .show()
+            }
+            with(preferences!!.edit()) {
+                this.remove(toCancel)
+                this.apply()
+            }
+            binding.etToCancel.text.clear()
+            hideSoftKeyboard()
         }
-
         return binding.root
     }
 
@@ -176,9 +198,10 @@ class HomeFragment : Fragment() {
 
         with(preferences.edit()) {
             this.putInt(getString(R.string.request_code_key), notificationRequestCode + 1)
+            this.putInt(notificationRequestCode.toString(), notificationRequestCode)
             this.apply()
         }
-        Toast.makeText(requireContext(), "Reminder set.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), notificationRequestCode.toString(), Toast.LENGTH_SHORT).show()
     }
 
     private fun hideSoftKeyboard() {
@@ -210,6 +233,7 @@ class HomeFragment : Fragment() {
             binding.bShowAndEdit,
 //            binding.button2,
 //            binding.button3,
+            binding.etToCancel,
             binding.bCancel
         )
 

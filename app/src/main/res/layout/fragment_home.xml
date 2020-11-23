@@ -7,211 +7,275 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".home.HomeFragment">
+        android:fillViewport="true">
 
-        <TextView
-            android:id="@+id/tvIntro"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#FFE57F"
-            android:gravity="center"
-            android:padding="15dp"
-            android:text="@string/intro_text"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/bSetReminder"
-            app:layout_constraintEnd_toEndOf="@+id/bCancel"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/bCancel"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="spread"
-            tools:visibility="visible" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".home.HomeFragment">
 
-<!--        <TextView-->
-<!--            android:id="@+id/tvHowEarly"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="#00E676"-->
-<!--            android:gravity="center"-->
-<!--            android:padding="15dp"-->
-<!--            android:text="How early would you like to be reminded?"-->
-<!--            android:visibility="visible"-->
-<!--            app:layout_constraintBottom_toTopOf="@+id/bAddCustomTime"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/bSwitchNotifications"-->
-<!--            app:layout_constraintHorizontal_bias="0.0"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/bSwitchNotifications"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/tvIntro" />-->
+            <TextView
+                android:id="@+id/tvIntro"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#FFE57F"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="@string/intro_text"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/bSetReminder"
+                app:layout_constraintEnd_toEndOf="@+id/bShowAndEdit"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/bShowAndEdit"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="spread"
+                tools:visibility="gone" />
 
-        <Button
-            android:id="@+id/bSetReminder"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingTop="40dp"
-            android:paddingBottom="40dp"
-            android:text="Set reminder"
-            android:visibility="visible"
-            app:backgroundTint="#2196F3"
-            app:layout_constraintBottom_toTopOf="@+id/bShowAndEdit"
-            app:layout_constraintEnd_toEndOf="@+id/bShowAndEdit"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/bShowAndEdit"
-            app:layout_constraintTop_toBottomOf="@+id/tvIntro"
-            tools:visibility="visible" />
+            <!--        <TextView-->
+            <!--            android:id="@+id/tvHowEarly"-->
+            <!--            android:layout_width="0dp"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:background="#00E676"-->
+            <!--            android:gravity="center"-->
+            <!--            android:padding="15dp"-->
+            <!--            android:text="How early would you like to be reminded?"-->
+            <!--            android:visibility="visible"-->
+            <!--            app:layout_constraintBottom_toTopOf="@+id/bAddCustomTime"-->
+            <!--            app:layout_constraintEnd_toEndOf="@+id/bSwitchNotifications"-->
+            <!--            app:layout_constraintHorizontal_bias="0.0"-->
+            <!--            app:layout_constraintStart_toStartOf="@+id/bSwitchNotifications"-->
+            <!--            app:layout_constraintTop_toBottomOf="@+id/tvIntro" />-->
 
-        <Button
-            android:id="@+id/bShowAndEdit"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingTop="40dp"
-            android:paddingBottom="40dp"
-            android:text="Show and edit list of times"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/bCancel"
-            app:layout_constraintEnd_toEndOf="@+id/bCancel"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/bCancel"
-            app:layout_constraintTop_toBottomOf="@+id/bSetReminder"
-            tools:visibility="visible" />
+            <Button
+                android:id="@+id/bSetReminder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Set reminder"
+                android:visibility="visible"
+                app:backgroundTint="#2196F3"
+                app:layout_constraintBottom_toTopOf="@+id/bShowAndEdit"
+                app:layout_constraintEnd_toEndOf="@+id/bShowAndEdit"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/bShowAndEdit"
+                app:layout_constraintTop_toBottomOf="@+id/tvIntro"
+                tools:visibility="gone" />
 
-<!--        <Button-->
-<!--            android:id="@+id/button2"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginEnd="2dp"-->
-<!--            android:padding="15dp"-->
-<!--            android:text="24hrs"-->
-<!--            android:visibility="gone"-->
-<!--            app:backgroundTint="#CDDC39"-->
-<!--            app:layout_constraintBottom_toTopOf="@+id/bSwitchNotifications"-->
-<!--            app:layout_constraintEnd_toStartOf="@+id/button3"-->
-<!--            app:layout_constraintHorizontal_chainStyle="packed"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/guideline2"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/bShowAndEdit" />-->
+            <Button
+                android:id="@+id/bShowAndEdit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Show and edit list of times"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/bCancel"
+                app:layout_constraintEnd_toEndOf="@+id/bCancel"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/etToCancel"
+                app:layout_constraintTop_toBottomOf="@+id/bSetReminder"
+                tools:visibility="gone" />
 
-<!--        <Button-->
-<!--            android:id="@+id/button3"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="2dp"-->
-<!--            android:padding="15dp"-->
-<!--            android:text="am/pm"-->
-<!--            android:visibility="gone"-->
-<!--            app:backgroundTint="#673AB7"-->
-<!--            app:layout_constraintBottom_toTopOf="@+id/bSwitchNotifications"-->
-<!--            app:layout_constraintEnd_toStartOf="@+id/guideline"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/button2"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/bShowAndEdit" />-->
+            <!--        <Button-->
+            <!--            android:id="@+id/button2"-->
+            <!--            android:layout_width="0dp"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_marginEnd="2dp"-->
+            <!--            android:padding="15dp"-->
+            <!--            android:text="24hrs"-->
+            <!--            android:visibility="gone"-->
+            <!--            app:backgroundTint="#CDDC39"-->
+            <!--            app:layout_constraintBottom_toTopOf="@+id/bSwitchNotifications"-->
+            <!--            app:layout_constraintEnd_toStartOf="@+id/button3"-->
+            <!--            app:layout_constraintHorizontal_chainStyle="packed"-->
+            <!--            app:layout_constraintStart_toStartOf="@+id/guideline2"-->
+            <!--            app:layout_constraintTop_toBottomOf="@+id/bShowAndEdit" />-->
 
-        <Button
-            android:id="@+id/bCancel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingTop="40dp"
-            android:paddingBottom="40dp"
-            android:text="Cancel most recent"
-            android:visibility="visible"
-            app:backgroundTint="#009688"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/guideline"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/bShowAndEdit"
-            tools:visibility="visible" />
+            <!--        <Button-->
+            <!--            android:id="@+id/button3"-->
+            <!--            android:layout_width="0dp"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_marginStart="2dp"-->
+            <!--            android:padding="15dp"-->
+            <!--            android:text="am/pm"-->
+            <!--            android:visibility="gone"-->
+            <!--            app:backgroundTint="#673AB7"-->
+            <!--            app:layout_constraintBottom_toTopOf="@+id/bSwitchNotifications"-->
+            <!--            app:layout_constraintEnd_toStartOf="@+id/guideline"-->
+            <!--            app:layout_constraintStart_toEndOf="@+id/button2"-->
+            <!--            app:layout_constraintTop_toBottomOf="@+id/bShowAndEdit" />-->
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="visible"
-            app:layout_constraintGuide_percent="0.85"
-            tools:visibility="visible" />
+            <EditText
+                android:id="@+id/etToCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/bCancel"
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
+                app:layout_constraintTop_toBottomOf="@+id/bShowAndEdit"
+                tools:visibility="gone" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="visible"
-            app:layout_constraintGuide_percent="0.15"
-            tools:visibility="visible" />
+            <Button
+                android:id="@+id/bCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Cancel selected"
+                android:visibility="visible"
+                app:backgroundTint="#009688"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/guideline"
+                app:layout_constraintStart_toEndOf="@+id/etToCancel"
+                app:layout_constraintTop_toBottomOf="@+id/bShowAndEdit"
+                tools:visibility="gone" />
 
-        <TimePicker
-            android:id="@+id/tpTimePicker"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:foregroundGravity="center"
-            android:timePickerMode="spinner"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            tools:visibility="gone" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible"
+                app:layout_constraintGuide_percent="0.85"
+                tools:visibility="visible" />
 
-        <EditText
-            android:id="@+id/etNotificationTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="I'm here to remind you:"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tpTimePicker"
-            tools:visibility="gone" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible"
+                app:layout_constraintGuide_percent="0.15"
+                tools:visibility="visible" />
 
-        <EditText
-            android:id="@+id/etNotificationText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="There's something you should think of!"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etNotificationTitle"
-            tools:visibility="gone" />
+            <TimePicker
+                android:id="@+id/tpTimePicker"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:foregroundGravity="center"
+                android:timePickerMode="spinner"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                tools:visibility="visible" />
 
-        <Button
-            android:id="@+id/bConfirmPick"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Confirm"
-            android:visibility="gone"
-            app:backgroundTint="#03DAC6"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cbRepeating"
-            tools:visibility="gone" />
+            <EditText
+                android:id="@+id/etNotificationTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="I'm here to remind you:"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tpTimePicker"
+                tools:visibility="visible" />
 
-        <ImageButton
-            android:id="@+id/ibExitTimePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@android:drawable/ic_delete"
-            tools:visibility="gone" />
+            <EditText
+                android:id="@+id/etNotificationText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="There's something you should think of!"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etNotificationTitle"
+                tools:visibility="visible" />
 
-        <CheckBox
-            android:id="@+id/cbRepeating"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Repeat Every Minute"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etNotificationText"
-            tools:visibility="gone" />
+            <Button
+                android:id="@+id/bConfirmPick"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Confirm"
+                android:visibility="gone"
+                app:backgroundTint="#03DAC6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/checkBox2"
+                tools:visibility="visible" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageButton
+                android:id="@+id/ibExitTimePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@android:drawable/ic_delete"
+                tools:visibility="visible" />
+
+            <CheckBox
+                android:id="@+id/cbRepeating"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Every Day"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/bConfirmPick"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/checkBox3"
+                app:layout_constraintTop_toBottomOf="@+id/etNotificationText"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:text="Repeat"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/checkBox3"
+                app:layout_constraintEnd_toStartOf="@+id/checkBox"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/checkBox3" />
+
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="Never"
+                app:layout_constraintBottom_toBottomOf="@+id/checkBox2"
+                app:layout_constraintEnd_toStartOf="@+id/checkBox2"
+                app:layout_constraintStart_toEndOf="@+id/textView"
+                app:layout_constraintTop_toTopOf="@+id/checkBox2" />
+
+            <CheckBox
+                android:id="@+id/checkBox2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="Every Minute"
+                app:layout_constraintBottom_toBottomOf="@+id/cbRepeating"
+                app:layout_constraintEnd_toStartOf="@+id/checkBox3"
+                app:layout_constraintStart_toEndOf="@+id/checkBox"
+                app:layout_constraintTop_toTopOf="@+id/cbRepeating" />
+
+            <CheckBox
+                android:id="@+id/checkBox3"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="Every Hour"
+                app:layout_constraintBottom_toBottomOf="@+id/checkBox"
+                app:layout_constraintEnd_toStartOf="@+id/cbRepeating"
+                app:layout_constraintStart_toEndOf="@+id/checkBox2"
+                app:layout_constraintTop_toTopOf="@+id/checkBox" />
+
+            <EditText
+                android:id="@+id/editTextTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="time"
+                app:layout_constraintTop_toBottomOf="@+id/bConfirmPick"
+                tools:layout_editor_absoluteX="110dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>
