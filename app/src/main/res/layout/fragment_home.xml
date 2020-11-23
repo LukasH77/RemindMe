@@ -192,10 +192,11 @@
                 android:text="Confirm"
                 android:visibility="gone"
                 app:backgroundTint="#03DAC6"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/checkBox2"
+                app:layout_constraintTop_toBottomOf="@+id/cbRepeating"
                 tools:visibility="visible" />
 
             <ImageButton
@@ -216,65 +217,16 @@
                 android:id="@+id/cbRepeating"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Every Day"
+                android:text="Repeat Every Minute"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/bConfirmPick"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/checkBox3"
-                app:layout_constraintTop_toBottomOf="@+id/etNotificationText"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:gravity="center"
-                android:text="Repeat"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/checkBox3"
-                app:layout_constraintEnd_toStartOf="@+id/checkBox"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/checkBox3" />
-
-            <CheckBox
-                android:id="@+id/checkBox"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:text="Never"
-                app:layout_constraintBottom_toBottomOf="@+id/checkBox2"
-                app:layout_constraintEnd_toStartOf="@+id/checkBox2"
-                app:layout_constraintStart_toEndOf="@+id/textView"
-                app:layout_constraintTop_toTopOf="@+id/checkBox2" />
-
-            <CheckBox
-                android:id="@+id/checkBox2"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:text="Every Minute"
-                app:layout_constraintBottom_toBottomOf="@+id/cbRepeating"
-                app:layout_constraintEnd_toStartOf="@+id/checkBox3"
-                app:layout_constraintStart_toEndOf="@+id/checkBox"
-                app:layout_constraintTop_toTopOf="@+id/cbRepeating" />
-
-            <CheckBox
-                android:id="@+id/checkBox3"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:text="Every Hour"
-                app:layout_constraintBottom_toBottomOf="@+id/checkBox"
-                app:layout_constraintEnd_toStartOf="@+id/cbRepeating"
-                app:layout_constraintStart_toEndOf="@+id/checkBox2"
-                app:layout_constraintTop_toTopOf="@+id/checkBox" />
-
-            <EditText
-                android:id="@+id/editTextTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="time"
-                app:layout_constraintTop_toBottomOf="@+id/bConfirmPick"
-                tools:layout_editor_absoluteX="110dp" />
+                app:layout_constraintTop_toBottomOf="@+id/etNotificationText"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
