@@ -14,7 +14,7 @@ import androidx.core.app.NotificationManagerCompat
 class FancyTimeBroadcast() : BroadcastReceiver() {
 
 
-    // TODO 2.
+    // TODO 2. DONE
     //  -> Non-repeating alarms delete their preference after triggering
 
 

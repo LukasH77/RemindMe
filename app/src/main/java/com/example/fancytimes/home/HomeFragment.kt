@@ -25,11 +25,11 @@ import java.util.*
 class HomeFragment : Fragment() {
 
 
-    // TODO 1.
+    // TODO 1. DONE
     //  -> counter preference goes up with each set alarm
     //  -> each set alarm gets its own preference with the current counter value as key & value
 
-    // TODO 3.
+    // TODO 3. DONE
     //  -> allow manual cancelling of alarms via their preference key, deleting the corresponding preference
 
     // TODO 4.
