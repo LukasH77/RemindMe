@@ -14,10 +14,12 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.fancytimes.FancyTimeBroadcast
 import com.example.fancytimes.R
+import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.FragmentHomeBinding
 import java.lang.Exception
 import java.util.*
@@ -38,7 +40,9 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
 
     private lateinit var alarmManager: AlarmManager
-//    private lateinit var timePicker: TimePicker
+
+    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var homeViewModelFactory: HomeViewModelFactory
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -47,6 +51,12 @@ class HomeFragment : Fragment() {
     ): View? {
         createNotificationChannel()
         setHasOptionsMenu(true)
+
+        val reminderDao = ReminderDatabase.createInstance(requireContext().applicationContext).reminderDao
+
+        homeViewModelFactory = HomeViewModelFactory(reminderDao)
+
+        homeViewModel = ViewModelProvider(this, homeViewModelFactory).get(HomeViewModel::class.java)
 
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_home, container, false)
 
