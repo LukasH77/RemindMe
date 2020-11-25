@@ -27,12 +27,12 @@
                 android:text="@string/intro_text"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/bSetReminder"
-                app:layout_constraintEnd_toEndOf="@+id/bShowAndEdit"
+                app:layout_constraintEnd_toEndOf="@+id/rvReminders"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/bShowAndEdit"
+                app:layout_constraintStart_toStartOf="@+id/rvReminders"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="spread"
-                tools:visibility="gone" />
+                tools:visibility="visible" />
 
             <!--        <TextView-->
             <!--            android:id="@+id/tvHowEarly"-->
@@ -56,25 +56,27 @@
                 android:text="Set reminder"
                 android:visibility="visible"
                 app:backgroundTint="#2196F3"
-                app:layout_constraintBottom_toTopOf="@+id/bShowAndEdit"
-                app:layout_constraintEnd_toEndOf="@+id/bShowAndEdit"
+                app:layout_constraintBottom_toTopOf="@+id/rvReminders"
+                app:layout_constraintEnd_toEndOf="@+id/rvReminders"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/bShowAndEdit"
+                app:layout_constraintStart_toStartOf="@+id/rvReminders"
                 app:layout_constraintTop_toBottomOf="@+id/tvIntro"
-                tools:visibility="gone" />
+                tools:visibility="visible" />
 
-            <Button
-                android:id="@+id/bShowAndEdit"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvReminders"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Show and edit list of times"
+                android:layout_height="0dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:background="#888282"
                 android:visibility="visible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toTopOf="@+id/bCancel"
                 app:layout_constraintEnd_toEndOf="@+id/bCancel"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/etToCancel"
-                app:layout_constraintTop_toBottomOf="@+id/bSetReminder"
-                tools:visibility="gone" />
+                app:layout_constraintTop_toBottomOf="@id/bAddListItem"
+                tools:visibility="visible" />
 
             <!--        <Button-->
             <!--            android:id="@+id/button2"-->
@@ -114,8 +116,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/bCancel"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/bShowAndEdit"
-                tools:visibility="gone" />
+                app:layout_constraintTop_toBottomOf="@+id/rvReminders"
+                tools:visibility="visible" />
 
             <Button
                 android:id="@+id/bCancel"
@@ -127,8 +129,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/guideline"
                 app:layout_constraintStart_toEndOf="@+id/etToCancel"
-                app:layout_constraintTop_toBottomOf="@+id/bShowAndEdit"
-                tools:visibility="gone" />
+                app:layout_constraintTop_toBottomOf="@+id/rvReminders"
+                tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"
@@ -160,7 +162,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                tools:visibility="visible" />
+                tools:visibility="gone" />
 
             <EditText
                 android:id="@+id/etNotificationTitle"
@@ -172,7 +174,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tpTimePicker"
-                tools:visibility="visible" />
+                tools:visibility="gone" />
 
             <EditText
                 android:id="@+id/etNotificationText"
@@ -183,7 +185,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etNotificationTitle"
-                tools:visibility="visible" />
+                tools:visibility="gone" />
 
             <Button
                 android:id="@+id/bConfirmPick"
@@ -197,7 +199,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cbRepeating"
-                tools:visibility="visible" />
+                tools:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/ibExitTimePicker"
@@ -211,7 +213,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
                 app:srcCompat="@android:drawable/ic_delete"
-                tools:visibility="visible" />
+                tools:visibility="gone" />
 
             <CheckBox
                 android:id="@+id/cbRepeating"
@@ -226,7 +228,19 @@
                 app:layout_constraintTop_toBottomOf="@+id/etNotificationText"
                 app:layout_constraintVertical_bias="0.0"
                 app:layout_constraintVertical_chainStyle="packed"
-                tools:visibility="visible" />
+                tools:visibility="gone" />
+
+            <Button
+                android:id="@+id/bAddListItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add list item"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.538" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

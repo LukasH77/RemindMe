@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/bRemove"
+        android:layout_width="181dp"
+        android:layout_height="117dp"
+        android:text="Remove"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/etTime"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etTime"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:inputType="time"
+        android:text="Time"
+        app:layout_constraintBottom_toTopOf="@+id/etRepeat"
+        app:layout_constraintEnd_toStartOf="@+id/bRemove"
+        app:layout_constraintStart_toEndOf="@+id/etTitle"
+        app:layout_constraintTop_toTopOf="@+id/bRemove" />
+
+    <EditText
+        android:id="@+id/etRepeat"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Repeat"
+        app:layout_constraintBottom_toBottomOf="@+id/bRemove"
+        app:layout_constraintEnd_toStartOf="@+id/bRemove"
+        app:layout_constraintStart_toEndOf="@+id/etText"
+        app:layout_constraintTop_toBottomOf="@+id/etTime" />
+
+    <EditText
+        android:id="@+id/etText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Text"
+        app:layout_constraintBottom_toBottomOf="@+id/etRepeat"
+        app:layout_constraintEnd_toStartOf="@+id/etRepeat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etTitle" />
+
+    <EditText
+        android:id="@+id/etTitle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Title"
+        app:layout_constraintBottom_toTopOf="@+id/etText"
+        app:layout_constraintEnd_toStartOf="@+id/etTime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/etTime" />
+</androidx.constraintlayout.widget.ConstraintLayout>

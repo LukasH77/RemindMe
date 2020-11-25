@@ -19,6 +19,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.fancytimes.FancyTimeBroadcast
 import com.example.fancytimes.R
+import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.FragmentHomeBinding
 import java.lang.Exception
@@ -52,7 +53,8 @@ class HomeFragment : Fragment() {
         createNotificationChannel()
         setHasOptionsMenu(true)
 
-        val reminderDao = ReminderDatabase.createInstance(requireContext().applicationContext).reminderDao
+        val reminderDao =
+            ReminderDatabase.createInstance(requireContext().applicationContext).reminderDao
 
         homeViewModelFactory = HomeViewModelFactory(reminderDao)
 
@@ -61,6 +63,59 @@ class HomeFragment : Fragment() {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_home, container, false)
 
         alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        var x = 0
+
+
+
+        binding.rvReminders.adapter =
+            ReminderAdapter(
+                listOf(
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123)
+                )
+            )
+
 
         val timePicker = binding.tpTimePicker
         val addCustomTimeButton = binding.bSetReminder
@@ -102,7 +157,7 @@ class HomeFragment : Fragment() {
             hideSoftKeyboard()
         }
 
-        binding.bShowAndEdit.setOnClickListener {
+        binding.rvReminders.setOnClickListener {
             hideSoftKeyboard()
         }
 
@@ -211,7 +266,8 @@ class HomeFragment : Fragment() {
             this.putInt(notificationRequestCode.toString(), notificationRequestCode)
             this.apply()
         }
-        Toast.makeText(requireContext(), notificationRequestCode.toString(), Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), notificationRequestCode.toString(), Toast.LENGTH_SHORT)
+            .show()
     }
 
     private fun hideSoftKeyboard() {
@@ -240,7 +296,7 @@ class HomeFragment : Fragment() {
             binding.tvIntro,
 //            binding.tvHowEarly,
             binding.bSetReminder,
-            binding.bShowAndEdit,
+            binding.rvReminders,
 //            binding.button2,
 //            binding.button3,
             binding.etToCancel,
