@@ -66,8 +66,6 @@ class HomeFragment : Fragment() {
 
         var x = 0
 
-
-
         binding.rvReminders.adapter =
             ReminderAdapter(
                 listOf(
