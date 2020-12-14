@@ -64,55 +64,74 @@ class HomeFragment : Fragment() {
 
         alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        var x = 0
+        var x = 20
 
-        binding.rvReminders.adapter =
-            ReminderAdapter(
-                listOf(
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
-                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123)
-                )
-            )
+        binding.bRemoveAll.setOnClickListener {
+            homeViewModel.deleteAll()
+        }
+
+        val reminderAdapter = ReminderAdapter()
+
+        binding.rvReminders.adapter = reminderAdapter
+
+        homeViewModel.reminders.observe(viewLifecycleOwner, {
+            println(it)
+            it?.let {
+                reminderAdapter.submitList(it)
+            }
+        })
+
+        binding.bAddListItem.setOnClickListener {
+            homeViewModel.addData(Reminder(0,"bla", "bla", 1000, null))
+        }
+
+//        binding.rvReminders.adapter =
+//            ReminderAdapter(
+////                listOf(
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123),
+////                    TestDataClass(x, "asddsa", "wasdad", 312213, 3123123)
+////                )
+//            )
 
 
         val timePicker = binding.tpTimePicker

@@ -15,4 +15,7 @@ interface ReminderDao {
 
     @Query("DELETE FROM Reminder WHERE requestCode = :requestCode")
     fun deleteByRequestCode(requestCode: Int)
+
+    @Query("DELETE FROM Reminder")
+    fun deleteAll()
 }

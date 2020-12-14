@@ -6,11 +6,33 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fancytimes.R
+import com.example.fancytimes.database.Reminder
 
-class ReminderAdapter(private val reminders: List<TestDataClass>) :
-    RecyclerView.Adapter<ReminderAdapter.ReminderViewHolder>() {
+class ReminderAdapter(/*private val reminders: List<Reminder>*/) :
+    ListAdapter<Reminder, ReminderAdapter.ReminderViewHolder>(ReminderDiffCallback()) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReminderViewHolder {
+        val reminderListItem =
+            LayoutInflater.from(parent.context).inflate(R.layout.reminder_list_item, parent, false)
+
+        return ReminderViewHolder(reminderListItem)
+    }
+
+
+
+    override fun onBindViewHolder(holder: ReminderViewHolder, position: Int) {
+        val reminder = getItem(position)
+        holder.titleField.text = SpannableStringBuilder(reminder.title)
+        holder.textField.text = SpannableStringBuilder(reminder.text)
+        holder.timeField.text = SpannableStringBuilder(reminder.timeInMillis.toString())
+        holder.repeatField.text = SpannableStringBuilder(reminder.repetition.toString())
+    }
+
+//    override fun getItemCount(): Int = reminders.size
 
     class ReminderViewHolder(reminderListItem: View) : RecyclerView.ViewHolder(reminderListItem) {
         val titleField: EditText = reminderListItem.findViewById(R.id.etTitle)
@@ -19,19 +41,14 @@ class ReminderAdapter(private val reminders: List<TestDataClass>) :
         val repeatField: EditText = reminderListItem.findViewById(R.id.etRepeat)
         val removeButton: Button = reminderListItem.findViewById(R.id.bRemove)
     }
+}
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReminderViewHolder {
-        val reminderListItem = LayoutInflater.from(parent.context).inflate(R.layout.reminder_list_item, parent, false)
-
-        return ReminderViewHolder(reminderListItem)
+class ReminderDiffCallback : DiffUtil.ItemCallback<Reminder>() {
+    override fun areItemsTheSame(oldItem: Reminder, newItem: Reminder): Boolean {
+        return oldItem.requestCode == newItem.requestCode
     }
 
-    override fun onBindViewHolder(holder: ReminderViewHolder, position: Int) {
-        holder.titleField.text = SpannableStringBuilder(reminders[position].title)
-        holder.textField.text = SpannableStringBuilder(reminders[position].text)
-        holder.timeField.text = SpannableStringBuilder(reminders[position].timeInMillis.toString())
-        holder.repeatField.text = SpannableStringBuilder(reminders[position].repetition.toString())
+    override fun areContentsTheSame(oldItem: Reminder, newItem: Reminder): Boolean {
+        return oldItem == newItem
     }
-
-    override fun getItemCount(): Int = reminders.size
 }
