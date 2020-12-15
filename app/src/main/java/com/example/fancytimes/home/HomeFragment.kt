@@ -182,7 +182,7 @@ class HomeFragment : Fragment() {
                     )
 
                 )
-
+                homeViewModel.deleteByRequestCode(toCancel.toInt())
                 Toast.makeText(requireContext(), "Reminder canceled", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), "Nothing to cancel there", Toast.LENGTH_SHORT)
