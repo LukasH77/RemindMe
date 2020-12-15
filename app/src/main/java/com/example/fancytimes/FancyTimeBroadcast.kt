@@ -10,6 +10,9 @@ import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
+import com.example.fancytimes.database.ReminderDatabase
+import com.example.fancytimes.home.HomeFragment
+import com.example.fancytimes.home.HomeViewModel
 
 class FancyTimeBroadcast() : BroadcastReceiver() {
 
@@ -21,7 +24,10 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(callingContext: Context?, callingIntent: Intent?) {
 
-        val preferences = callingContext?.getSharedPreferences(callingContext.getString(R.string.notification_preferences_key), Context.MODE_PRIVATE)
+        val preferences = callingContext?.getSharedPreferences(
+            callingContext.getString(R.string.notification_preferences_key),
+            Context.MODE_PRIVATE
+        )
 
         with(preferences!!.edit()) {
             this.remove("requestCode")
@@ -77,7 +83,12 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
             )
 
             val pendingIntent =
-                PendingIntent.getBroadcast(callingContext, notificationRequestCode, callingIntent, FLAG_UPDATE_CURRENT)
+                PendingIntent.getBroadcast(
+                    callingContext,
+                    notificationRequestCode,
+                    callingIntent,
+                    FLAG_UPDATE_CURRENT
+                )
 
             alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
@@ -89,6 +100,9 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
                 this.remove(notificationRequestCode.toString())
                 this.apply()
             }
+            HomeViewModel(ReminderDatabase.createInstance(callingContext.applicationContext).reminderDao).deleteByRequestCode(
+                notificationRequestCode
+            )
         }
     }
 }

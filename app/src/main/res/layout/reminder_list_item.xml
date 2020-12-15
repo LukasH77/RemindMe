@@ -8,9 +8,9 @@
     <Button
         android:id="@+id/bRemove"
         android:layout_width="181dp"
-        android:layout_height="117dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:text="Remove"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/etTime"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,7 +34,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Repeat"
-        app:layout_constraintBottom_toBottomOf="@+id/bRemove"
+        app:layout_constraintBottom_toBottomOf="@+id/tvRequestCode"
         app:layout_constraintEnd_toStartOf="@+id/bRemove"
         app:layout_constraintStart_toEndOf="@+id/etText"
         app:layout_constraintTop_toBottomOf="@+id/etTime" />
@@ -62,4 +62,15 @@
         app:layout_constraintEnd_toStartOf="@+id/etTime"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/etTime" />
+
+    <TextView
+        android:id="@+id/tvRequestCode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/bRemove"
+        app:layout_constraintStart_toStartOf="@+id/bRemove"
+        app:layout_constraintTop_toBottomOf="@+id/bRemove" />
 </androidx.constraintlayout.widget.ConstraintLayout>

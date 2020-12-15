@@ -26,4 +26,12 @@ class HomeViewModel(private val reminderDao: ReminderDao) : ViewModel() {
             }
         }
     }
+
+    fun deleteByRequestCode(requestCode: Int) {
+        scope.launch {
+            withContext(Dispatchers.IO) {
+                reminderDao.deleteByRequestCode(requestCode)
+            }
+        }
+    }
 }

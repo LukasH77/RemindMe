@@ -21,6 +21,7 @@
                 android:id="@+id/tvIntro"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:background="#FFE57F"
                 android:gravity="center"
                 android:padding="15dp"
@@ -75,7 +76,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/bCancel"
                 app:layout_constraintEnd_toEndOf="@+id/bCancel"
                 app:layout_constraintStart_toStartOf="@+id/etToCancel"
-                app:layout_constraintTop_toBottomOf="@id/bAddListItem"
+                app:layout_constraintTop_toBottomOf="@id/bSetReminder"
                 tools:visibility="visible" />
 
             <!--        <Button-->
@@ -116,7 +117,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/bCancel"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/rvReminders"
+                app:layout_constraintTop_toTopOf="@+id/bCancel"
                 tools:visibility="visible" />
 
             <Button
@@ -231,24 +232,14 @@
                 tools:visibility="gone" />
 
             <Button
-                android:id="@+id/bAddListItem"
-                android:layout_width="43dp"
-                android:layout_height="41dp"
-                android:text="+"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.538" />
-
-            <Button
                 android:id="@+id/bRemoveAll"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="48dp"
                 android:text="x"
                 app:backgroundTint="#B50E0E"
-                app:layout_constraintBottom_toTopOf="@+id/bAddListItem"
-                app:layout_constraintEnd_toEndOf="@+id/bAddListItem"
-                app:layout_constraintStart_toStartOf="@+id/bAddListItem" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
