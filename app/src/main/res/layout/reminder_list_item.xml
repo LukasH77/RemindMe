@@ -7,68 +7,57 @@
 
     <Button
         android:id="@+id/bRemove"
-        android:layout_width="181dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:text="Remove"
+        app:layout_constraintBottom_toTopOf="@+id/tvRequestCode"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/etTime"
+        app:layout_constraintStart_toEndOf="@+id/tvTime"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/etTime"
+    <TextView
+        android:id="@+id/tvTitle"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:ems="10"
-        android:inputType="time"
-        android:text="Time"
-        app:layout_constraintBottom_toTopOf="@+id/etRepeat"
-        app:layout_constraintEnd_toStartOf="@+id/bRemove"
-        app:layout_constraintStart_toEndOf="@+id/etTitle"
-        app:layout_constraintTop_toTopOf="@+id/bRemove" />
-
-    <EditText
-        android:id="@+id/etRepeat"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:ems="10"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="#D4EAAC"
+        android:gravity="center"
         android:inputType="textPersonName"
-        android:text="Repeat"
-        app:layout_constraintBottom_toBottomOf="@+id/tvRequestCode"
-        app:layout_constraintEnd_toStartOf="@+id/bRemove"
-        app:layout_constraintStart_toEndOf="@+id/etText"
-        app:layout_constraintTop_toBottomOf="@+id/etTime" />
-
-    <EditText
-        android:id="@+id/etText"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Text"
-        app:layout_constraintBottom_toBottomOf="@+id/etRepeat"
-        app:layout_constraintEnd_toStartOf="@+id/etRepeat"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etTitle" />
-
-    <EditText
-        android:id="@+id/etTitle"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:ems="10"
-        android:inputType="textPersonName"
+        android:padding="2dp"
         android:text="Title"
-        app:layout_constraintBottom_toTopOf="@+id/etText"
-        app:layout_constraintEnd_toStartOf="@+id/etTime"
+        app:layout_constraintBottom_toBottomOf="@id/tvRequestCode"
+        app:layout_constraintEnd_toStartOf="@+id/tvRequestCode"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/etTime" />
+        app:layout_constraintTop_toTopOf="@+id/tvRequestCode" />
 
     <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="#E8ACAC"
+        android:gravity="center"
+        android:inputType="textPersonName"
+        android:padding="2dp"
+        android:text="Time"
+        app:layout_constraintBottom_toBottomOf="@+id/bRemove"
+        app:layout_constraintEnd_toStartOf="@+id/bRemove"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bRemove"
+        app:layout_constraintVertical_chainStyle="spread" />
+
+    <Button
         android:id="@+id/tvRequestCode"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:gravity="center"
-        android:text="TextView"
+        android:text="Edit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/bRemove"
         app:layout_constraintStart_toStartOf="@+id/bRemove"

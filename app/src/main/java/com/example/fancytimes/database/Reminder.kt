@@ -19,5 +19,20 @@ data class Reminder(
     val timeInMillis: Long,
 
     @ColumnInfo
+    val minute: Int,
+
+    @ColumnInfo
+    val hour: Int,
+
+    @ColumnInfo
+    val day: Int,
+
+    @ColumnInfo
+    val month: Int,
+
+    @ColumnInfo
+    val year: Int,
+
+    @ColumnInfo
     val repetition: Long?
 )

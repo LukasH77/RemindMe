@@ -70,7 +70,7 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp"
-                android:background="#888282"
+                android:background="#CCDBED"
                 android:visibility="visible"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toTopOf="@+id/bCancel"
@@ -139,7 +139,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="visible"
-                app:layout_constraintGuide_percent="0.85"
+                app:layout_constraintGuide_percent="0.95"
                 tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Guideline
@@ -148,7 +148,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="visible"
-                app:layout_constraintGuide_percent="0.15"
+                app:layout_constraintGuide_percent="0.05"
                 tools:visibility="visible" />
 
             <TimePicker
@@ -170,7 +170,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="I'm here to remind you:"
+                android:hint="I'm here to remind you"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -233,13 +233,14 @@
 
             <Button
                 android:id="@+id/bRemoveAll"
-                android:layout_width="40dp"
-                android:layout_height="48dp"
-                android:text="x"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 app:backgroundTint="#B50E0E"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.276" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

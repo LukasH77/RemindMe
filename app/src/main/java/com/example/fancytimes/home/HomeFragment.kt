@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.os.Parcel
 import android.text.format.DateFormat
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -145,6 +144,11 @@ class HomeFragment : Fragment() {
                 0
             )
 
+            println(calendar.get(Calendar.YEAR))
+            println(calendar.get(Calendar.MONTH))
+            println(calendar.get(Calendar.DAY_OF_MONTH))
+
+
             val hourIsTooEarly = timePicker.hour < Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
             val hourIsEqual = timePicker.hour == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
             val minuteIsTooEarly =
@@ -154,6 +158,9 @@ class HomeFragment : Fragment() {
                 calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1)
             }
             handleAlarms(
+                calendar,
+                timePicker.minute,
+                timePicker.hour,
                 calendar.timeInMillis,
                 preferences,
                 notificationTitle,
@@ -200,7 +207,10 @@ class HomeFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun handleAlarms(
-        notificationTime: Long,
+        calendarInstance: Calendar,
+        notificationMinute: Int,
+        notificationHour: Int,
+        notificationMillis: Long,
         preferences: SharedPreferences?,
         notificationTitle: String,
         notificationText: String,
@@ -217,18 +227,28 @@ class HomeFragment : Fragment() {
             getString(R.string.notification_requestCode_extra_name),
             notificationRequestCode
         )
-        intent.putExtra(getString(R.string.notification_time_extra_name), notificationTime)
+        intent.putExtra(getString(R.string.notification_time_extra_name), notificationMillis)
 
         val pendingIntent =
             PendingIntent.getBroadcast(requireContext(), notificationRequestCode, intent, 0)
 
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
-            notificationTime,
+            notificationMillis,
             pendingIntent
         )
 
-        homeViewModel.addData(Reminder(notificationRequestCode, notificationTitle, notificationText, 1000, null))
+        homeViewModel.addData(Reminder(
+            notificationRequestCode,
+            notificationTitle,
+            notificationText,
+            notificationMillis,
+            notificationMinute,
+            notificationHour,
+            calendarInstance.get(Calendar.DAY_OF_MONTH),
+            calendarInstance.get(Calendar.MONTH),
+            calendarInstance.get(Calendar.YEAR),
+            null))
 
         with(preferences.edit()) {
             this.putInt(getString(R.string.request_code_key), notificationRequestCode + 1)
