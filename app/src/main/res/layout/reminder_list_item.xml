@@ -12,7 +12,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         android:text="Remove"
-        app:layout_constraintBottom_toTopOf="@+id/tvRequestCode"
+        app:layout_constraintBottom_toTopOf="@+id/bEdit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvTime"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,10 +28,10 @@
         android:inputType="textPersonName"
         android:padding="2dp"
         android:text="Title"
-        app:layout_constraintBottom_toBottomOf="@id/tvRequestCode"
-        app:layout_constraintEnd_toStartOf="@+id/tvRequestCode"
+        app:layout_constraintBottom_toBottomOf="@id/bEdit"
+        app:layout_constraintEnd_toStartOf="@+id/bEdit"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvRequestCode" />
+        app:layout_constraintTop_toTopOf="@+id/bEdit" />
 
     <TextView
         android:id="@+id/tvTime"
@@ -51,7 +51,7 @@
         app:layout_constraintVertical_chainStyle="spread" />
 
     <Button
-        android:id="@+id/tvRequestCode"
+        android:id="@+id/bEdit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
