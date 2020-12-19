@@ -179,31 +179,6 @@ class HomeFragment : Fragment() {
             hideSoftKeyboard(requireContext(), requireView())
         }
 
-        binding.bCancel.setOnClickListener {
-            val toCancel = binding.etToCancel.text.toString()
-            try {
-                alarmManager.cancel(
-                    PendingIntent.getBroadcast(
-                        requireContext(),
-                        toCancel.toInt(),
-                        Intent(requireContext(), FancyTimeBroadcast::class.java),
-                        PendingIntent.FLAG_NO_CREATE
-                    )
-
-                )
-                homeViewModel.deleteByRequestCode(toCancel.toInt())
-                Toast.makeText(requireContext(), "Reminder canceled", Toast.LENGTH_SHORT).show()
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Nothing to cancel there", Toast.LENGTH_SHORT)
-                    .show()
-            }
-            with(preferences!!.edit()) {
-                this.remove(toCancel)
-                this.apply()
-            }
-            binding.etToCancel.text.clear()
-            hideSoftKeyboard(requireContext(), requireView())
-        }
         return binding.root
     }
 
@@ -230,8 +205,6 @@ class HomeFragment : Fragment() {
             binding.rvReminders,
 //            binding.button2,
 //            binding.button3,
-            binding.etToCancel,
-            binding.bCancel
         )
 
         val notificationCreationLayout = arrayOf(
