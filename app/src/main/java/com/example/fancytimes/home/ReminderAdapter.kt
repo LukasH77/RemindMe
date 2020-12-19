@@ -1,18 +1,26 @@
 package com.example.fancytimes.home
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.fancytimes.FancyTimeBroadcast
 import com.example.fancytimes.R
 import com.example.fancytimes.database.Reminder
+import com.example.fancytimes.database.ReminderDatabase
 
-class ReminderAdapter() :
+class ReminderAdapter(private val preferences: SharedPreferences?) :
     ListAdapter<Reminder, ReminderAdapter.ReminderViewHolder>(ReminderDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReminderViewHolder {
@@ -27,6 +35,25 @@ class ReminderAdapter() :
         holder.titleField.text = reminder.title
         holder.timeField.text = "${if (reminder.hour < 10) {"0${reminder.hour}"} else {reminder.hour}}" +
                 ":${if (reminder.minute < 10) {"0${reminder.minute}"} else {reminder.minute}} ${reminder.day}.${reminder.month}.${reminder.year}  (${reminder.requestCode})"
+
+
+
+        holder.removeButton.setOnClickListener {
+            val alarmManager = it.context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            alarmManager.cancel(PendingIntent.getBroadcast(it.context, reminder.requestCode, Intent(it.context, FancyTimeBroadcast::class.java), PendingIntent.FLAG_NO_CREATE))
+
+            HomeViewModel(ReminderDatabase.createInstance(it.context).reminderDao).deleteByRequestCode(reminder.requestCode)
+
+            with(preferences!!.edit()) {
+                this.remove(reminder.requestCode.toString())
+                this.apply()
+            }
+
+            Toast.makeText(it.context, "Reminder Canceled", Toast.LENGTH_SHORT).show()
+        }
+
+
+
         holder.editButton.setOnClickListener {
             it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(reminder.requestCode))
         }

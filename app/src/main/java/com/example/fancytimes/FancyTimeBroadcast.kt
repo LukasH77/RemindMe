@@ -11,7 +11,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import com.example.fancytimes.database.ReminderDatabase
-import com.example.fancytimes.home.HomeFragment
 import com.example.fancytimes.home.HomeViewModel
 
 class FancyTimeBroadcast() : BroadcastReceiver() {
@@ -56,7 +55,9 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
             0
         )
 
-        println("Request code: $notificationRequestCode")
+
+        println("IsRepeatingReceived: $isNotificationRepeating")
+//        println("Request code: $notificationRequestCode")
 
         val notification =
             Notification.Builder(
@@ -100,7 +101,7 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
                 this.remove(notificationRequestCode.toString())
                 this.apply()
             }
-            HomeViewModel(ReminderDatabase.createInstance(callingContext.applicationContext).reminderDao).deleteByRequestCode(
+            HomeViewModel(ReminderDatabase.createInstance(callingContext).reminderDao).deleteByRequestCode(
                 notificationRequestCode
             )
         }

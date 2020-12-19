@@ -3,7 +3,6 @@ package com.example.fancytimes.home
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
@@ -15,13 +14,13 @@ import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.fancytimes.FancyTimeBroadcast
 import com.example.fancytimes.R
-import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.FragmentHomeBinding
+import com.example.fancytimes.handleAlarmsHome
+import com.example.fancytimes.hideSoftKeyboard
 import java.lang.Exception
 import java.util.*
 
@@ -35,7 +34,7 @@ class HomeFragment : Fragment() {
     // TODO 3. DONE
     //  -> allow manual cancelling of alarms via their preference key, deleting the corresponding preference
 
-    // TODO 4.
+    // TODO 4. DONE
     //  -> visualize all active alarms using a database and recycler view
 
     private lateinit var binding: FragmentHomeBinding
@@ -97,7 +96,7 @@ class HomeFragment : Fragment() {
 
         var x = 20
 
-        val reminderAdapter = ReminderAdapter()
+        val reminderAdapter = ReminderAdapter(preferences)
         binding.rvReminders.adapter = reminderAdapter
         homeViewModel.reminders.observe(viewLifecycleOwner, {
             println(it)
@@ -118,11 +117,11 @@ class HomeFragment : Fragment() {
 
             swapVisibility(false)
 
-            hideSoftKeyboard()
+            hideSoftKeyboard(requireContext(), requireView())
         }
 
         binding.rvReminders.setOnClickListener {
-            hideSoftKeyboard()
+            hideSoftKeyboard(requireContext(), requireView())
         }
 
         binding.bConfirmPick.setOnClickListener {
@@ -158,7 +157,9 @@ class HomeFragment : Fragment() {
 //                println("Next day")
                 calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1)
             }
-            handleAlarms(
+            handleAlarmsHome(
+                requireContext(),
+                homeViewModel,
                 calendar,
                 timePicker.minute,
                 timePicker.hour,
@@ -170,12 +171,12 @@ class HomeFragment : Fragment() {
             )
 
             swapVisibility(true)
-            hideSoftKeyboard()
+            hideSoftKeyboard(requireContext(), requireView())
         }
 
         binding.ibExitTimePicker.setOnClickListener {
             swapVisibility(true)
-            hideSoftKeyboard()
+            hideSoftKeyboard(requireContext(), requireView())
         }
 
         binding.bCancel.setOnClickListener {
@@ -201,69 +202,9 @@ class HomeFragment : Fragment() {
                 this.apply()
             }
             binding.etToCancel.text.clear()
-            hideSoftKeyboard()
+            hideSoftKeyboard(requireContext(), requireView())
         }
         return binding.root
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun handleAlarms(
-        calendarInstance: Calendar,
-        notificationMinute: Int,
-        notificationHour: Int,
-        notificationMillis: Long,
-        preferences: SharedPreferences?,
-        notificationTitle: String,
-        notificationText: String,
-        isNotificationRepeating: Boolean
-    ) {
-        val notificationRequestCode = preferences!!.getInt(getString(R.string.request_code_key), 0)
-        println("Request code: ${preferences.getInt(getString(R.string.request_code_key), 0)}")
-
-        val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
-        intent.putExtra(getString(R.string.notification_title_extra_name), notificationTitle)
-        intent.putExtra(getString(R.string.notification_text_extra_name), notificationText)
-        intent.putExtra(getString(R.string.notification_repeat_extra_name), isNotificationRepeating)
-        intent.putExtra(
-            getString(R.string.notification_requestCode_extra_name),
-            notificationRequestCode
-        )
-        intent.putExtra(getString(R.string.notification_time_extra_name), notificationMillis)
-
-        val pendingIntent =
-            PendingIntent.getBroadcast(requireContext(), notificationRequestCode, intent, 0)
-
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            notificationMillis,
-            pendingIntent
-        )
-
-        homeViewModel.addData(Reminder(
-            notificationRequestCode,
-            notificationTitle,
-            notificationText,
-            notificationMillis,
-            notificationMinute,
-            notificationHour,
-            calendarInstance.get(Calendar.DAY_OF_MONTH),
-            calendarInstance.get(Calendar.MONTH),
-            calendarInstance.get(Calendar.YEAR),
-            null))
-
-        with(preferences.edit()) {
-            this.putInt(getString(R.string.request_code_key), notificationRequestCode + 1)
-            this.putInt(notificationRequestCode.toString(), notificationRequestCode)
-            this.apply()
-        }
-        Toast.makeText(requireContext(), notificationRequestCode.toString(), Toast.LENGTH_SHORT)
-            .show()
-    }
-
-    private fun hideSoftKeyboard() {
-        val inputMethodManager =
-            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
     private fun createNotificationChannel() {
@@ -327,6 +268,7 @@ class HomeFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        hideSoftKeyboard(requireContext(), requireView())
         return NavigationUI.onNavDestinationSelected(
             item,
             requireView().findNavController()

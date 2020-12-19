@@ -11,7 +11,7 @@ class HomeViewModel(private val reminderDao: ReminderDao) : ViewModel() {
 
     val reminders = reminderDao.getAllReminders()
 
-    fun addData(reminder: Reminder) {
+    fun addReminder(reminder: Reminder) {
         scope.launch{
             withContext(Dispatchers.IO) {
                 reminderDao.addReminder(reminder)
