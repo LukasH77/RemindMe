@@ -37,7 +37,7 @@
     <fragment
         android:id="@+id/setterFragment"
         android:name="com.example.fancytimes.setter.SetterFragment"
-        android:label="New"
+        android:label="New Reminder"
         tools:layout="@layout/fragment_setter">
         <action
             android:id="@+id/action_setterFragment_to_homeFragment"
