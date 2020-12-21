@@ -80,6 +80,12 @@ class HomeFragment : Fragment() {
 
         binding.bRemoveAll.setOnClickListener {
             homeViewModel.deleteAll()
+
+            with(preferences!!.edit()) {
+                this.clear()
+                this.putInt(getString(R.string.request_code_key), 0)
+                this.apply()
+            }
         }
 
         binding.rvReminders.setOnClickListener {
