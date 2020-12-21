@@ -10,8 +10,10 @@ import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
+import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.home.HomeViewModel
+import java.util.*
 
 class FancyTimeBroadcast() : BroadcastReceiver() {
 
@@ -27,6 +29,11 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
             callingContext.getString(R.string.notification_preferences_key),
             Context.MODE_PRIVATE
         )
+
+        val databaseReference =
+            HomeViewModel(ReminderDatabase.createInstance(callingContext!!).reminderDao)
+
+        val calendar = Calendar.getInstance()
 
         with(preferences!!.edit()) {
             this.remove("requestCode")
@@ -75,6 +82,9 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
 
         if (isNotificationRepeating) {
             notificationTime += 60000
+
+            calendar.timeInMillis = notificationTime
+
             val alarmManager =
                 callingContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
@@ -96,12 +106,37 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
                 notificationTime,
                 pendingIntent
             )
+            databaseReference.updateReminder(Reminder(notificationRequestCode,
+                notificationTitle!!,
+                notificationText!!,
+                notificationTime,
+                calendar.get(Calendar.MINUTE),
+                calendar.get(Calendar.HOUR),
+                calendar.get(Calendar.DAY_OF_MONTH),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.YEAR),
+                60000L
+            ))
+//            viewModel.updateReminder(
+//                Reminder(
+//                    notificationRequestCode,
+//                    notificationTitle,
+//                    notificationText,
+//                    notificationMillis,
+//                    notificationMinute,
+//                    notificationHour,
+//                    calendarInstance.get(Calendar.DAY_OF_MONTH),
+//                    calendarInstance.get(Calendar.MONTH),
+//                    calendarInstance.get(Calendar.YEAR),
+//                    repetition
+//                )
+//            )
         } else {
             with(preferences.edit()) {
                 this.remove(notificationRequestCode.toString())
                 this.apply()
             }
-            HomeViewModel(ReminderDatabase.createInstance(callingContext).reminderDao).deleteByRequestCode(
+            databaseReference.deleteByRequestCode(
                 notificationRequestCode
             )
         }

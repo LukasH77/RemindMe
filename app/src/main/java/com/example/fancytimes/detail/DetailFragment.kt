@@ -78,7 +78,7 @@ class DetailFragment : Fragment() {
             val minuteIsTooEarly =
                 hourIsEqual && timePicker.minute < Calendar.getInstance().get(Calendar.MINUTE)
             if (hourIsTooEarly || minuteIsTooEarly) {
-                calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1)
+                calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH))
             }
 
             notificationTitle = title.text.toString()

@@ -144,18 +144,13 @@ class HomeFragment : Fragment() {
                 0
             )
 
-            println(calendar.get(Calendar.YEAR))
-            println(calendar.get(Calendar.MONTH))
-            println(calendar.get(Calendar.DAY_OF_MONTH))
-
-
             val hourIsTooEarly = timePicker.hour < Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
             val hourIsEqual = timePicker.hour == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
             val minuteIsTooEarly =
                 hourIsEqual && timePicker.minute < Calendar.getInstance().get(Calendar.MINUTE)
             if (hourIsTooEarly || minuteIsTooEarly) {
 //                println("Next day")
-                calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1)
+                calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH))
             }
             handleAlarmsHome(
                 requireContext(),

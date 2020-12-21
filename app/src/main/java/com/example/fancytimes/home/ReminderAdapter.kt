@@ -34,7 +34,7 @@ class ReminderAdapter(private val preferences: SharedPreferences?) :
         val reminder = getItem(position)
         holder.titleField.text = reminder.title
         holder.timeField.text = "${if (reminder.hour < 10) {"0${reminder.hour}"} else {reminder.hour}}" +
-                ":${if (reminder.minute < 10) {"0${reminder.minute}"} else {reminder.minute}} ${reminder.day}.${reminder.month}.${reminder.year}  (${reminder.requestCode})"
+                ":${if (reminder.minute < 10) {"0${reminder.minute}"} else {reminder.minute}} ${reminder.day}.${reminder.month + 1}.${reminder.year}  (${reminder.requestCode})"
 
 
 

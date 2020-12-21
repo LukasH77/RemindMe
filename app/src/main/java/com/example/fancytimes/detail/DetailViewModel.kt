@@ -16,7 +16,7 @@ class DetailViewModel(private val reminderDao: ReminderDao, private val requestC
         selectedReminder = getByRequestCode(requestCode)
     }
 
-    fun getByRequestCode(requestCode: Int): LiveData<Reminder> = reminderDao.getByRequestCode(requestCode)
+    private fun getByRequestCode(requestCode: Int): LiveData<Reminder> = reminderDao.getByRequestCode(requestCode)
 
 
     fun updateReminder(reminder: Reminder) {

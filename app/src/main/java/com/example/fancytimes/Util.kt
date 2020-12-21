@@ -146,7 +146,7 @@ fun handleAlarmsDetail(
         pendingIntent
     )
 
-    val repetition = if (isNotificationRepeating) 420L else null
+    val repetition = if (isNotificationRepeating) 60000L else null
     viewModel.updateReminder(
         Reminder(
             notificationRequestCode,

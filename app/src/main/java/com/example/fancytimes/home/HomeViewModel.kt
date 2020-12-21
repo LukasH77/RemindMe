@@ -19,6 +19,14 @@ class HomeViewModel(private val reminderDao: ReminderDao) : ViewModel() {
         }
     }
 
+    fun updateReminder(reminder: Reminder) {
+        scope.launch {
+            withContext(Dispatchers.IO) {
+                reminderDao.updateReminder(reminder)
+            }
+        }
+    }
+
     fun deleteAll() {
         scope.launch {
             withContext(Dispatchers.IO) {
