@@ -126,97 +126,109 @@
                 app:layout_constraintGuide_percent="0.05"
                 tools:visibility="visible" />
 
-            <TimePicker
-                android:id="@+id/tpTimePicker"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:foregroundGravity="center"
-                android:timePickerMode="spinner"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                tools:visibility="gone" />
-
-            <EditText
-                android:id="@+id/etNotificationTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="I'm here to remind you"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tpTimePicker"
-                tools:visibility="gone" />
-
-            <EditText
-                android:id="@+id/etNotificationText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="There's something you should think of!"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etNotificationTitle"
-                tools:visibility="gone" />
-
-            <Button
-                android:id="@+id/bConfirmPick"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Confirm"
-                android:visibility="gone"
-                app:backgroundTint="#03DAC6"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cbRepeating"
-                tools:visibility="gone" />
-
-            <ImageButton
-                android:id="@+id/ibExitTimePicker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@android:drawable/ic_delete"
-                tools:visibility="gone" />
-
-            <CheckBox
-                android:id="@+id/cbRepeating"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Repeat Every Minute"
-                android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/bConfirmPick"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etNotificationText"
-                app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintVertical_chainStyle="packed"
-                tools:visibility="gone" />
-
             <Button
                 android:id="@+id/bRemoveAll"
-                android:layout_width="15dp"
-                android:layout_height="27dp"
+                android:layout_width="40dp"
+                android:layout_height="54dp"
                 app:backgroundTint="#B50E0E"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.082" />
+                app:layout_constraintVertical_bias="0.701" />
+
+<!--            <TimePicker-->
+<!--                android:id="@+id/tpTimePicker"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:foregroundGravity="center"-->
+<!--                android:timePickerMode="spinner"-->
+<!--                android:visibility="gone"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintVertical_bias="0.0"-->
+<!--                tools:visibility="gone" />-->
+
+<!--            <EditText-->
+<!--                android:id="@+id/etNotificationTitle"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:ems="10"-->
+<!--                android:hint="I'm here to remind you"-->
+<!--                android:visibility="gone"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/tpTimePicker"-->
+<!--                tools:visibility="gone" />-->
+
+<!--            <EditText-->
+<!--                android:id="@+id/etNotificationText"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="There's something you should think of!"-->
+<!--                android:visibility="gone"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/etNotificationTitle"-->
+<!--                tools:visibility="gone" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/bConfirmPick"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Confirm"-->
+<!--                android:visibility="gone"-->
+<!--                app:backgroundTint="#03DAC6"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.0"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/cbRepeating"-->
+<!--                tools:visibility="gone" />-->
+
+<!--            <ImageButton-->
+<!--                android:id="@+id/ibExitTimePicker"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:visibility="gone"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="1.0"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintVertical_bias="0.0"-->
+<!--                app:srcCompat="@android:drawable/ic_delete"-->
+<!--                tools:visibility="gone" />-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/cbRepeating"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Repeat Every Minute"-->
+<!--                android:visibility="gone"-->
+<!--                app:layout_constraintBottom_toTopOf="@+id/bConfirmPick"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="1.0"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/etNotificationText"-->
+<!--                app:layout_constraintVertical_bias="0.0"-->
+<!--                app:layout_constraintVertical_chainStyle="packed"-->
+<!--                tools:visibility="gone" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/bRemoveAll"-->
+<!--                android:layout_width="15dp"-->
+<!--                android:layout_height="27dp"-->
+<!--                app:backgroundTint="#B50E0E"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toStartOf="@+id/guideline2"-->
+<!--                app:layout_constraintHorizontal_bias="1.0"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintVertical_bias="0.082" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

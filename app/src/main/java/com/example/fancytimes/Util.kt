@@ -13,18 +13,19 @@ import androidx.annotation.RequiresApi
 import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.detail.DetailViewModel
 import com.example.fancytimes.home.HomeViewModel
+import com.example.fancytimes.setter.SetterViewModel
 import java.util.*
 
 fun hideSoftKeyboard(context: Context, view: View) {
     val inputMethodManager =
-        context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
 @RequiresApi(Build.VERSION_CODES.M)
-fun handleAlarmsHome(
+fun handleAlarmsSetter(
     context: Context,
-    viewModel: HomeViewModel,
+    viewModel: SetterViewModel,
     calendarInstance: Calendar,
     notificationMinute: Int,
     notificationHour: Int,

@@ -1,9 +1,8 @@
-package com.example.fancytimes.detail
+package com.example.fancytimes.setter
 
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.text.SpannableStringBuilder
 import android.text.format.DateFormat
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,60 +10,60 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.navArgs
+import androidx.navigation.fragment.findNavController
 import com.example.fancytimes.R
 import com.example.fancytimes.database.ReminderDatabase
-import com.example.fancytimes.databinding.FragmentDetailBinding
-import com.example.fancytimes.handleAlarmsDetail
+import com.example.fancytimes.databinding.FragmentSetterBinding
+import com.example.fancytimes.handleAlarmsSetter
 import com.example.fancytimes.hideSoftKeyboard
 import java.util.*
 
-class DetailFragment : Fragment() {
-    private lateinit var binding: FragmentDetailBinding
-    private lateinit var detailViewModel: DetailViewModel
+class SetterFragment : Fragment() {
+    private lateinit var binding: FragmentSetterBinding
 
-    private lateinit var notificationTitle: String
-    private lateinit var notificationText: String
+    private lateinit var setterViewModelFactory: SetterViewModelFactory
+    private lateinit var setterViewModel: SetterViewModel
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val receivedArgs by navArgs<DetailFragmentArgs>()
-
         val reminderDao = ReminderDatabase.createInstance(requireContext()).reminderDao
-        val detailViewModelFactory = DetailViewModelFactory(reminderDao, receivedArgs.requestCode)
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
-        detailViewModel =
-            ViewModelProvider(this, detailViewModelFactory).get(DetailViewModel::class.java)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_setter, container, false)
+
+        setterViewModelFactory = SetterViewModelFactory(reminderDao)
+        setterViewModel = ViewModelProvider(this, setterViewModelFactory).get(SetterViewModel::class.java)
+
+        val preferences = activity?.getSharedPreferences(
+            getString(R.string.notification_preferences_key),
+            Context.MODE_PRIVATE
+        )
 
         val timePicker = binding.tpTimePicker
-        val title = binding.etNotificationTitle
-        val text = binding.etNotificationText
-        val repetition = binding.cbRepeating
+        val notificationTitleField = binding.etNotificationTitle
+        val notificationTextField = binding.etNotificationText
+        val repeatingCheckBox = binding.cbRepeating
 
         val system24hrs = DateFormat.is24HourFormat(requireContext())
         timePicker.setIs24HourView(system24hrs)
 
-        binding.tvRequestCode.text = "Request Code: ${receivedArgs.requestCode}"
+        val calendar = Calendar.getInstance()
 
-        detailViewModel.selectedReminder.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                binding.tpTimePicker.minute = it.minute
-                binding.tpTimePicker.hour = it.hour
-                binding.etNotificationTitle.text = SpannableStringBuilder(it.title)
-                binding.etNotificationText.text = SpannableStringBuilder(it.text)
-                if (it.repetition != null) binding.cbRepeating.isChecked = true
-            }
-        })
+        timePicker.hour = calendar.get(Calendar.HOUR_OF_DAY)
+        timePicker.minute = calendar.get(Calendar.MINUTE)
 
         binding.bConfirmPick.setOnClickListener {
-            val calendar = Calendar.getInstance()
+            val notificationTitle =
+                if (notificationTitleField.text.isBlank()) notificationTitleField.hint.toString() else notificationTitleField.text.toString()
+
+            val notificationText =
+                if (notificationTextField.text.isBlank()) notificationTextField.hint.toString() else notificationTextField.text.toString()
+
+            val isNotificationRepeating = repeatingCheckBox.isChecked
 
             calendar.set(
                 calendar.get(Calendar.YEAR),
@@ -82,28 +81,22 @@ class DetailFragment : Fragment() {
             if (hourIsTooEarly || minuteIsTooEarly) {
                 calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH))
             }
-
-            notificationTitle = title.text.toString()
-            notificationText = text.text.toString()
-
-            println("IsRepeatingSent ${repetition.isChecked}")
-
-            handleAlarmsDetail(
+            handleAlarmsSetter(
                 requireContext(),
-                detailViewModel,
-                receivedArgs.requestCode,
+                setterViewModel,
                 calendar,
                 timePicker.minute,
                 timePicker.hour,
                 calendar.timeInMillis,
+                preferences,
                 notificationTitle,
                 notificationText,
-                repetition.isChecked
+                isNotificationRepeating
             )
 
             hideSoftKeyboard(requireContext(), requireView())
 
-            it.findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToHomeFragment())
+            it.findNavController().navigate(SetterFragmentDirections.actionSetterFragmentToHomeFragment())
         }
 
         return binding.root
