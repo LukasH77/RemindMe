@@ -40,16 +40,18 @@ class ReminderAdapter(private val preferences: SharedPreferences?) :
 
         holder.removeButton.setOnClickListener {
             val alarmManager = it.context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            alarmManager.cancel(PendingIntent.getBroadcast(it.context, reminder.requestCode, Intent(it.context, FancyTimeBroadcast::class.java), PendingIntent.FLAG_NO_CREATE))
-
-            HomeViewModel(ReminderDatabase.createInstance(it.context).reminderDao).deleteByRequestCode(reminder.requestCode)
-
-            with(preferences!!.edit()) {
-                this.remove(reminder.requestCode.toString())
-                this.apply()
+            try {
+                with(preferences!!.edit()) {
+                    this.remove(reminder.requestCode.toString())
+                    this.apply()
+                }
+                alarmManager.cancel(PendingIntent.getBroadcast(it.context, reminder.requestCode, Intent(it.context, FancyTimeBroadcast::class.java), PendingIntent.FLAG_NO_CREATE))
+                Toast.makeText(it.context, "Reminder Canceled", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Toast.makeText(it.context, "Alarm already cancelled", Toast.LENGTH_SHORT).show()
+            } finally {
+                HomeViewModel(ReminderDatabase.createInstance(it.context).reminderDao).deleteByRequestCode(reminder.requestCode)
             }
-
-            Toast.makeText(it.context, "Reminder Canceled", Toast.LENGTH_SHORT).show()
         }
 
 
