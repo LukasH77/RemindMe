@@ -9,8 +9,6 @@ class SetterViewModel(private val reminderDao: ReminderDao) : ViewModel() {
     private val job = Job()
     private val scope = CoroutineScope(Dispatchers.Main + job)
 
-    val reminders = reminderDao.getAllReminders()
-
     fun addReminder(reminder: Reminder) {
         scope.launch{
             withContext(Dispatchers.IO) {
