@@ -2,8 +2,11 @@ package com.example.fancytimes.home
 
 import android.app.*
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -12,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import com.example.fancytimes.FancyTimeBroadcast
 import com.example.fancytimes.R
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.FragmentHomeBinding
@@ -48,6 +52,11 @@ class HomeFragment : Fragment() {
         val reminderDao =
             ReminderDatabase.createInstance(requireContext()).reminderDao
 
+        val preferences = activity?.getSharedPreferences(
+            getString(R.string.notification_preferences_key),
+            Context.MODE_PRIVATE
+        )
+
         homeViewModelFactory = HomeViewModelFactory(reminderDao)
 
         homeViewModel = ViewModelProvider(this, homeViewModelFactory).get(HomeViewModel::class.java)
@@ -58,12 +67,9 @@ class HomeFragment : Fragment() {
 
         val addReminder = binding.bSetReminder
 
-        val preferences = activity?.getSharedPreferences(
-            getString(R.string.notification_preferences_key),
-            Context.MODE_PRIVATE
-        )
 
-        val reminderAdapter = ReminderAdapter(preferences)
+        val reminderAdapter =
+            ReminderAdapter(preferences, DateFormat.is24HourFormat(requireContext()))
         binding.rvReminders.adapter = reminderAdapter
         homeViewModel.reminders.observe(viewLifecycleOwner, {
             println(it)
@@ -73,19 +79,39 @@ class HomeFragment : Fragment() {
         })
 
         addReminder.setOnClickListener {
+
             hideSoftKeyboard(requireContext(), requireView())
 
-            it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSetterFragment())
+            it.findNavController()
+                .navigate(HomeFragmentDirections.actionHomeFragmentToSetterFragment())
         }
 
         binding.bRemoveAll.setOnClickListener {
-            homeViewModel.deleteAll()
-
-            with(preferences!!.edit()) {
-                this.clear()
-                this.putInt(getString(R.string.request_code_key), 0)
-                this.apply()
-            }
+            AlertDialog.Builder(requireContext()).setTitle("Clear all")
+                .setMessage("Do you really want to cancel all set reminders?").setPositiveButton(
+                    "Yes"
+                ) { _: DialogInterface, _: Int ->
+                    val requestCodeMax =
+                        preferences!!.getInt(getString(R.string.request_code_key), 0)
+                    val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
+                    println("Request code key $requestCodeMax")
+                    for (i in 0 until requestCodeMax) {
+                        alarmManager.cancel(
+                            PendingIntent.getBroadcast(
+                                requireContext(),
+                                i,
+                                intent,
+                                PendingIntent.FLAG_NO_CREATE
+                            )
+                        )
+                    }
+                    homeViewModel.deleteAll()
+                    with(preferences.edit()) {
+                        this.clear()
+                        this.putInt(getString(R.string.request_code_key), 0)
+                        this.apply()
+                    }
+                }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
         }
 
         binding.rvReminders.setOnClickListener {

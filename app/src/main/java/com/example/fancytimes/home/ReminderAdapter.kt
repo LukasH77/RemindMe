@@ -20,8 +20,12 @@ import com.example.fancytimes.R
 import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.database.ReminderDatabase
 
-class ReminderAdapter(private val preferences: SharedPreferences?) :
+class ReminderAdapter(private val preferences: SharedPreferences?, private val is24hrs: Boolean) :
     ListAdapter<Reminder, ReminderAdapter.ReminderViewHolder>(ReminderDiffCallback()) {
+
+    init {
+        println("Adapter init")
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReminderViewHolder {
         val reminderListItem =
@@ -32,11 +36,32 @@ class ReminderAdapter(private val preferences: SharedPreferences?) :
 
     override fun onBindViewHolder(holder: ReminderViewHolder, position: Int) {
         val reminder = getItem(position)
+
+        // this one's kinda messy, but I think all the string templates save a few if else branches, it's ok
+        // it basically just formats the time according to the system time settings (24hours or not) as well as times below 10 (adding a 0)
+        val hourText: String = if (is24hrs) {
+            "${if (reminder.hour < 10) "0${reminder.hour}" else reminder.hour}:${if (reminder.minute < 10) "0${reminder.minute}" else "${reminder.minute}"}"
+        } else {
+            "${
+                when (reminder.hour) {
+                    0 -> "12"
+                    in 1..12 -> reminder.hour.toString()
+                    else -> (reminder.hour - 12).toString()
+                }
+            }:${
+                if (reminder.hour < 12) {
+                    if (reminder.minute < 10) "0${reminder.minute} AM" else "${reminder.minute} AM"
+                } else {
+                    if (reminder.minute < 10) "0${reminder.minute} PM" else "${reminder.minute} PM"
+                }
+            }"
+        }
+
         holder.titleField.text = reminder.title
-        holder.timeField.text = "${if (reminder.hour < 10) {"0${reminder.hour}"} else {reminder.hour}}" +
-                ":${if (reminder.minute < 10) {"0${reminder.minute}"} else {reminder.minute}} ${reminder.day}.${reminder.month + 1}.${reminder.year}  (${reminder.requestCode})"
+        holder.timeField.text =
+            "$hourText ${reminder.day}.${reminder.month + 1}.${reminder.year}  (${reminder.requestCode})"
 
-
+        println("Adapter request code: ${reminder.requestCode}")
 
         holder.removeButton.setOnClickListener {
             val alarmManager = it.context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -45,19 +70,29 @@ class ReminderAdapter(private val preferences: SharedPreferences?) :
                     this.remove(reminder.requestCode.toString())
                     this.apply()
                 }
-                alarmManager.cancel(PendingIntent.getBroadcast(it.context, reminder.requestCode, Intent(it.context, FancyTimeBroadcast::class.java), PendingIntent.FLAG_NO_CREATE))
+                alarmManager.cancel(
+                    PendingIntent.getBroadcast(
+                        it.context,
+                        reminder.requestCode,
+                        Intent(it.context, FancyTimeBroadcast::class.java),
+                        PendingIntent.FLAG_NO_CREATE
+                    )
+                )
                 Toast.makeText(it.context, "Reminder Canceled", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
                 Toast.makeText(it.context, "Alarm already cancelled", Toast.LENGTH_SHORT).show()
             } finally {
-                HomeViewModel(ReminderDatabase.createInstance(it.context).reminderDao).deleteByRequestCode(reminder.requestCode)
+                HomeViewModel(ReminderDatabase.createInstance(it.context).reminderDao).deleteByRequestCode(
+                    reminder.requestCode
+                )
             }
         }
 
 
 
         holder.editButton.setOnClickListener {
-            it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(reminder.requestCode))
+            it.findNavController()
+                .navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(reminder.requestCode))
         }
     }
 

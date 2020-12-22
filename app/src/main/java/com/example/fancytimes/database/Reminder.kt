@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Reminder(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     val requestCode: Int,
 
     @ColumnInfo

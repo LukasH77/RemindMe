@@ -38,12 +38,7 @@ fun handleAlarmsSetter(
     val notificationRequestCode =
         preferences!!.getInt(context.getString(R.string.request_code_key), 0)
     println(
-        "Request code: ${
-            preferences.getInt(
-                context.getString(R.string.request_code_key),
-                0
-            )
-        }"
+        "Request code: $notificationRequestCode"
     )
 
     val intent = Intent(context, FancyTimeBroadcast::class.java)

@@ -1,6 +1,5 @@
 package com.example.fancytimes.detail
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -80,13 +79,11 @@ class DetailFragment : Fragment() {
             val minuteIsTooEarly =
                 hourIsEqual && timePicker.minute < Calendar.getInstance().get(Calendar.MINUTE)
             if (hourIsTooEarly || minuteIsTooEarly) {
-                calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH))
+                calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1)
             }
 
             notificationTitle = title.text.toString()
             notificationText = text.text.toString()
-
-            println("IsRepeatingSent ${repetition.isChecked}")
 
             handleAlarmsDetail(
                 requireContext(),

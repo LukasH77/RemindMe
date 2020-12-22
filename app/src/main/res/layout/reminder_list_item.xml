@@ -64,4 +64,16 @@
         app:layout_constraintEnd_toEndOf="@+id/bRemove"
         app:layout_constraintStart_toStartOf="@+id/bRemove"
         app:layout_constraintTop_toBottomOf="@+id/bRemove" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#151515"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bEdit" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
