@@ -96,14 +96,18 @@ class HomeFragment : Fragment() {
                     val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
                     println("Request code key $requestCodeMax")
                     for (i in 0 until requestCodeMax) {
-                        alarmManager.cancel(
-                            PendingIntent.getBroadcast(
-                                requireContext(),
-                                i,
-                                intent,
-                                PendingIntent.FLAG_NO_CREATE
+                        try {
+                            alarmManager.cancel(
+                                PendingIntent.getBroadcast(
+                                    requireContext(),
+                                    i,
+                                    intent,
+                                    PendingIntent.FLAG_NO_CREATE
+                                )
                             )
-                        )
+                        } catch (e: Exception) {
+                            println("cancel() called with a null PendingIntent")
+                        }
                     }
                     homeViewModel.deleteAll()
                     with(preferences.edit()) {

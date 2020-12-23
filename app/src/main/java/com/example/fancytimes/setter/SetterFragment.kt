@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.example.fancytimes.DatePicker
 import com.example.fancytimes.R
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.FragmentSetterBinding
@@ -43,7 +44,7 @@ class SetterFragment : Fragment() {
             getString(R.string.notification_preferences_key),
             Context.MODE_PRIVATE
         )
-
+        val datePicker = DatePicker()
         val timePicker = binding.tpTimePicker
         val notificationTitleField = binding.etNotificationTitle
         val notificationTextField = binding.etNotificationText
@@ -56,6 +57,10 @@ class SetterFragment : Fragment() {
 
         timePicker.hour = calendar.get(Calendar.HOUR_OF_DAY)
         timePicker.minute = calendar.get(Calendar.MINUTE)
+
+        binding.bEditDate.setOnClickListener {
+            datePicker.show(parentFragmentManager, "Date Picker")
+        }
 
         binding.bConfirmPick.setOnClickListener {
             val notificationTitle =

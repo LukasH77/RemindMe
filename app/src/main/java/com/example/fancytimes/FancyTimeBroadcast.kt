@@ -70,11 +70,11 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
             Notification.Builder(
                 callingContext,
                 callingContext.getString(R.string.notification_channel_id)
-            )
-                .setSmallIcon(R.drawable.access_time_24px)
+            ).setSmallIcon(R.drawable.access_time_24px)
                 .setContentTitle(notificationTitle).setContentText(notificationText)
                 .setStyle(Notification.BigTextStyle().bigText(notificationText))
                 .setContentIntent(notificationClickPendingIntent)
+                .setShowWhen(true)
                 .setAutoCancel(true)
         with(NotificationManagerCompat.from(callingContext)) {
             notify(1, notification.build())
@@ -106,31 +106,20 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
                 notificationTime,
                 pendingIntent
             )
-            databaseReference.updateReminder(Reminder(notificationRequestCode,
-                notificationTitle!!,
-                notificationText!!,
-                notificationTime,
-                calendar.get(Calendar.MINUTE),
-                calendar.get(Calendar.HOUR),
-                calendar.get(Calendar.DAY_OF_MONTH),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.YEAR),
-                60000L
-            ))
-//            viewModel.updateReminder(
-//                Reminder(
-//                    notificationRequestCode,
-//                    notificationTitle,
-//                    notificationText,
-//                    notificationMillis,
-//                    notificationMinute,
-//                    notificationHour,
-//                    calendarInstance.get(Calendar.DAY_OF_MONTH),
-//                    calendarInstance.get(Calendar.MONTH),
-//                    calendarInstance.get(Calendar.YEAR),
-//                    repetition
-//                )
-//            )
+            databaseReference.updateReminder(
+                Reminder(
+                    notificationRequestCode,
+                    notificationTitle!!,
+                    notificationText!!,
+                    notificationTime,
+                    calendar.get(Calendar.MINUTE),
+                    calendar.get(Calendar.HOUR),
+                    calendar.get(Calendar.DAY_OF_MONTH),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.YEAR),
+                    60000L
+                )
+            )
         } else {
             with(preferences.edit()) {
                 this.remove(notificationRequestCode.toString())
