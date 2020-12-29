@@ -32,7 +32,7 @@ class SetterFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val reminderDao = ReminderDatabase.createInstance(requireContext()).reminderDao
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_setter, container, false)
@@ -75,7 +75,6 @@ class SetterFragment : Fragment() {
 
         binding.bEditDate.setOnClickListener {
             datePicker!!.show(parentFragmentManager, "Date Picker")
-
         }
 
         binding.bConfirmPick.setOnClickListener {

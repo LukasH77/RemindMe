@@ -8,12 +8,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.CompoundButton
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.fancytimes.DateSetter
 import com.example.fancytimes.R
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.FragmentDetailBinding
@@ -32,7 +35,7 @@ class DetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val receivedArgs by navArgs<DetailFragmentArgs>()
 
         val reminderDao = ReminderDatabase.createInstance(requireContext()).reminderDao
@@ -42,13 +45,32 @@ class DetailFragment : Fragment() {
         detailViewModel =
             ViewModelProvider(this, detailViewModelFactory).get(DetailViewModel::class.java)
 
+        val datePicker = DateSetter()
         val timePicker = binding.tpTimePicker
         val title = binding.etNotificationTitle
         val text = binding.etNotificationText
-        val repetition = binding.cbRepeating
+        val repeatingCheckBox = binding.cbRepeating
+        val repeatingIntervalsSpinner = binding.sRepInterval
+
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.repeatIntervals,
+            android.R.layout.simple_spinner_item
+        ).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            repeatingIntervalsSpinner.adapter = it
+        }
+
+        repeatingCheckBox.setOnCheckedChangeListener { _: CompoundButton, checkedState: Boolean ->
+            if (checkedState) repeatingIntervalsSpinner.visibility = View.VISIBLE else repeatingIntervalsSpinner.visibility = View.INVISIBLE
+        }
 
         val system24hrs = DateFormat.is24HourFormat(requireContext())
         timePicker.setIs24HourView(system24hrs)
+
+        binding.bEditDate.setOnClickListener {
+            datePicker!!.show(parentFragmentManager, "Date Picker")
+        }
 
         binding.tvRequestCode.text = "Request Code: ${receivedArgs.requestCode}"
 
@@ -95,7 +117,7 @@ class DetailFragment : Fragment() {
                 calendar.timeInMillis,
                 notificationTitle,
                 notificationText,
-                repetition.isChecked
+                repeatingCheckBox.isChecked
             )
 
             hideSoftKeyboard(requireContext(), requireView())
