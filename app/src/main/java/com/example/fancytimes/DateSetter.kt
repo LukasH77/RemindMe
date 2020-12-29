@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import java.util.*
 
-class DatePicker : DialogFragment(), DatePickerDialog.OnDateSetListener {
+class DateSetter : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -21,7 +21,5 @@ class DatePicker : DialogFragment(), DatePickerDialog.OnDateSetListener {
     }
 
     override fun onDateSet(datePicker: DatePicker?, year: Int, month: Int, day: Int) {
-
     }
-
 }

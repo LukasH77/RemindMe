@@ -8,13 +8,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.ArrayAdapter
+import android.widget.CompoundButton
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import com.example.fancytimes.DatePicker
+import com.example.fancytimes.DateSetter
 import com.example.fancytimes.R
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.FragmentSetterBinding
@@ -38,17 +38,32 @@ class SetterFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_setter, container, false)
 
         setterViewModelFactory = SetterViewModelFactory(reminderDao)
-        setterViewModel = ViewModelProvider(this, setterViewModelFactory).get(SetterViewModel::class.java)
+        setterViewModel =
+            ViewModelProvider(this, setterViewModelFactory).get(SetterViewModel::class.java)
 
         val preferences = activity?.getSharedPreferences(
             getString(R.string.notification_preferences_key),
             Context.MODE_PRIVATE
         )
-        val datePicker = DatePicker()
+        val datePicker = DateSetter()
         val timePicker = binding.tpTimePicker
         val notificationTitleField = binding.etNotificationTitle
         val notificationTextField = binding.etNotificationText
         val repeatingCheckBox = binding.cbRepeating
+        val repeatingIntervalsSpinner = binding.sRepInterval
+
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.repeatIntervals,
+            android.R.layout.simple_spinner_item
+        ).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            repeatingIntervalsSpinner.adapter = it
+        }
+
+        repeatingCheckBox.setOnCheckedChangeListener { _: CompoundButton, checkedState: Boolean ->
+            if (checkedState) repeatingIntervalsSpinner.visibility = View.VISIBLE else repeatingIntervalsSpinner.visibility = View.INVISIBLE
+        }
 
         val system24hrs = DateFormat.is24HourFormat(requireContext())
         timePicker.setIs24HourView(system24hrs)
@@ -59,7 +74,8 @@ class SetterFragment : Fragment() {
         timePicker.minute = calendar.get(Calendar.MINUTE)
 
         binding.bEditDate.setOnClickListener {
-            datePicker.show(parentFragmentManager, "Date Picker")
+            datePicker!!.show(parentFragmentManager, "Date Picker")
+
         }
 
         binding.bConfirmPick.setOnClickListener {
@@ -103,7 +119,8 @@ class SetterFragment : Fragment() {
 
             hideSoftKeyboard(requireContext(), requireView())
 
-            it.findNavController().navigate(SetterFragmentDirections.actionSetterFragmentToHomeFragment())
+            it.findNavController()
+                .navigate(SetterFragmentDirections.actionSetterFragmentToHomeFragment())
         }
 
         return binding.root

@@ -30,4 +30,14 @@
         \n
         \nBug reports, feedback or other messages can be either left as a review in the Play Store or sent via E-mail to:</string>
     <string name="email"><a href="">LHendeavours@gmail.com</a></string>
+
+    <string-array name="repeatIntervals">
+        <item>Every Minute</item>
+        <item>Every 10 Minutes</item>
+        <item>Every 30 Minutes</item>
+        <item>Hourly</item>
+        <item>Daily</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
+    </string-array>
 </resources>
