@@ -1,5 +1,6 @@
 package com.example.fancytimes.detail
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -16,12 +17,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.fancytimes.DateSetter
-import com.example.fancytimes.R
+import com.example.fancytimes.*
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.FragmentDetailBinding
-import com.example.fancytimes.handleAlarmsDetail
-import com.example.fancytimes.hideSoftKeyboard
 import java.util.*
 
 class DetailFragment : Fragment() {
@@ -45,6 +43,8 @@ class DetailFragment : Fragment() {
         detailViewModel =
             ViewModelProvider(this, detailViewModelFactory).get(DetailViewModel::class.java)
 
+        val preferences = activity?.getSharedPreferences(getString(R.string.notification_preferences_key), Context.MODE_PRIVATE)
+
         val datePicker = DateSetter()
         val timePicker = binding.tpTimePicker
         val title = binding.etNotificationTitle
@@ -61,6 +61,8 @@ class DetailFragment : Fragment() {
             repeatingIntervalsSpinner.adapter = it
         }
 
+        repeatingIntervalsSpinner.onItemSelectedListener = IntervalSetter(preferences!!)
+
         repeatingCheckBox.setOnCheckedChangeListener { _: CompoundButton, checkedState: Boolean ->
             if (checkedState) repeatingIntervalsSpinner.visibility = View.VISIBLE else repeatingIntervalsSpinner.visibility = View.INVISIBLE
         }
@@ -69,7 +71,7 @@ class DetailFragment : Fragment() {
         timePicker.setIs24HourView(system24hrs)
 
         binding.bEditDate.setOnClickListener {
-            datePicker!!.show(parentFragmentManager, "Date Picker")
+            datePicker.show(parentFragmentManager, "Date Picker")
         }
 
         binding.tvRequestCode.text = "Request Code: ${receivedArgs.requestCode}"
@@ -80,9 +82,21 @@ class DetailFragment : Fragment() {
                 binding.tpTimePicker.hour = it.hour
                 binding.etNotificationTitle.text = SpannableStringBuilder(it.title)
                 binding.etNotificationText.text = SpannableStringBuilder(it.text)
-                if (it.repetition != null) binding.cbRepeating.isChecked = true
+                if (it.repetition != 0L) {
+                    binding.cbRepeating.isChecked = true
+                    when (it.repetition) {
+                        60000L -> repeatingIntervalsSpinner.setSelection(0)
+                        600000L -> repeatingIntervalsSpinner.setSelection(1)
+                        1800000L -> repeatingIntervalsSpinner.setSelection(2)
+                        3600000L -> repeatingIntervalsSpinner.setSelection(3)
+                        86400000L -> repeatingIntervalsSpinner.setSelection(4)
+                        1L -> repeatingIntervalsSpinner.setSelection(5)
+                        2L -> repeatingIntervalsSpinner.setSelection(6)
+                    }
+                }
             }
         })
+        repeatingIntervalsSpinner.setSelection(5)
 
         binding.bConfirmPick.setOnClickListener {
             val calendar = Calendar.getInstance()
@@ -104,6 +118,9 @@ class DetailFragment : Fragment() {
                 calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1)
             }
 
+            val isNotificationRepeating = repeatingCheckBox.isChecked
+            val notificationRepeatInterval = if (isNotificationRepeating) preferences.getLong(getString(R.string.repeat_interval_key), 0) else 0
+
             notificationTitle = title.text.toString()
             notificationText = text.text.toString()
 
@@ -117,7 +134,8 @@ class DetailFragment : Fragment() {
                 calendar.timeInMillis,
                 notificationTitle,
                 notificationText,
-                repeatingCheckBox.isChecked
+                isNotificationRepeating,
+                notificationRepeatInterval
             )
 
             hideSoftKeyboard(requireContext(), requireView())

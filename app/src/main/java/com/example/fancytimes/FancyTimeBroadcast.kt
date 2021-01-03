@@ -33,8 +33,6 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
         val databaseReference =
             HomeViewModel(ReminderDatabase.createInstance(callingContext!!).reminderDao)
 
-        val calendar = Calendar.getInstance()
-
         with(preferences!!.edit()) {
             this.remove("requestCode")
             this.apply()
@@ -53,6 +51,10 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
             callingContext.getString(R.string.notification_repeat_extra_name),
             false
         )
+        val notificationRepeatInterval = callingIntent.getLongExtra(
+            callingContext.getString(R.string.notification_repeat_interval_extra_name),
+            0
+        )
         val notificationRequestCode = callingIntent.getIntExtra(
             callingContext.getString(R.string.notification_requestCode_extra_name),
             0
@@ -62,6 +64,9 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
             0
         )
 
+        val calendar = Calendar.getInstance()
+
+        calendar.timeInMillis = notificationTime
 
         println("IsRepeatingReceived: $isNotificationRepeating")
 //        println("Request code: $notificationRequestCode")
@@ -81,9 +86,17 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
         }
 
         if (isNotificationRepeating) {
-            notificationTime += 60000
-
-            calendar.timeInMillis = notificationTime
+            if (notificationRepeatInterval != 1L && notificationRepeatInterval != 2L) {
+                notificationTime += notificationRepeatInterval
+                calendar.timeInMillis = notificationTime
+            } else {
+                if (notificationRepeatInterval == 1L) {
+                    calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1)
+                } else if (notificationRepeatInterval == 2L) {
+                    calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 1)
+                }
+                notificationTime = calendar.timeInMillis
+            }
 
             val alarmManager =
                 callingContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -117,7 +130,7 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
                     calendar.get(Calendar.DAY_OF_MONTH),
                     calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.YEAR),
-                    60000L
+                    notificationRepeatInterval
                 )
             )
         } else {

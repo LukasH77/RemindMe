@@ -33,7 +33,8 @@ fun handleAlarmsSetter(
     preferences: SharedPreferences?,
     notificationTitle: String,
     notificationText: String,
-    isNotificationRepeating: Boolean
+    isNotificationRepeating: Boolean,
+    notificationRepeatInterval: Long
 ) {
     val notificationRequestCode =
         preferences!!.getInt(context.getString(R.string.request_code_key), 0)
@@ -50,6 +51,10 @@ fun handleAlarmsSetter(
     intent.putExtra(
         context.getString(R.string.notification_repeat_extra_name),
         isNotificationRepeating
+    )
+    intent.putExtra(
+        context.getString(R.string.notification_repeat_interval_extra_name),
+        notificationRepeatInterval
     )
     intent.putExtra(
         context.getString(R.string.notification_requestCode_extra_name),
@@ -71,7 +76,6 @@ fun handleAlarmsSetter(
         pendingIntent
     )
 
-    val repetition = if (isNotificationRepeating) 420L else null
     viewModel.addReminder(
         Reminder(
             notificationRequestCode,
@@ -83,7 +87,7 @@ fun handleAlarmsSetter(
             calendarInstance.get(Calendar.DAY_OF_MONTH),
             calendarInstance.get(Calendar.MONTH),
             calendarInstance.get(Calendar.YEAR),
-            repetition
+            notificationRepeatInterval
         )
     )
 
@@ -107,7 +111,8 @@ fun handleAlarmsDetail(
     notificationMillis: Long,
     notificationTitle: String,
     notificationText: String,
-    isNotificationRepeating: Boolean
+    isNotificationRepeating: Boolean,
+    notificationRepeatInterval: Long
 ) {
     val intent = Intent(context, FancyTimeBroadcast::class.java)
 
@@ -121,6 +126,10 @@ fun handleAlarmsDetail(
     intent.putExtra(
         context.getString(R.string.notification_repeat_extra_name),
         isNotificationRepeating
+    )
+    intent.putExtra(
+        context.getString(R.string.notification_repeat_interval_extra_name),
+        notificationRepeatInterval
     )
     intent.putExtra(
         context.getString(R.string.notification_requestCode_extra_name),
@@ -142,7 +151,6 @@ fun handleAlarmsDetail(
         pendingIntent
     )
 
-    val repetition = if (isNotificationRepeating) 60000L else null
     viewModel.updateReminder(
         Reminder(
             notificationRequestCode,
@@ -154,7 +162,7 @@ fun handleAlarmsDetail(
             calendarInstance.get(Calendar.DAY_OF_MONTH),
             calendarInstance.get(Calendar.MONTH),
             calendarInstance.get(Calendar.YEAR),
-            repetition
+            notificationRepeatInterval
         )
     )
     Toast.makeText(context, notificationRequestCode.toString(), Toast.LENGTH_SHORT)

@@ -87,6 +87,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.bRemoveAll.setOnClickListener {
+            if (reminderAdapter.itemCount == 0) return@setOnClickListener
             AlertDialog.Builder(requireContext()).setTitle("Clear all")
                 .setMessage("Do you really want to cancel all set reminders?").setPositiveButton(
                     "Yes"

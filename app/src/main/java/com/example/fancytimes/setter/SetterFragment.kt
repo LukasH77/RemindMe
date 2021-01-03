@@ -14,12 +14,9 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import com.example.fancytimes.DateSetter
-import com.example.fancytimes.R
+import com.example.fancytimes.*
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.FragmentSetterBinding
-import com.example.fancytimes.handleAlarmsSetter
-import com.example.fancytimes.hideSoftKeyboard
 import java.util.*
 
 class SetterFragment : Fragment() {
@@ -61,6 +58,8 @@ class SetterFragment : Fragment() {
             repeatingIntervalsSpinner.adapter = it
         }
 
+        repeatingIntervalsSpinner.onItemSelectedListener = IntervalSetter(preferences!!)
+
         repeatingCheckBox.setOnCheckedChangeListener { _: CompoundButton, checkedState: Boolean ->
             if (checkedState) repeatingIntervalsSpinner.visibility = View.VISIBLE else repeatingIntervalsSpinner.visibility = View.INVISIBLE
         }
@@ -74,7 +73,7 @@ class SetterFragment : Fragment() {
         timePicker.minute = calendar.get(Calendar.MINUTE)
 
         binding.bEditDate.setOnClickListener {
-            datePicker!!.show(parentFragmentManager, "Date Picker")
+            datePicker.show(parentFragmentManager, "Date Picker")
         }
 
         binding.bConfirmPick.setOnClickListener {
@@ -85,6 +84,8 @@ class SetterFragment : Fragment() {
                 if (notificationTextField.text.isBlank()) notificationTextField.hint.toString() else notificationTextField.text.toString()
 
             val isNotificationRepeating = repeatingCheckBox.isChecked
+
+            val notificationRepeatInterval = if (isNotificationRepeating) preferences.getLong(getString(R.string.repeat_interval_key), 0) else 0
 
             calendar.set(
                 calendar.get(Calendar.YEAR),
@@ -113,7 +114,8 @@ class SetterFragment : Fragment() {
                 preferences,
                 notificationTitle,
                 notificationText,
-                isNotificationRepeating
+                isNotificationRepeating,
+                notificationRepeatInterval
             )
 
             hideSoftKeyboard(requireContext(), requireView())
