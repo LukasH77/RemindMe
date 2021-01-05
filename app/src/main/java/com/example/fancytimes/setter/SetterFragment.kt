@@ -115,17 +115,17 @@ class SetterFragment : Fragment() {
             )
 
 
-//            val yearIsTooEarly =
-//                preferences.getInt(getString(R.string.year_key), 0) < Calendar.getInstance()
-//                    .get(Calendar.YEAR)
-//
-//            val yearIsEqual =
-//                preferences.getInt(getString(R.string.year_key), 0) == Calendar.getInstance()
-//                    .get(Calendar.YEAR)
+            val yearIsTooEarly =
+                preferences.getInt(getString(R.string.year_key), 0) < Calendar.getInstance()
+                    .get(Calendar.YEAR)
 
-            val monthIsTooEarly =
-                preferences.getInt(getString(R.string.month_key), 0) < Calendar.getInstance()
-                    .get(Calendar.MONTH)
+            val yearIsEqual =
+                preferences.getInt(getString(R.string.year_key), 0) == Calendar.getInstance()
+                    .get(Calendar.YEAR)
+
+            val monthIsTooEarly = yearIsEqual &&
+                    preferences.getInt(getString(R.string.month_key), 0) < Calendar.getInstance()
+                .get(Calendar.MONTH)
 
             val monthIsEqual =
                 preferences.getInt(getString(R.string.month_key), 0) == Calendar.getInstance()
@@ -141,7 +141,7 @@ class SetterFragment : Fragment() {
             val minuteIsTooEarly =
                 hourIsEqual && timePicker.minute < Calendar.getInstance().get(Calendar.MINUTE)
 
-            if (monthIsTooEarly || dayIsTooEarly) {
+            if (yearIsTooEarly || monthIsTooEarly || dayIsTooEarly) {
                 Toast.makeText(requireContext(), "Invalid date!", Toast.LENGTH_SHORT).show()
                 println("Invalid date!")
                 return@setOnClickListener
