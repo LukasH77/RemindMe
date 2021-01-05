@@ -76,6 +76,8 @@ fun handleAlarmsSetter(
         pendingIntent
     )
 
+    println(calendarInstance.get(Calendar.YEAR))
+
     viewModel.addReminder(
         Reminder(
             notificationRequestCode,

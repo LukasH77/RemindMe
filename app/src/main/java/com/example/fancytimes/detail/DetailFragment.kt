@@ -11,6 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
+import android.widget.DatePicker
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -45,7 +47,7 @@ class DetailFragment : Fragment() {
 
         val preferences = activity?.getSharedPreferences(getString(R.string.notification_preferences_key), Context.MODE_PRIVATE)
 
-        val datePicker = DateSetter()
+        val datePicker = DateSetter(preferences!!)
         val timePicker = binding.tpTimePicker
         val title = binding.etNotificationTitle
         val text = binding.etNotificationText
@@ -61,7 +63,7 @@ class DetailFragment : Fragment() {
             repeatingIntervalsSpinner.adapter = it
         }
 
-        repeatingIntervalsSpinner.onItemSelectedListener = IntervalSetter(preferences!!)
+        repeatingIntervalsSpinner.onItemSelectedListener = IntervalSetter(preferences)
 
         repeatingCheckBox.setOnCheckedChangeListener { _: CompoundButton, checkedState: Boolean ->
             if (checkedState) repeatingIntervalsSpinner.visibility = View.VISIBLE else repeatingIntervalsSpinner.visibility = View.INVISIBLE
@@ -102,20 +104,54 @@ class DetailFragment : Fragment() {
             val calendar = Calendar.getInstance()
 
             calendar.set(
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH),
+                preferences.getInt(getString(R.string.year_key), 0),
+                preferences.getInt(getString(R.string.month_key), 0),
+                preferences.getInt(getString(R.string.day_key), 0),
                 timePicker.hour,
                 timePicker.minute,
                 0
             )
 
+
+//            val yearIsTooEarly =
+//                preferences.getInt(getString(R.string.year_key), 0) < Calendar.getInstance()
+//                    .get(Calendar.YEAR)
+//
+//            val yearIsEqual =
+//                preferences.getInt(getString(R.string.year_key), 0) == Calendar.getInstance()
+//                    .get(Calendar.YEAR)
+
+            val monthIsTooEarly =
+                preferences.getInt(getString(R.string.month_key), 0) < Calendar.getInstance()
+                    .get(Calendar.MONTH)
+
+            val monthIsEqual =
+                preferences.getInt(getString(R.string.month_key), 0) == Calendar.getInstance()
+                    .get(Calendar.MONTH)
+
+            val dayIsTooEarly = monthIsEqual && preferences.getInt(
+                getString(R.string.day_key),
+                0
+            ) < Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+
             val hourIsTooEarly = timePicker.hour < Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
             val hourIsEqual = timePicker.hour == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
             val minuteIsTooEarly =
                 hourIsEqual && timePicker.minute < Calendar.getInstance().get(Calendar.MINUTE)
+
+            if (monthIsTooEarly || dayIsTooEarly) {
+                Toast.makeText(requireContext(), "Invalid date!", Toast.LENGTH_SHORT).show()
+                println("Invalid date!")
+                return@setOnClickListener
+            }
+
             if (hourIsTooEarly || minuteIsTooEarly) {
-                calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1)
+                calendar.set(
+                    Calendar.DAY_OF_MONTH,
+                    preferences.getInt(getString(R.string.day_key), 0) + 1
+                )
+                println(preferences.getInt(getString(R.string.day_key), 0))
+                Toast.makeText(requireContext(), "Triggered", Toast.LENGTH_SHORT).show()
             }
 
             val isNotificationRepeating = repeatingCheckBox.isChecked
