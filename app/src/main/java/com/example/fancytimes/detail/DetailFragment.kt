@@ -10,10 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.CompoundButton
-import android.widget.DatePicker
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -46,20 +43,35 @@ class DetailFragment : Fragment() {
         detailViewModel =
             ViewModelProvider(this, detailViewModelFactory).get(DetailViewModel::class.java)
 
-        val preferences = activity?.getSharedPreferences(getString(R.string.notification_preferences_key), Context.MODE_PRIVATE)
+        val preferences = activity?.getSharedPreferences(
+            getString(R.string.notification_preferences_key),
+            Context.MODE_PRIVATE
+        )
 
         val calendar = Calendar.getInstance()
 //        val datePicker = DateSetter(preferences!!)
 
-        val datePicker = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _: DatePicker?, year: Int, month: Int, day: Int ->
-            println("date set")
-            with(preferences!!.edit()) {
-                this.putInt(requireContext().getString(R.string.day_key), day)
-                this.putInt(requireContext().getString(R.string.month_key), month)
-                this.putInt(requireContext().getString(R.string.year_key), year)
-                this.apply()
-            }
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+        val datePicker = DatePickerDialog(
+            requireContext(),
+            { _: DatePicker?, year: Int, month: Int, day: Int ->
+                println("date set")
+                with(preferences!!.edit()) {
+                    this.putInt(requireContext().getString(R.string.day_key), day)
+                    this.putInt(requireContext().getString(R.string.month_key), month)
+                    this.putInt(requireContext().getString(R.string.year_key), year)
+                    this.apply()
+                }
+                val setDay = preferences.getInt(getString(R.string.day_key), 0)
+                val setMonth = preferences.getInt(getString(R.string.month_key), 0)
+                val setYear = preferences.getInt(getString(R.string.year_key), 0)
+
+                binding.tvDate.text =
+                    "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
 
         val timePicker = binding.tpTimePicker
         val title = binding.etNotificationTitle
@@ -79,13 +91,14 @@ class DetailFragment : Fragment() {
         repeatingIntervalsSpinner.onItemSelectedListener = IntervalSetter(preferences!!)
 
         repeatingCheckBox.setOnCheckedChangeListener { _: CompoundButton, checkedState: Boolean ->
-            if (checkedState) repeatingIntervalsSpinner.visibility = View.VISIBLE else repeatingIntervalsSpinner.visibility = View.INVISIBLE
+            if (checkedState) repeatingIntervalsSpinner.visibility =
+                View.VISIBLE else repeatingIntervalsSpinner.visibility = View.INVISIBLE
         }
 
         val system24hrs = DateFormat.is24HourFormat(requireContext())
         timePicker.setIs24HourView(system24hrs)
 
-        binding.bEditDate.setOnClickListener {
+        binding.ibEditDate.setOnClickListener {
             datePicker.show()
         }
 
@@ -93,6 +106,8 @@ class DetailFragment : Fragment() {
 
         detailViewModel.selectedReminder.observe(viewLifecycleOwner, Observer {
             it?.let {
+                binding.tvDate.text =
+                    "${if (it.day < 10) "0${it.day}" else it.day}.${if (it.month < 9) "0${it.month + 1}" else it.month + 1}.${it.year}  (${it.requestCode})"
                 binding.tpTimePicker.minute = it.minute
                 binding.tpTimePicker.hour = it.hour
                 binding.etNotificationTitle.text = SpannableStringBuilder(it.title)
@@ -134,23 +149,32 @@ class DetailFragment : Fragment() {
                 preferences.getInt(getString(R.string.year_key), 0) == Calendar.getInstance()
                     .get(Calendar.YEAR)
 
-            val monthIsTooEarly = yearIsEqual &&
+            val monthIsTooEarly = (yearIsTooEarly || yearIsEqual) &&
                     preferences.getInt(getString(R.string.month_key), 0) < Calendar.getInstance()
                 .get(Calendar.MONTH)
 
-            val monthIsEqual =
-                preferences.getInt(getString(R.string.month_key), 0) == Calendar.getInstance()
-                    .get(Calendar.MONTH)
+            val monthIsEqual = yearIsEqual &&
+                    preferences.getInt(getString(R.string.month_key), 0) == Calendar.getInstance()
+                .get(Calendar.MONTH)
 
-            val dayIsTooEarly = monthIsEqual && preferences.getInt(
+            val dayIsTooEarly = (monthIsTooEarly || monthIsEqual) && preferences.getInt(
                 getString(R.string.day_key),
                 0
             ) < Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
 
-            val hourIsTooEarly = timePicker.hour < Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-            val hourIsEqual = timePicker.hour == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+            val dayIsEqual = monthIsEqual &&
+                    preferences.getInt(getString(R.string.day_key), 0) == Calendar.getInstance()
+                .get(Calendar.DAY_OF_MONTH)
+
+            val hourIsTooEarly =
+                (dayIsEqual || dayIsTooEarly) && timePicker.hour < Calendar.getInstance()
+                    .get(Calendar.HOUR_OF_DAY)
+            val hourIsEqual =
+                dayIsEqual && timePicker.hour == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+
             val minuteIsTooEarly =
-                hourIsEqual && timePicker.minute < Calendar.getInstance().get(Calendar.MINUTE)
+                (hourIsTooEarly || hourIsEqual) && timePicker.minute < Calendar.getInstance()
+                    .get(Calendar.MINUTE)
 
             if (yearIsTooEarly || monthIsTooEarly || dayIsTooEarly) {
                 Toast.makeText(requireContext(), "Invalid date!", Toast.LENGTH_SHORT).show()
@@ -168,7 +192,10 @@ class DetailFragment : Fragment() {
             }
 
             val isNotificationRepeating = repeatingCheckBox.isChecked
-            val notificationRepeatInterval = if (isNotificationRepeating) preferences.getLong(getString(R.string.repeat_interval_key), 0) else 0
+            val notificationRepeatInterval = if (isNotificationRepeating) preferences.getLong(
+                getString(R.string.repeat_interval_key),
+                0
+            ) else 0
 
             notificationTitle = title.text.toString()
             notificationText = text.text.toString()
@@ -189,7 +216,8 @@ class DetailFragment : Fragment() {
 
             hideSoftKeyboard(requireContext(), requireView())
 
-            it.findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToHomeFragment())
+            it.findNavController()
+                .navigate(DetailFragmentDirections.actionDetailFragmentToHomeFragment())
         }
 
         return binding.root

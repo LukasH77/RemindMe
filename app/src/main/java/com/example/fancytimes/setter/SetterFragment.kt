@@ -9,12 +9,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.CompoundButton
-import android.widget.DatePicker
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.fancytimes.*
@@ -47,27 +46,69 @@ class SetterFragment : Fragment() {
         )
 
         val calendar = Calendar.getInstance()
-//        val datePicker = DateSetter(preferences!!)
 
+        val setDay = preferences!!.getInt(getString(R.string.day_key), 0)
+        val setMonth = preferences.getInt(getString(R.string.month_key), 0)
+        val setYear = preferences.getInt(getString(R.string.year_key), 0)
 
+        binding.tvDate.text =
+            "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
 
-        val datePicker = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _: DatePicker?, year: Int, month: Int, day: Int ->
-            println("date set")
-            with(preferences!!.edit()) {
-                this.putInt(requireContext().getString(R.string.day_key), day)
-                this.putInt(requireContext().getString(R.string.month_key), month)
-                this.putInt(requireContext().getString(R.string.year_key), year)
-                this.apply()
-            }
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+        with(preferences!!.edit()) {
+            this.putInt(
+                requireContext().getString(R.string.day_key),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            )
+            this.putInt(
+                requireContext().getString(R.string.month_key),
+                calendar.get(Calendar.MONTH)
+            )
+            this.putInt(requireContext().getString(R.string.year_key), calendar.get(Calendar.YEAR))
+            this.apply()
+        }
 
+        val datePicker = DatePickerDialog(
+            requireContext(),
+            { _: DatePicker?, year: Int, month: Int, day: Int ->
+                println("date set")
+                with(preferences!!.edit()) {
+                    this.putInt(requireContext().getString(R.string.day_key), day)
+                    this.putInt(requireContext().getString(R.string.month_key), month)
+                    this.putInt(requireContext().getString(R.string.year_key), year)
+                    this.apply()
+                }
+                val setDay = preferences.getInt(getString(R.string.day_key), 0)
+                val setMonth = preferences.getInt(getString(R.string.month_key), 0)
+                val setYear = preferences.getInt(getString(R.string.year_key), 0)
 
+                binding.tvDate.text =
+                    "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
 
         val timePicker = binding.tpTimePicker
         val notificationTitleField = binding.etNotificationTitle
         val notificationTextField = binding.etNotificationText
         val repeatingCheckBox = binding.cbRepeating
         val repeatingIntervalsSpinner = binding.sRepInterval
+
+        timePicker.setOnTimeChangedListener { _: TimePicker, _: Int, _: Int ->
+            val hourIsTooEarly = timePicker.hour < Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+            val hourIsEqual = timePicker.hour == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+            val minuteIsTooEarly =
+                hourIsEqual && timePicker.minute < Calendar.getInstance().get(Calendar.MINUTE)
+
+            if (hourIsTooEarly || minuteIsTooEarly) {
+                binding.tvDate.text =
+                    "${if (setDay < 9) "0${setDay + 1}" else setDay + 1}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
+            } else {
+                binding.tvDate.text =
+                    "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
+            }
+        }
 
         ArrayAdapter.createFromResource(
             requireContext(),
@@ -88,23 +129,10 @@ class SetterFragment : Fragment() {
         val system24hrs = DateFormat.is24HourFormat(requireContext())
         timePicker.setIs24HourView(system24hrs)
 
-        with(preferences!!.edit()) {
-            this.putInt(
-                requireContext().getString(R.string.day_key),
-                calendar.get(Calendar.DAY_OF_MONTH)
-            )
-            this.putInt(
-                requireContext().getString(R.string.month_key),
-                calendar.get(Calendar.MONTH)
-            )
-            this.putInt(requireContext().getString(R.string.year_key), calendar.get(Calendar.YEAR))
-            this.apply()
-        }
-
         timePicker.hour = calendar.get(Calendar.HOUR_OF_DAY)
         timePicker.minute = calendar.get(Calendar.MINUTE)
 
-        binding.bEditDate.setOnClickListener {
+        binding.ibEditDate.setOnClickListener {
             datePicker.show()
         }
 
@@ -140,23 +168,32 @@ class SetterFragment : Fragment() {
                 preferences.getInt(getString(R.string.year_key), 0) == Calendar.getInstance()
                     .get(Calendar.YEAR)
 
-            val monthIsTooEarly = yearIsEqual &&
+            val monthIsTooEarly = (yearIsTooEarly || yearIsEqual) &&
                     preferences.getInt(getString(R.string.month_key), 0) < Calendar.getInstance()
                 .get(Calendar.MONTH)
 
-            val monthIsEqual =
-                preferences.getInt(getString(R.string.month_key), 0) == Calendar.getInstance()
-                    .get(Calendar.MONTH)
+            val monthIsEqual = yearIsEqual &&
+                    preferences.getInt(getString(R.string.month_key), 0) == Calendar.getInstance()
+                .get(Calendar.MONTH)
 
-            val dayIsTooEarly = monthIsEqual && preferences.getInt(
+            val dayIsTooEarly = (monthIsTooEarly || monthIsEqual) && preferences.getInt(
                 getString(R.string.day_key),
                 0
             ) < Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
 
-            val hourIsTooEarly = timePicker.hour < Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-            val hourIsEqual = timePicker.hour == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+            val dayIsEqual = monthIsEqual &&
+                    preferences.getInt(getString(R.string.day_key), 0) == Calendar.getInstance()
+                .get(Calendar.DAY_OF_MONTH)
+
+            val hourIsTooEarly =
+                (dayIsEqual || dayIsTooEarly) && timePicker.hour < Calendar.getInstance()
+                    .get(Calendar.HOUR_OF_DAY)
+            val hourIsEqual =
+                dayIsEqual && timePicker.hour == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+
             val minuteIsTooEarly =
-                hourIsEqual && timePicker.minute < Calendar.getInstance().get(Calendar.MINUTE)
+                (hourIsTooEarly || hourIsEqual) && timePicker.minute < Calendar.getInstance()
+                    .get(Calendar.MINUTE)
 
             if (yearIsTooEarly || monthIsTooEarly || dayIsTooEarly) {
                 Toast.makeText(requireContext(), "Invalid date!", Toast.LENGTH_SHORT).show()
@@ -172,6 +209,7 @@ class SetterFragment : Fragment() {
                 println(preferences.getInt(getString(R.string.day_key), 0))
                 Toast.makeText(requireContext(), "Triggered", Toast.LENGTH_SHORT).show()
             }
+
             handleAlarmsSetter(
                 requireContext(),
                 setterViewModel,
