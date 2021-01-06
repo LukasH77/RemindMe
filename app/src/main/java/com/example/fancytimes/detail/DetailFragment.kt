@@ -1,5 +1,6 @@
 package com.example.fancytimes.detail
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -47,7 +48,19 @@ class DetailFragment : Fragment() {
 
         val preferences = activity?.getSharedPreferences(getString(R.string.notification_preferences_key), Context.MODE_PRIVATE)
 
-        val datePicker = DateSetter(preferences!!)
+        val calendar = Calendar.getInstance()
+//        val datePicker = DateSetter(preferences!!)
+
+        val datePicker = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _: DatePicker?, year: Int, month: Int, day: Int ->
+            println("date set")
+            with(preferences!!.edit()) {
+                this.putInt(requireContext().getString(R.string.day_key), day)
+                this.putInt(requireContext().getString(R.string.month_key), month)
+                this.putInt(requireContext().getString(R.string.year_key), year)
+                this.apply()
+            }
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+
         val timePicker = binding.tpTimePicker
         val title = binding.etNotificationTitle
         val text = binding.etNotificationText
@@ -63,7 +76,7 @@ class DetailFragment : Fragment() {
             repeatingIntervalsSpinner.adapter = it
         }
 
-        repeatingIntervalsSpinner.onItemSelectedListener = IntervalSetter(preferences)
+        repeatingIntervalsSpinner.onItemSelectedListener = IntervalSetter(preferences!!)
 
         repeatingCheckBox.setOnCheckedChangeListener { _: CompoundButton, checkedState: Boolean ->
             if (checkedState) repeatingIntervalsSpinner.visibility = View.VISIBLE else repeatingIntervalsSpinner.visibility = View.INVISIBLE
@@ -73,7 +86,7 @@ class DetailFragment : Fragment() {
         timePicker.setIs24HourView(system24hrs)
 
         binding.bEditDate.setOnClickListener {
-            datePicker.show(parentFragmentManager, "Date Picker")
+            datePicker.show()
         }
 
         binding.tvRequestCode.text = "Request Code: ${receivedArgs.requestCode}"
@@ -84,6 +97,7 @@ class DetailFragment : Fragment() {
                 binding.tpTimePicker.hour = it.hour
                 binding.etNotificationTitle.text = SpannableStringBuilder(it.title)
                 binding.etNotificationText.text = SpannableStringBuilder(it.text)
+                datePicker.updateDate(it.year, it.month, it.day)
                 if (it.repetition != 0L) {
                     binding.cbRepeating.isChecked = true
                     when (it.repetition) {
@@ -101,7 +115,6 @@ class DetailFragment : Fragment() {
         repeatingIntervalsSpinner.setSelection(5)
 
         binding.bConfirmPick.setOnClickListener {
-            val calendar = Calendar.getInstance()
 
             calendar.set(
                 preferences.getInt(getString(R.string.year_key), 0),

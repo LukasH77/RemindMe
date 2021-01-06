@@ -1,5 +1,6 @@
 package com.example.fancytimes.setter
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
@@ -26,7 +28,7 @@ class SetterFragment : Fragment() {
     private lateinit var setterViewModelFactory: SetterViewModelFactory
     private lateinit var setterViewModel: SetterViewModel
 
-    @RequiresApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,7 +45,24 @@ class SetterFragment : Fragment() {
             getString(R.string.notification_preferences_key),
             Context.MODE_PRIVATE
         )
-        val datePicker = DateSetter(preferences!!)
+
+        val calendar = Calendar.getInstance()
+//        val datePicker = DateSetter(preferences!!)
+
+
+
+        val datePicker = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _: DatePicker?, year: Int, month: Int, day: Int ->
+            println("date set")
+            with(preferences!!.edit()) {
+                this.putInt(requireContext().getString(R.string.day_key), day)
+                this.putInt(requireContext().getString(R.string.month_key), month)
+                this.putInt(requireContext().getString(R.string.year_key), year)
+                this.apply()
+            }
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+
+
+
         val timePicker = binding.tpTimePicker
         val notificationTitleField = binding.etNotificationTitle
         val notificationTextField = binding.etNotificationText
@@ -59,7 +78,7 @@ class SetterFragment : Fragment() {
             repeatingIntervalsSpinner.adapter = it
         }
 
-        repeatingIntervalsSpinner.onItemSelectedListener = IntervalSetter(preferences)
+        repeatingIntervalsSpinner.onItemSelectedListener = IntervalSetter(preferences!!)
 
         repeatingCheckBox.setOnCheckedChangeListener { _: CompoundButton, checkedState: Boolean ->
             if (checkedState) repeatingIntervalsSpinner.visibility =
@@ -69,9 +88,7 @@ class SetterFragment : Fragment() {
         val system24hrs = DateFormat.is24HourFormat(requireContext())
         timePicker.setIs24HourView(system24hrs)
 
-        val calendar = Calendar.getInstance()
-
-        with(preferences.edit()) {
+        with(preferences!!.edit()) {
             this.putInt(
                 requireContext().getString(R.string.day_key),
                 calendar.get(Calendar.DAY_OF_MONTH)
@@ -88,7 +105,7 @@ class SetterFragment : Fragment() {
         timePicker.minute = calendar.get(Calendar.MINUTE)
 
         binding.bEditDate.setOnClickListener {
-            datePicker.show(parentFragmentManager, "Date Picker")
+            datePicker.show()
         }
 
         binding.bConfirmPick.setOnClickListener {
