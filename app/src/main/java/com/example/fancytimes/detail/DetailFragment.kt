@@ -51,19 +51,25 @@ class DetailFragment : Fragment() {
         val calendar = Calendar.getInstance()
 //        val datePicker = DateSetter(preferences!!)
 
+        var setDay = 0
+        var setMonth = 0
+        var setYear = 0
+
         val datePicker = DatePickerDialog(
             requireContext(),
             { _: DatePicker?, year: Int, month: Int, day: Int ->
                 println("date set")
+
                 with(preferences!!.edit()) {
                     this.putInt(requireContext().getString(R.string.day_key), day)
                     this.putInt(requireContext().getString(R.string.month_key), month)
                     this.putInt(requireContext().getString(R.string.year_key), year)
                     this.apply()
                 }
-                val setDay = preferences.getInt(getString(R.string.day_key), 0)
-                val setMonth = preferences.getInt(getString(R.string.month_key), 0)
-                val setYear = preferences.getInt(getString(R.string.year_key), 0)
+
+                setDay = preferences.getInt(getString(R.string.day_key), 0)
+                setMonth = preferences.getInt(getString(R.string.month_key), 0)
+                setYear = preferences.getInt(getString(R.string.year_key), 0)
 
                 binding.tvDate.text =
                     "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
@@ -106,6 +112,16 @@ class DetailFragment : Fragment() {
 
         detailViewModel.selectedReminder.observe(viewLifecycleOwner, Observer {
             it?.let {
+                setDay = it.day
+                setMonth = it.month
+                setYear = it.year
+                with(preferences!!.edit()) {
+                    this.putInt(requireContext().getString(R.string.day_key), setDay)
+                    this.putInt(requireContext().getString(R.string.month_key), setMonth)
+                    this.putInt(requireContext().getString(R.string.year_key), setYear)
+                    this.apply()
+                }
+
                 binding.tvDate.text =
                     "${if (it.day < 10) "0${it.day}" else it.day}.${if (it.month < 9) "0${it.month + 1}" else it.month + 1}.${it.year}  (${it.requestCode})"
                 binding.tpTimePicker.minute = it.minute
@@ -127,6 +143,56 @@ class DetailFragment : Fragment() {
                 }
             }
         })
+
+        timePicker.setOnTimeChangedListener { _: TimePicker, _: Int, _: Int ->
+            val yearIsTooEarly =
+                preferences.getInt(getString(R.string.year_key), 0) < Calendar.getInstance()
+                    .get(Calendar.YEAR)
+
+            val yearIsEqual =
+                preferences.getInt(getString(R.string.year_key), 0) == Calendar.getInstance()
+                    .get(Calendar.YEAR)
+
+            val monthIsTooEarly = (yearIsTooEarly || yearIsEqual) &&
+                    preferences.getInt(getString(R.string.month_key), 0) < Calendar.getInstance()
+                .get(Calendar.MONTH)
+
+            val monthIsEqual = yearIsEqual &&
+                    preferences.getInt(getString(R.string.month_key), 0) == Calendar.getInstance()
+                .get(Calendar.MONTH)
+
+            val dayIsTooEarly = (monthIsTooEarly || monthIsEqual) && preferences.getInt(
+                getString(R.string.day_key),
+                0
+            ) < Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+
+            val dayIsEqual = monthIsEqual &&
+                    preferences.getInt(getString(R.string.day_key), 0) == Calendar.getInstance()
+                .get(Calendar.DAY_OF_MONTH)
+
+            val hourIsTooEarly =
+                (dayIsEqual || dayIsTooEarly) && timePicker.hour < Calendar.getInstance()
+                    .get(Calendar.HOUR_OF_DAY)
+            val hourIsEqual =
+                dayIsEqual && timePicker.hour == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+
+            val minuteIsTooEarly =
+                (hourIsTooEarly || hourIsEqual) && timePicker.minute < Calendar.getInstance()
+                    .get(Calendar.MINUTE)
+
+            if (dayIsTooEarly || monthIsTooEarly || yearIsTooEarly) {
+                return@setOnTimeChangedListener
+            } else if (hourIsTooEarly || minuteIsTooEarly) {
+                binding.tvDate.text =
+                    "${if (setDay < 9) "0${setDay + 1}" else setDay + 1}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
+                datePicker.updateDate(setYear, setMonth, setDay + 1)
+            } else {
+                binding.tvDate.text =
+                    "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
+                datePicker.updateDate(setYear, setMonth, setDay)
+            }
+        }
+
         repeatingIntervalsSpinner.setSelection(5)
 
         binding.bConfirmPick.setOnClickListener {
