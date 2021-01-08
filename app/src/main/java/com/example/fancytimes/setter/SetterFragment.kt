@@ -98,7 +98,7 @@ class SetterFragment : Fragment() {
 
         val colorPicker =
             ColorPickerDialog.newBuilder().setDialogType(ColorPickerDialog.TYPE_PRESETS)
-                .setAllowCustom(false).setShowColorShades(false)
+                .setAllowCustom(false).setShowColorShades(false).setShowAlphaSlider(true)
 
         colorPicker.setColor(preferences.getInt(requireContext().getString(R.string.color_key), 0))
 

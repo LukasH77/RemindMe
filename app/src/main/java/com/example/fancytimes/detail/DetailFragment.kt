@@ -58,7 +58,7 @@ class DetailFragment : Fragment() {
 
         val colorPicker =
             ColorPickerDialog.newBuilder().setDialogType(ColorPickerDialog.TYPE_PRESETS)
-                .setAllowCustom(false).setShowColorShades(false)
+                .setAllowCustom(false).setShowColorShades(false).setShowAlphaSlider(true)
 
         val datePicker = DatePickerDialog(
             requireContext(),
