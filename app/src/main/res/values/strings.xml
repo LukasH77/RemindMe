@@ -10,6 +10,7 @@
     <string name="notification_requestCode_extra_name">notificationRequestCode</string>
     <string name="notification_time_extra_name">notificationTime</string>
     <string name="context_extra_name">context</string>
+    <string name="color_extra_name">color</string>
 
     <string name="notification_preferences_key">notificationPreferences</string>
     <string name="request_code_key">notificationRequestCode</string>
@@ -17,6 +18,7 @@
     <string name="day_key">day</string>
     <string name="month_key">month</string>
     <string name="year_key">year</string>
+    <string name="color_key">color</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home_fragment_placeholder">Home Fragment</string>

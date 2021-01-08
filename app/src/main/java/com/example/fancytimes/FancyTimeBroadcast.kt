@@ -63,6 +63,8 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
             callingContext.getString(R.string.notification_time_extra_name),
             0
         )
+        val notificationColor =
+            callingIntent.getIntExtra(callingContext.getString(R.string.context_extra_name), 0)
 
         val calendar = Calendar.getInstance()
 
@@ -130,7 +132,8 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
                     calendar.get(Calendar.DAY_OF_MONTH),
                     calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.YEAR),
-                    notificationRepeatInterval
+                    notificationRepeatInterval,
+                    notificationColor
                 )
             )
         } else {

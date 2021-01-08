@@ -34,5 +34,8 @@ data class Reminder(
     val year: Int,
 
     @ColumnInfo
-    val repetition: Long?
+    val repetition: Long?,
+
+    @ColumnInfo
+    val color: Int
 )

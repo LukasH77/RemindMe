@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -88,12 +89,12 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
             }
         }
 
-
-
         holder.editButton.setOnClickListener {
             it.findNavController()
                 .navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(reminder.requestCode))
         }
+
+        holder.listItem.setBackgroundColor(reminder.color)
     }
 
     class ReminderViewHolder(reminderListItem: View) : RecyclerView.ViewHolder(reminderListItem) {
@@ -101,6 +102,7 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
         val timeField: TextView = reminderListItem.findViewById(R.id.tvTime)
         val removeButton: Button = reminderListItem.findViewById(R.id.bRemove)
         val editButton: Button = reminderListItem.findViewById(R.id.bEdit)
+        val listItem: ConstraintLayout = reminderListItem.findViewById(R.id.clListItem)
     }
 }
 

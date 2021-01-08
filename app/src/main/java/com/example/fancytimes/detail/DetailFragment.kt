@@ -20,6 +20,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.fancytimes.*
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.FragmentDetailBinding
+import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import java.util.*
 
 class DetailFragment : Fragment() {
@@ -54,6 +55,10 @@ class DetailFragment : Fragment() {
         var setDay = 0
         var setMonth = 0
         var setYear = 0
+
+        val colorPicker =
+            ColorPickerDialog.newBuilder().setDialogType(ColorPickerDialog.TYPE_PRESETS)
+                .setAllowCustom(false).setShowColorShades(false)
 
         val datePicker = DatePickerDialog(
             requireContext(),
@@ -121,6 +126,10 @@ class DetailFragment : Fragment() {
                     this.putInt(requireContext().getString(R.string.year_key), setYear)
                     this.apply()
                 }
+
+                binding.tvColorPreview.setBackgroundColor(it.color)
+
+                colorPicker.setColor(it.color)
 
                 binding.tvDate.text =
                     "${if (it.day < 10) "0${it.day}" else it.day}.${if (it.month < 9) "0${it.month + 1}" else it.month + 1}.${it.year}  (${it.requestCode})"
@@ -195,6 +204,10 @@ class DetailFragment : Fragment() {
 
         repeatingIntervalsSpinner.setSelection(5)
 
+        binding.ibEditColor.setOnClickListener {
+            colorPicker.show(requireActivity())
+        }
+
         binding.bConfirmPick.setOnClickListener {
 
             calendar.set(
@@ -206,6 +219,7 @@ class DetailFragment : Fragment() {
                 0
             )
 
+            val color = preferences.getInt(requireContext().getString(R.string.color_key), 0)
 
             val yearIsTooEarly =
                 preferences.getInt(getString(R.string.year_key), 0) < Calendar.getInstance()
@@ -277,7 +291,8 @@ class DetailFragment : Fragment() {
                 notificationTitle,
                 notificationText,
                 isNotificationRepeating,
-                notificationRepeatInterval
+                notificationRepeatInterval,
+                color
             )
 
             hideSoftKeyboard(requireContext(), requireView())

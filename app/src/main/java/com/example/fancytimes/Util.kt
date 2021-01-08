@@ -34,7 +34,8 @@ fun handleAlarmsSetter(
     notificationTitle: String,
     notificationText: String,
     isNotificationRepeating: Boolean,
-    notificationRepeatInterval: Long
+    notificationRepeatInterval: Long,
+    color: Int
 ) {
     val notificationRequestCode =
         preferences!!.getInt(context.getString(R.string.request_code_key), 0)
@@ -64,6 +65,7 @@ fun handleAlarmsSetter(
         context.getString(R.string.notification_time_extra_name),
         notificationMillis
     )
+    intent.putExtra(context.getString(R.string.context_extra_name), color)
 
     val pendingIntent =
         PendingIntent.getBroadcast(context, notificationRequestCode, intent, 0)
@@ -89,7 +91,8 @@ fun handleAlarmsSetter(
             calendarInstance.get(Calendar.DAY_OF_MONTH),
             calendarInstance.get(Calendar.MONTH),
             calendarInstance.get(Calendar.YEAR),
-            notificationRepeatInterval
+            notificationRepeatInterval,
+            color
         )
     )
 
@@ -114,7 +117,8 @@ fun handleAlarmsDetail(
     notificationTitle: String,
     notificationText: String,
     isNotificationRepeating: Boolean,
-    notificationRepeatInterval: Long
+    notificationRepeatInterval: Long,
+    color: Int
 ) {
     val intent = Intent(context, FancyTimeBroadcast::class.java)
 
@@ -141,9 +145,15 @@ fun handleAlarmsDetail(
         context.getString(R.string.notification_time_extra_name),
         notificationMillis
     )
+    intent.putExtra(context.getString(R.string.context_extra_name), color)
 
     val pendingIntent =
-        PendingIntent.getBroadcast(context, notificationRequestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        PendingIntent.getBroadcast(
+            context,
+            notificationRequestCode,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
 
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
@@ -164,7 +174,8 @@ fun handleAlarmsDetail(
             calendarInstance.get(Calendar.DAY_OF_MONTH),
             calendarInstance.get(Calendar.MONTH),
             calendarInstance.get(Calendar.YEAR),
-            notificationRepeatInterval
+            notificationRepeatInterval,
+            color
         )
     )
     Toast.makeText(context, notificationRequestCode.toString(), Toast.LENGTH_SHORT)

@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.graphics.toColorInt
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,6 +20,8 @@ import androidx.navigation.findNavController
 import com.example.fancytimes.*
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.FragmentSetterBinding
+import com.jaredrummler.android.colorpicker.ColorPickerDialog
+import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import java.util.*
 
 class SetterFragment : Fragment() {
@@ -57,12 +60,15 @@ class SetterFragment : Fragment() {
                 calendar.get(Calendar.MONTH)
             )
             this.putInt(requireContext().getString(R.string.year_key), calendar.get(Calendar.YEAR))
+            this.putInt(requireContext().getString(R.string.color_key), 0xFF03A9F4.toInt())
             this.apply()
         }
 
         var setDay = preferences!!.getInt(getString(R.string.day_key), 0)
         var setMonth = preferences.getInt(getString(R.string.month_key), 0)
         var setYear = preferences.getInt(getString(R.string.year_key), 0)
+
+        binding.tvColorPreview.setBackgroundColor(0xFF03A9F4.toInt())
 
         binding.tvDate.text =
             "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
@@ -89,6 +95,12 @@ class SetterFragment : Fragment() {
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         )
+
+        val colorPicker =
+            ColorPickerDialog.newBuilder().setDialogType(ColorPickerDialog.TYPE_PRESETS)
+                .setAllowCustom(false).setShowColorShades(false)
+
+        colorPicker.setColor(preferences.getInt(requireContext().getString(R.string.color_key), 0))
 
         val timePicker = binding.tpTimePicker
         val notificationTitleField = binding.etNotificationTitle
@@ -171,6 +183,10 @@ class SetterFragment : Fragment() {
             datePicker.show()
         }
 
+        binding.ibEditColor.setOnClickListener {
+            colorPicker.show(requireActivity())
+        }
+
         binding.bConfirmPick.setOnClickListener {
             val notificationTitle =
                 if (notificationTitleField.text.isBlank()) notificationTitleField.hint.toString() else notificationTitleField.text.toString()
@@ -184,6 +200,8 @@ class SetterFragment : Fragment() {
                 getString(R.string.repeat_interval_key),
                 0
             ) else 0
+
+            val color = preferences.getInt(requireContext().getString(R.string.color_key), 0)
 
             calendar.set(
                 preferences.getInt(getString(R.string.year_key), 0),
@@ -255,7 +273,8 @@ class SetterFragment : Fragment() {
                 notificationTitle,
                 notificationText,
                 isNotificationRepeating,
-                notificationRepeatInterval
+                notificationRepeatInterval,
+                color
             )
 
             hideSoftKeyboard(requireContext(), requireView())
