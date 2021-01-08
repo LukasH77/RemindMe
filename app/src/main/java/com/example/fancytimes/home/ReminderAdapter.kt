@@ -95,6 +95,8 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
         }
 
         holder.listItem.setBackgroundColor(reminder.color)
+        holder.timeField.setBackgroundColor(reminder.color)
+        holder.titleField.setBackgroundColor(reminder.color)
     }
 
     class ReminderViewHolder(reminderListItem: View) : RecyclerView.ViewHolder(reminderListItem) {
