@@ -60,7 +60,7 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
 
         holder.titleField.text = reminder.title
         holder.timeField.text =
-            "$hourText ${if (reminder.day < 10) "0${reminder.day}" else reminder.day}.${if (reminder.month < 9) "0${reminder.month + 1}" else reminder.month + 1}.${reminder.year}  (${reminder.requestCode})"
+            "$hourText ${if (reminder.day < 10) "0${reminder.day}" else reminder.day}.${if (reminder.month < 9) "0${reminder.month + 1}" else reminder.month + 1}.${reminder.year}"
 
         println("Adapter request code: ${reminder.requestCode}")
 

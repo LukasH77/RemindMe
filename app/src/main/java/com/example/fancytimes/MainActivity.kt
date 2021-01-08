@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        NavigationUI.setupActionBarWithNavController(this, findNavController(R.id.nav_host))
+//        NavigationUI.setupActionBarWithNavController(this, findNavController(R.id.nav_host))
     }
 
     override fun onSupportNavigateUp(): Boolean {
