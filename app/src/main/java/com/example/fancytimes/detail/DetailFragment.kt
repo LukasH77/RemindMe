@@ -58,7 +58,21 @@ class DetailFragment : Fragment() {
 
         val colorPicker =
             ColorPickerDialog.newBuilder().setDialogType(ColorPickerDialog.TYPE_PRESETS)
-                .setAllowCustom(false).setShowColorShades(false).setShowAlphaSlider(true)
+                .setPresets(
+                    intArrayOf(
+                        0xffeccced.toInt(),
+                        0xffd0cced.toInt(),
+                        0xffccdbed.toInt(),
+                        0xffccede6.toInt(),
+                        0xffccedd0.toInt(),
+                        0xffddedcc.toInt(),
+                        0xffedeccc.toInt(),
+                        0xffeddccc.toInt(),
+                        0xffedcccc.toInt(),
+                        0xffffffff.toInt()
+                    )
+                )
+                .setAllowCustom(false).setShowColorShades(false)
 
         val datePicker = DatePickerDialog(
             requireContext(),
@@ -205,6 +219,7 @@ class DetailFragment : Fragment() {
         repeatingIntervalsSpinner.setSelection(5)
 
         binding.ibEditColor.setOnClickListener {
+            colorPicker.setColor(preferences.getInt(requireContext().getString(R.string.color_key), 0))
             colorPicker.show(requireActivity())
         }
 

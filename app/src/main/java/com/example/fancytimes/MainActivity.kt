@@ -3,9 +3,11 @@ package com.example.fancytimes
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 
 class MainActivity : AppCompatActivity(), ColorPickerDialogListener {
@@ -29,9 +31,7 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener {
         this.findViewById<TextView>(R.id.tvColorPreview).setBackgroundColor(color)
     }
 
-    override fun onDialogDismissed(dialogId: Int) {
-
-    }
+    override fun onDialogDismissed(dialogId: Int) {}
 
 
     //A failed experiment, for now at least.

@@ -1,14 +1,17 @@
 package com.example.fancytimes.home
 
 import android.app.AlarmManager
+import android.app.AlertDialog
 import android.app.PendingIntent
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -66,27 +69,32 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
 
         holder.removeButton.setOnClickListener {
             val alarmManager = it.context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            try {
-                with(preferences!!.edit()) {
-                    this.remove(reminder.requestCode.toString())
-                    this.apply()
+            AlertDialog.Builder(it.context).setTitle("Cancel Reminder")
+                .setMessage("Do you really want to cancel this reminder?").setPositiveButton(
+                    "Yes"
+                ) { _: DialogInterface, _: Int ->
+                    val intent = Intent(it.context, FancyTimeBroadcast::class.java)
+                    try {
+                        alarmManager.cancel(
+                            PendingIntent.getBroadcast(
+                                it.context,
+                                reminder.requestCode,
+                                intent,
+                                PendingIntent.FLAG_NO_CREATE
+                            )
+                        )
+                        HomeViewModel(ReminderDatabase.createInstance(it.context).reminderDao).deleteByRequestCode(
+                            reminder.requestCode
+                        )
+                        with(preferences!!.edit()) {
+                            this.remove(reminder.requestCode.toString())
+                            this.apply()
+                        }
+                    } catch (e: Exception) {
+                        println("cancel() called with a null PendingIntent")
+                    }
                 }
-                alarmManager.cancel(
-                    PendingIntent.getBroadcast(
-                        it.context,
-                        reminder.requestCode,
-                        Intent(it.context, FancyTimeBroadcast::class.java),
-                        PendingIntent.FLAG_NO_CREATE
-                    )
-                )
-                Toast.makeText(it.context, "Reminder Canceled", Toast.LENGTH_SHORT).show()
-            } catch (e: Exception) {
-                Toast.makeText(it.context, "Alarm already cancelled", Toast.LENGTH_SHORT).show()
-            } finally {
-                HomeViewModel(ReminderDatabase.createInstance(it.context).reminderDao).deleteByRequestCode(
-                    reminder.requestCode
-                )
-            }
+                .setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
         }
 
         holder.editButton.setOnClickListener {
@@ -97,13 +105,15 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
         holder.listItem.setBackgroundColor(reminder.color)
         holder.timeField.setBackgroundColor(reminder.color)
         holder.titleField.setBackgroundColor(reminder.color)
+        holder.removeButton.setBackgroundColor(reminder.color)
+        holder.editButton.setBackgroundColor(reminder.color)
     }
 
     class ReminderViewHolder(reminderListItem: View) : RecyclerView.ViewHolder(reminderListItem) {
         val titleField: TextView = reminderListItem.findViewById(R.id.tvTitle)
         val timeField: TextView = reminderListItem.findViewById(R.id.tvTime)
-        val removeButton: Button = reminderListItem.findViewById(R.id.bRemove)
-        val editButton: Button = reminderListItem.findViewById(R.id.bEdit)
+        val removeButton: ImageButton = reminderListItem.findViewById(R.id.ibRemove)
+        val editButton: ImageButton = reminderListItem.findViewById(R.id.ibEdit)
         val listItem: ConstraintLayout = reminderListItem.findViewById(R.id.clListItem)
     }
 }

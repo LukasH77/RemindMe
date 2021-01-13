@@ -60,15 +60,13 @@ class SetterFragment : Fragment() {
                 calendar.get(Calendar.MONTH)
             )
             this.putInt(requireContext().getString(R.string.year_key), calendar.get(Calendar.YEAR))
-            this.putInt(requireContext().getString(R.string.color_key), 0xFF03A9F4.toInt())
+            this.putInt(requireContext().getString(R.string.color_key), 0xff90a4ae.toInt())
             this.apply()
         }
 
-        var setDay = preferences!!.getInt(getString(R.string.day_key), 0)
+        var setDay = preferences.getInt(getString(R.string.day_key), 0)
         var setMonth = preferences.getInt(getString(R.string.month_key), 0)
         var setYear = preferences.getInt(getString(R.string.year_key), 0)
-
-        binding.tvColorPreview.setBackgroundColor(0xFF03A9F4.toInt())
 
         binding.tvDate.text =
             "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
@@ -98,8 +96,28 @@ class SetterFragment : Fragment() {
 
         val colorPicker =
             ColorPickerDialog.newBuilder().setDialogType(ColorPickerDialog.TYPE_PRESETS)
-                .setAllowCustom(false).setShowColorShades(false).setShowAlphaSlider(true)
+                .setPresets(
+                    intArrayOf(
+                        0xffeccced.toInt(),
+                        0xffd0cced.toInt(),
+                        0xffccdbed.toInt(),
+                        0xffccede6.toInt(),
+                        0xffccedd0.toInt(),
+                        0xffedeccc.toInt(),
+                        0xffeddccc.toInt(),
+                        0xffedcccc.toInt(),
+                        0xff90a4ae.toInt(),
+                        0xffffffff.toInt()
+                    )
+                )
+                .setAllowCustom(false).setShowColorShades(false)
 
+        binding.tvColorPreview.setBackgroundColor(
+            preferences.getInt(
+                requireContext().getString(R.string.color_key),
+                0
+            )
+        )
         colorPicker.setColor(preferences.getInt(requireContext().getString(R.string.color_key), 0))
 
         val timePicker = binding.tpTimePicker
@@ -184,6 +202,7 @@ class SetterFragment : Fragment() {
         }
 
         binding.ibEditColor.setOnClickListener {
+            colorPicker.setColor(preferences.getInt(requireContext().getString(R.string.color_key), 0))
             colorPicker.show(requireActivity())
         }
 

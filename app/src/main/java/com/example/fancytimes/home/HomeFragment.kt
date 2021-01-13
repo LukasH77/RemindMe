@@ -65,7 +65,7 @@ class HomeFragment : Fragment() {
 
         alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        val addReminder = binding.bSetReminder
+        val addReminder = binding.ibSetReminder
 
 
         val reminderAdapter =
