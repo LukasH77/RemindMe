@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FancyTimes</string>
+    <string name="app_name">Reminders</string>
 
     <string name="notification_channel_id">reminders</string>
     <string name="notification_text_extra_name">notificationText</string>

@@ -312,8 +312,7 @@ class DetailFragment : Fragment() {
 
             hideSoftKeyboard(requireContext(), requireView())
 
-            it.findNavController()
-                .navigate(DetailFragmentDirections.actionDetailFragmentToHomeFragment())
+            requireActivity().onBackPressed()
         }
 
         return binding.root

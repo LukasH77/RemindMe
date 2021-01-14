@@ -60,7 +60,7 @@ class SetterFragment : Fragment() {
                 calendar.get(Calendar.MONTH)
             )
             this.putInt(requireContext().getString(R.string.year_key), calendar.get(Calendar.YEAR))
-            this.putInt(requireContext().getString(R.string.color_key), 0xff90a4ae.toInt())
+            this.putInt(requireContext().getString(R.string.color_key), 0xffcfd8dc.toInt())
             this.apply()
         }
 
@@ -106,7 +106,7 @@ class SetterFragment : Fragment() {
                         0xffedeccc.toInt(),
                         0xffeddccc.toInt(),
                         0xffedcccc.toInt(),
-                        0xff90a4ae.toInt(),
+                        0xffcfd8dc.toInt(),
                         0xffffffff.toInt()
                     )
                 )
@@ -298,8 +298,10 @@ class SetterFragment : Fragment() {
 
             hideSoftKeyboard(requireContext(), requireView())
 
-            it.findNavController()
-                .navigate(SetterFragmentDirections.actionSetterFragmentToHomeFragment())
+            requireActivity().onBackPressed()
+
+//            it.findNavController()
+//                .navigate(SetterFragmentDirections.actionSetterFragmentToHomeFragment())
         }
 
         return binding.root

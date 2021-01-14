@@ -11,14 +11,15 @@
         android:label="Reminders"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_homeFragment_to_aboutFragment"
-            app:destination="@id/aboutFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            app:destination="@id/detailFragment"
+            app:enterAnim="@anim/slide_in_up"
+            app:popExitAnim="@anim/slide_out_down" />
         <action
             android:id="@+id/action_homeFragment_to_setterFragment"
-            app:destination="@id/setterFragment" />
+            app:destination="@id/setterFragment"
+            app:enterAnim="@anim/slide_in_up"
+            app:popExitAnim="@anim/slide_out_down" />
     </fragment>
 
     <fragment
@@ -29,24 +30,12 @@
         <argument
             android:name="requestCode"
             app:argType="integer" />
-        <action
-            android:id="@+id/action_detailFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/setterFragment"
         android:name="com.example.fancytimes.setter.SetterFragment"
         android:label="New Reminder"
-        tools:layout="@layout/fragment_setter">
-        <action
-            android:id="@+id/action_setterFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_setter"/>
 
-    <fragment
-        android:id="@+id/aboutFragment"
-        android:name="com.example.fancytimes.about.AboutFragment"
-        android:label="About"
-        tools:layout="@layout/fragment_about" />
 </navigation>
