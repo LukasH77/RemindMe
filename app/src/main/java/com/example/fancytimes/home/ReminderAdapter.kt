@@ -8,6 +8,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
+import android.text.Layout
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,7 @@ import com.example.fancytimes.FancyTimeBroadcast
 import com.example.fancytimes.R
 import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.database.ReminderDatabase
+import com.example.fancytimes.databinding.ReminderListItemBinding
 import java.util.*
 
 class ReminderAdapter(private val preferences: SharedPreferences?, private val is24hrs: Boolean) :
@@ -34,10 +36,10 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReminderViewHolder {
-        val reminderListItem =
-            LayoutInflater.from(parent.context).inflate(R.layout.reminder_list_item, parent, false)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ReminderListItemBinding.inflate(inflater, parent, false)
 
-        return ReminderViewHolder(reminderListItem)
+        return ReminderViewHolder(binding,)
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -84,7 +86,7 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
 
         holder.titleField.text = reminder.title
         holder.timeField.text = "$hourText"
-        if (reminder.isRepeating) holder.timeField.setCompoundDrawablesWithIntrinsicBounds(null, null, holder.reminderListItem.context.getDrawable(R.drawable.repeat_24px), null)
+        if (reminder.isRepeating) holder.timeField.setCompoundDrawablesWithIntrinsicBounds(null, null, holder.itemView.context.getDrawable(R.drawable.repeat_24px), null)
         holder.dateField.text = "$monthText ${if (reminder.day < 10) "0${reminder.day}" else reminder.day}$yearText"
 
 //        println("Adapter request code: ${reminder.requestCode}")
@@ -131,13 +133,13 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
         holder.editButton.setBackgroundColor(reminder.color)
     }
 
-    class ReminderViewHolder(val reminderListItem: View) : RecyclerView.ViewHolder(reminderListItem) {
-        val titleField: TextView = reminderListItem.findViewById(R.id.tvTitle)
-        val timeField: TextView = reminderListItem.findViewById(R.id.tvTime)
-        val dateField: TextView = reminderListItem.findViewById(R.id.tvDate)
-        val removeButton: ImageButton = reminderListItem.findViewById(R.id.ibRemove)
-        val editButton: ImageButton = reminderListItem.findViewById(R.id.ibEdit)
-        val listItem: ConstraintLayout = reminderListItem.findViewById(R.id.clListItem)
+    class ReminderViewHolder(reminderListItemBinding: ReminderListItemBinding) : RecyclerView.ViewHolder(reminderListItemBinding.root) {
+        val titleField = reminderListItemBinding.tvTitle
+        val timeField = reminderListItemBinding.tvTime
+        val dateField = reminderListItemBinding.tvDate
+        val removeButton = reminderListItemBinding.ibRemove
+        val editButton = reminderListItemBinding.ibEdit
+        val listItem = reminderListItemBinding.clListItem
     }
 }
 
