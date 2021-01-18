@@ -37,5 +37,8 @@ data class Reminder(
     val repetition: Long?,
 
     @ColumnInfo
+    val isRepeating: Boolean,
+
+    @ColumnInfo
     val color: Int
 )

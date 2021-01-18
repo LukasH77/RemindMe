@@ -65,10 +65,10 @@ class DetailFragment : Fragment() {
                         0xffccdbed.toInt(),
                         0xffccede6.toInt(),
                         0xffccedd0.toInt(),
-                        0xffddedcc.toInt(),
                         0xffedeccc.toInt(),
                         0xffeddccc.toInt(),
                         0xffedcccc.toInt(),
+                        0xffcfd8dc.toInt(),
                         0xffffffff.toInt()
                     )
                 )
@@ -90,7 +90,7 @@ class DetailFragment : Fragment() {
                 setMonth = preferences.getInt(getString(R.string.month_key), 0)
                 setYear = preferences.getInt(getString(R.string.year_key), 0)
 
-                binding.tvDate.text =
+                binding.tvSetDate.text =
                     "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
             },
             calendar.get(Calendar.YEAR),
@@ -145,7 +145,7 @@ class DetailFragment : Fragment() {
 
                 colorPicker.setColor(it.color)
 
-                binding.tvDate.text =
+                binding.tvSetDate.text =
                     "${if (it.day < 10) "0${it.day}" else it.day}.${if (it.month < 9) "0${it.month + 1}" else it.month + 1}.${it.year}  (${it.requestCode})"
                 binding.tpTimePicker.minute = it.minute
                 binding.tpTimePicker.hour = it.hour
@@ -206,20 +206,19 @@ class DetailFragment : Fragment() {
             if (dayIsTooEarly || monthIsTooEarly || yearIsTooEarly) {
                 return@setOnTimeChangedListener
             } else if (hourIsTooEarly || minuteIsTooEarly) {
-                binding.tvDate.text =
+                binding.tvSetDate.text =
                     "${if (setDay < 9) "0${setDay + 1}" else setDay + 1}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
                 datePicker.updateDate(setYear, setMonth, setDay + 1)
             } else {
-                binding.tvDate.text =
+                binding.tvSetDate.text =
                     "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
                 datePicker.updateDate(setYear, setMonth, setDay)
             }
         }
 
-        repeatingIntervalsSpinner.setSelection(5)
+        repeatingIntervalsSpinner.setSelection(4)
 
         binding.ibEditColor.setOnClickListener {
-            colorPicker.setColor(preferences.getInt(requireContext().getString(R.string.color_key), 0))
             colorPicker.show(requireActivity())
         }
 

@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.text.format.DateFormat
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -68,7 +69,7 @@ class SetterFragment : Fragment() {
         var setMonth = preferences.getInt(getString(R.string.month_key), 0)
         var setYear = preferences.getInt(getString(R.string.year_key), 0)
 
-        binding.tvDate.text =
+        binding.tvSetDate.text =
             "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
 
         val datePicker = DatePickerDialog(
@@ -86,7 +87,7 @@ class SetterFragment : Fragment() {
                 setMonth = preferences.getInt(getString(R.string.month_key), 0)
                 setYear = preferences.getInt(getString(R.string.year_key), 0)
 
-                binding.tvDate.text =
+                binding.tvSetDate.text =
                     "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
             },
             calendar.get(Calendar.YEAR),
@@ -165,11 +166,11 @@ class SetterFragment : Fragment() {
             if (dayIsTooEarly || monthIsTooEarly || yearIsTooEarly) {
                 return@setOnTimeChangedListener
             } else if (hourIsTooEarly || minuteIsTooEarly) {
-                binding.tvDate.text =
+                binding.tvSetDate.text =
                     "${if (setDay < 9) "0${setDay + 1}" else setDay + 1}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
                 datePicker.updateDate(setYear, setMonth, setDay + 1)
             } else {
-                binding.tvDate.text =
+                binding.tvSetDate.text =
                     "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
                 datePicker.updateDate(setYear, setMonth, setDay)
             }
@@ -185,6 +186,8 @@ class SetterFragment : Fragment() {
         }
 
         repeatingIntervalsSpinner.onItemSelectedListener = IntervalSetter(preferences!!)
+
+        repeatingIntervalsSpinner.setSelection(4)
 
         repeatingCheckBox.setOnCheckedChangeListener { _: CompoundButton, checkedState: Boolean ->
             if (checkedState) repeatingIntervalsSpinner.visibility =

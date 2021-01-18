@@ -7,13 +7,14 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -23,6 +24,7 @@ import com.example.fancytimes.FancyTimeBroadcast
 import com.example.fancytimes.R
 import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.database.ReminderDatabase
+import java.util.*
 
 class ReminderAdapter(private val preferences: SharedPreferences?, private val is24hrs: Boolean) :
     ListAdapter<Reminder, ReminderAdapter.ReminderViewHolder>(ReminderDiffCallback()) {
@@ -38,12 +40,13 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
         return ReminderViewHolder(reminderListItem)
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: ReminderViewHolder, position: Int) {
         val reminder = getItem(position)
 
         // this one's kinda messy, but I think all the string templates save a few if else branches, it's ok
         // it basically just formats the time according to the system time settings (24hours or not) as well as times below 10 (adding a 0)
-        val hourText: String = if (is24hrs) {
+        val hourText = if (is24hrs) {
             "${if (reminder.hour < 10) "0${reminder.hour}" else reminder.hour}:${if (reminder.minute < 10) "0${reminder.minute}" else "${reminder.minute}"}"
         } else {
             "${
@@ -61,11 +64,30 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
             }"
         }
 
-        holder.titleField.text = reminder.title
-        holder.timeField.text =
-            "$hourText ${if (reminder.day < 10) "0${reminder.day}" else reminder.day}.${if (reminder.month < 9) "0${reminder.month + 1}" else reminder.month + 1}.${reminder.year}"
+        val monthText = when (reminder.month) {
+            0 -> "Jan"
+            1 -> "Feb"
+            2 -> "Mar"
+            3 -> "Apr"
+            4 -> "May"
+            5 -> "Jun"
+            6 -> "Jul"
+            7 -> "Aug"
+            8 -> "Sept"
+            9 -> "Oct"
+            10 -> "Nov"
+            11 -> "Dec"
+            else -> "*error*"
+        }
 
-        println("Adapter request code: ${reminder.requestCode}")
+        val yearText = if (reminder.year == Calendar.getInstance().get(Calendar.YEAR)) "" else ", ${reminder.year}"
+
+        holder.titleField.text = reminder.title
+        holder.timeField.text = "$hourText"
+        if (reminder.isRepeating) holder.timeField.setCompoundDrawablesWithIntrinsicBounds(null, null, holder.reminderListItem.context.getDrawable(R.drawable.repeat_24px), null)
+        holder.dateField.text = "$monthText ${if (reminder.day < 10) "0${reminder.day}" else reminder.day}$yearText"
+
+//        println("Adapter request code: ${reminder.requestCode}")
 
         holder.removeButton.setOnClickListener {
             val alarmManager = it.context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -109,9 +131,10 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
         holder.editButton.setBackgroundColor(reminder.color)
     }
 
-    class ReminderViewHolder(reminderListItem: View) : RecyclerView.ViewHolder(reminderListItem) {
+    class ReminderViewHolder(val reminderListItem: View) : RecyclerView.ViewHolder(reminderListItem) {
         val titleField: TextView = reminderListItem.findViewById(R.id.tvTitle)
         val timeField: TextView = reminderListItem.findViewById(R.id.tvTime)
+        val dateField: TextView = reminderListItem.findViewById(R.id.tvDate)
         val removeButton: ImageButton = reminderListItem.findViewById(R.id.ibRemove)
         val editButton: ImageButton = reminderListItem.findViewById(R.id.ibEdit)
         val listItem: ConstraintLayout = reminderListItem.findViewById(R.id.clListItem)

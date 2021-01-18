@@ -92,6 +92,7 @@ fun handleAlarmsSetter(
             calendarInstance.get(Calendar.MONTH),
             calendarInstance.get(Calendar.YEAR),
             notificationRepeatInterval,
+            isNotificationRepeating,
             color
         )
     )
@@ -175,6 +176,7 @@ fun handleAlarmsDetail(
             calendarInstance.get(Calendar.MONTH),
             calendarInstance.get(Calendar.YEAR),
             notificationRepeatInterval,
+            isNotificationRepeating,
             color
         )
     )

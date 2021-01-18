@@ -37,7 +37,7 @@
             tools:visibility="visible" />
 
         <TextView
-            android:id="@+id/tvDate"
+            android:id="@+id/tvSetDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -55,23 +55,23 @@
             android:layout_height="0dp"
             android:background="#FFFFFF"
             android:foreground="?android:attr/selectableItemBackground"
-            app:layout_constraintBottom_toBottomOf="@+id/tvDate"
+            app:layout_constraintBottom_toBottomOf="@+id/tvSetDate"
             app:layout_constraintEnd_toEndOf="@+id/ibEditColor"
             app:layout_constraintStart_toEndOf="@+id/tvColorPreview"
-            app:layout_constraintTop_toTopOf="@+id/tvDate"
+            app:layout_constraintTop_toTopOf="@+id/tvSetDate"
             app:srcCompat="@drawable/date_range_24px" />
 
         <EditText
             android:id="@+id/etNotificationTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:hint="Title"
+            android:maxLength="18"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/etNotificationText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDate"
+            app:layout_constraintTop_toBottomOf="@+id/tvSetDate"
             tools:visibility="visible" />
 
         <EditText

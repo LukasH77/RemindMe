@@ -133,6 +133,7 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
                     calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.YEAR),
                     notificationRepeatInterval,
+                    isNotificationRepeating,
                     notificationColor
                 )
             )
