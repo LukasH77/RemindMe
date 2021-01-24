@@ -68,6 +68,8 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
 
         val calendar = Calendar.getInstance()
 
+        println("repInterval: $notificationRepeatInterval")
+
         calendar.timeInMillis = notificationTime
 
         println("IsRepeatingReceived: $isNotificationRepeating")
@@ -128,7 +130,7 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
                     notificationText!!,
                     notificationTime,
                     calendar.get(Calendar.MINUTE),
-                    calendar.get(Calendar.HOUR),
+                    calendar.get(Calendar.HOUR_OF_DAY),
                     calendar.get(Calendar.DAY_OF_MONTH),
                     calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.YEAR),

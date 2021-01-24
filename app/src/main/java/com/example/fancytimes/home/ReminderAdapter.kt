@@ -49,6 +49,7 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
         // this one's kinda messy, but I think all the string templates save a few if else branches, it's ok
         // it basically just formats the time according to the system time settings (24hours or not) as well as times below 10 (adding a 0)
         val hourText = if (is24hrs) {
+            println("reminder.hour = ${reminder.hour}")
             "${if (reminder.hour < 10) "0${reminder.hour}" else reminder.hour}:${if (reminder.minute < 10) "0${reminder.minute}" else "${reminder.minute}"}"
         } else {
             "${
