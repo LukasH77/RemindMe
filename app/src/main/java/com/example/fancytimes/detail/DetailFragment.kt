@@ -77,7 +77,7 @@ class DetailFragment : Fragment() {
         val datePicker = DatePickerDialog(
             requireContext(),
             { _: DatePicker?, year: Int, month: Int, day: Int ->
-                println("date set")
+//                println("date set")
 
                 with(preferences!!.edit()) {
                     this.putInt(requireContext().getString(R.string.day_key), day)
@@ -129,8 +129,11 @@ class DetailFragment : Fragment() {
 
         binding.tvRequestCode.text = "Request Code: ${receivedArgs.requestCode}"
 
+        var currentChannel = 5
         detailViewModel.selectedReminder.observe(viewLifecycleOwner, Observer {
             it?.let {
+                currentChannel = it.notificationChannel
+
                 setDay = it.day
                 setMonth = it.month
                 setYear = it.year
@@ -272,7 +275,7 @@ class DetailFragment : Fragment() {
 
             if (yearIsTooEarly || monthIsTooEarly || dayIsTooEarly) {
                 Toast.makeText(requireContext(), "Invalid date!", Toast.LENGTH_SHORT).show()
-                println("Invalid date!")
+//                println("Invalid date!")
                 return@setOnClickListener
             }
 
@@ -281,7 +284,7 @@ class DetailFragment : Fragment() {
                     Calendar.DAY_OF_MONTH,
                     preferences.getInt(getString(R.string.day_key), 0) + 1
                 )
-                println(preferences.getInt(getString(R.string.day_key), 0))
+//                println(preferences.getInt(getString(R.string.day_key), 0))
                 Toast.makeText(requireContext(), "Triggered", Toast.LENGTH_SHORT).show()
             }
 
@@ -306,7 +309,8 @@ class DetailFragment : Fragment() {
                 notificationText,
                 isNotificationRepeating,
                 notificationRepeatInterval,
-                color
+                color,
+                currentChannel
             )
 
             hideSoftKeyboard(requireContext(), requireView())

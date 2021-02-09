@@ -40,5 +40,8 @@ data class Reminder(
     val isRepeating: Boolean,
 
     @ColumnInfo
-    val color: Int
+    val color: Int,
+
+    @ColumnInfo
+    val notificationChannel: Int
 )

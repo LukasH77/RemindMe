@@ -65,20 +65,25 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
         )
         val notificationColor =
             callingIntent.getIntExtra(callingContext.getString(R.string.context_extra_name), 0)
+        val currentChannel = callingIntent.getIntExtra(callingContext.getString(R.string.notification_channel_count_extra_name), 0)
+        
+        println("Current notification channel notify: $currentChannel")
 
         val calendar = Calendar.getInstance()
 
-        println("repInterval: $notificationRepeatInterval")
+//        println("repInterval: $notificationRepeatInterval")
 
         calendar.timeInMillis = notificationTime
 
-        println("IsRepeatingReceived: $isNotificationRepeating")
+//        println("IsRepeatingReceived: $isNotificationRepeating")
 //        println("Request code: $notificationRequestCode")
+
+//        val notificationChannels = callingContext.resources.getStringArray(R.array.notificationChannels)
 
         val notification =
             Notification.Builder(
                 callingContext,
-                callingContext.getString(R.string.notification_channel_id)
+                callingContext.getString(R.string.notification_channel)
             ).setSmallIcon(R.drawable.access_time_24px)
                 .setContentTitle(notificationTitle).setContentText(notificationText)
                 .setStyle(Notification.BigTextStyle().bigText(notificationText))
@@ -86,7 +91,7 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
                 .setShowWhen(true)
                 .setAutoCancel(true)
         with(NotificationManagerCompat.from(callingContext)) {
-            notify(1, notification.build())
+            notify(currentChannel, notification.build())
         }
 
         if (isNotificationRepeating) {
@@ -136,7 +141,8 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
                     calendar.get(Calendar.YEAR),
                     notificationRepeatInterval,
                     isNotificationRepeating,
-                    notificationColor
+                    notificationColor,
+                    currentChannel
                 )
             )
         } else {

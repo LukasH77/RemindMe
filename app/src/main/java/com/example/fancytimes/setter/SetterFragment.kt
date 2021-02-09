@@ -75,7 +75,7 @@ class SetterFragment : Fragment() {
         val datePicker = DatePickerDialog(
             requireContext(),
             { _: DatePicker?, year: Int, month: Int, day: Int ->
-                println("date set")
+//                println("date set")
                 with(preferences!!.edit()) {
                     this.putInt(requireContext().getString(R.string.day_key), day)
                     this.putInt(requireContext().getString(R.string.month_key), month)
@@ -271,7 +271,7 @@ class SetterFragment : Fragment() {
 
             if (yearIsTooEarly || monthIsTooEarly || dayIsTooEarly) {
                 Toast.makeText(requireContext(), "Invalid date!", Toast.LENGTH_SHORT).show()
-                println("Invalid date!")
+//                println("Invalid date!")
                 return@setOnClickListener
             }
 
@@ -280,7 +280,7 @@ class SetterFragment : Fragment() {
                     Calendar.DAY_OF_MONTH,
                     preferences.getInt(getString(R.string.day_key), 0) + 1
                 )
-                println(preferences.getInt(getString(R.string.day_key), 0))
+//                println(preferences.getInt(getString(R.string.day_key), 0))
                 Toast.makeText(requireContext(), "Triggered", Toast.LENGTH_SHORT).show()
             }
 

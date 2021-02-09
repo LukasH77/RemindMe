@@ -7,7 +7,7 @@ import android.widget.AdapterView
 class IntervalSetter(private val preferences: SharedPreferences) :
     AdapterView.OnItemSelectedListener {
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
-        println("Spinner pos: $pos")
+//        println("Spinner pos: $pos")
         with(preferences.edit()) {
             when (pos) {
                 0 -> this.putLong(view!!.context.getString(R.string.repeat_interval_key), 60000)

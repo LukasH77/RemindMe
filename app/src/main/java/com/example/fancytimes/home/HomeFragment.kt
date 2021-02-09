@@ -46,16 +46,24 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        createNotificationChannel()
-        setHasOptionsMenu(true)
-
-        val reminderDao =
-            ReminderDatabase.createInstance(requireContext()).reminderDao
-
         val preferences = activity?.getSharedPreferences(
             getString(R.string.notification_preferences_key),
             Context.MODE_PRIVATE
         )
+
+        createNotificationChannel()
+
+        if (preferences!!.getInt(getString(R.string.notification_channel_count), 1000) == 1000) {
+            println("channel count not initialized")
+            with(preferences.edit()) {
+                this.putInt(getString(R.string.notification_channel_count), 0)
+                this.apply()
+            }
+        }
+
+
+        val reminderDao =
+            ReminderDatabase.createInstance(requireContext()).reminderDao
 
         homeViewModelFactory = HomeViewModelFactory(reminderDao)
 
@@ -72,7 +80,7 @@ class HomeFragment : Fragment() {
             ReminderAdapter(preferences, DateFormat.is24HourFormat(requireContext()))
         binding.rvReminders.adapter = reminderAdapter
         homeViewModel.reminders.observe(viewLifecycleOwner, {
-            println(it)
+//            println(it)
             it?.let {
                 reminderAdapter.submitList(it)
             }
@@ -95,7 +103,7 @@ class HomeFragment : Fragment() {
                     val requestCodeMax =
                         preferences!!.getInt(getString(R.string.request_code_key), 0)
                     val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
-                    println("Request code key $requestCodeMax")
+//                    println("Request code key $requestCodeMax")
                     for (i in 0 until requestCodeMax) {
                         try {
                             alarmManager.cancel(
@@ -127,17 +135,88 @@ class HomeFragment : Fragment() {
     }
 
     private fun createNotificationChannel() {
+//        val notificationChannels = this.resources.getStringArray(R.array.notificationChannels)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
             val channel = NotificationChannel(
-                getString(R.string.notification_channel_id),
+                getString(R.string.notification_channel),
                 "Notification Channel",
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
                 description = "Reminders"
             }
-            val notificationManager: NotificationManager =
-                activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+//            val channel2 = NotificationChannel(
+//                notificationChannels[1],
+//                "Notification Channel",
+//                NotificationManager.IMPORTANCE_HIGH
+//            ).apply {
+//                description = "Reminders"
+//            }
+//            val channel3 = NotificationChannel(
+//                notificationChannels[2],
+//                "Notification Channel",
+//                NotificationManager.IMPORTANCE_HIGH
+//            ).apply {
+//                description = "Reminders"
+//            }
+//            val channel4 = NotificationChannel(
+//                notificationChannels[3],
+//                "Notification Channel",
+//                NotificationManager.IMPORTANCE_HIGH
+//            ).apply {
+//                description = "Reminders"
+//            }
+//            val channel5 = NotificationChannel(
+//                notificationChannels[4],
+//                "Notification Channel",
+//                NotificationManager.IMPORTANCE_HIGH
+//            ).apply {
+//                description = "Reminders"
+//            }
+//            val channel6 = NotificationChannel(
+//                notificationChannels[5],
+//                "Notification Channel",
+//                NotificationManager.IMPORTANCE_HIGH
+//            ).apply {
+//                description = "Reminders"
+//            }
+//            val channel7 = NotificationChannel(
+//                notificationChannels[6],
+//                "Notification Channel",
+//                NotificationManager.IMPORTANCE_HIGH
+//            ).apply {
+//                description = "Reminders"
+//            }
+//            val channel8 = NotificationChannel(
+//                notificationChannels[7],
+//                "Notification Channel",
+//                NotificationManager.IMPORTANCE_HIGH
+//            ).apply {
+//                description = "Reminders"
+//            }
+//            val channel9 = NotificationChannel(
+//                notificationChannels[8],
+//                "Notification Channel",
+//                NotificationManager.IMPORTANCE_HIGH
+//            ).apply {
+//                description = "Reminders"
+//            }
+//            val channel10 = NotificationChannel(
+//                notificationChannels[9],
+//                "Notification Channel",
+//                NotificationManager.IMPORTANCE_HIGH
+//            ).apply {
+//                description = "Reminders"
+//            }
+
+//            val channels = arrayOf(channel1, channel2, channel3, channel4, channel5, channel6, channel7, channel8, channel9, channel10)
+
+//            for (channel in channels) {
+                val notificationManager: NotificationManager =
+                    activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                notificationManager.createNotificationChannel(channel)
+//            }
         }
     }
 

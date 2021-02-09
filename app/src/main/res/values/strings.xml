@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">Reminders</string>
 
-    <string name="notification_channel_id">reminders</string>
     <string name="notification_text_extra_name">notificationText</string>
     <string name="notification_title_extra_name">notificationTitle</string>
     <string name="notification_repeat_extra_name">isNotificationRepeating</string>
     <string name="notification_repeat_interval_extra_name">notificationRepeatInterval</string>
     <string name="notification_exact_extra_name">isNotificationExact</string>
+    <string name="notification_channel_count_extra_name">channelCountExtra</string>
     <string name="notification_requestCode_extra_name">notificationRequestCode</string>
     <string name="notification_time_extra_name">notificationTime</string>
     <string name="context_extra_name">context</string>
@@ -15,6 +15,7 @@
     <string name="notification_preferences_key">notificationPreferences</string>
     <string name="request_code_key">notificationRequestCode</string>
     <string name="repeat_interval_key">repeatInterval</string>
+    <string name="notification_channel_count">channelCount</string>
     <string name="day_key">day</string>
     <string name="month_key">month</string>
     <string name="year_key">year</string>
@@ -37,6 +38,21 @@
         \n
         \nBug reports, feedback or other messages can be either left as a review in the Play Store or sent via E-mail to:</string>
     <string name="email"><a href="">LHendeavours@gmail.com</a></string>
+
+    <string name="notification_channel">channel</string>
+
+<!--    <string-array name="notificationChannels">-->
+<!--        <item>channel1</item>-->
+<!--        <item>channel2</item>-->
+<!--        <item>channel3</item>-->
+<!--        <item>channel4</item>-->
+<!--        <item>channel5</item>-->
+<!--        <item>channel6</item>-->
+<!--        <item>channel7</item>-->
+<!--        <item>channel8</item>-->
+<!--        <item>channel9</item>-->
+<!--        <item>channel10</item>-->
+<!--    </string-array>-->
 
     <string-array name="repeatIntervals">
         <item>Every Minute</item>

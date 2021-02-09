@@ -30,18 +30,24 @@ fun handleAlarmsSetter(
     notificationMinute: Int,
     notificationHour: Int,
     notificationMillis: Long,
-    preferences: SharedPreferences?,
+    preferencesMaybe: SharedPreferences?,
     notificationTitle: String,
     notificationText: String,
     isNotificationRepeating: Boolean,
     notificationRepeatInterval: Long,
     color: Int
 ) {
+    val preferences = context.getSharedPreferences(
+        context.getString(R.string.notification_preferences_key),
+        Context.MODE_PRIVATE
+    )
+
     val notificationRequestCode =
         preferences!!.getInt(context.getString(R.string.request_code_key), 0)
-    println(
-        "Request code: $notificationRequestCode"
-    )
+//    println("Request code: $notificationRequestCode")
+
+    val currentChannel =
+        preferences.getInt(context.getString(R.string.notification_channel_count), 0)
 
     val intent = Intent(context, FancyTimeBroadcast::class.java)
     intent.putExtra(
@@ -66,6 +72,21 @@ fun handleAlarmsSetter(
         notificationMillis
     )
     intent.putExtra(context.getString(R.string.context_extra_name), color)
+    intent.putExtra(
+        context.getString(R.string.notification_channel_count_extra_name),
+        currentChannel
+    )
+
+    println("Current notification channel set: $currentChannel")
+
+    with(preferences.edit()) {
+        if (currentChannel == 9) {
+            this.putInt(context.getString(R.string.notification_channel_count), 0)
+        } else {
+            this.putInt(context.getString(R.string.notification_channel_count), currentChannel + 1)
+        }
+        this.apply()
+    }
 
     val pendingIntent =
         PendingIntent.getBroadcast(context, notificationRequestCode, intent, 0)
@@ -78,7 +99,7 @@ fun handleAlarmsSetter(
         pendingIntent
     )
 
-    println(calendarInstance.get(Calendar.YEAR))
+//    println(calendarInstance.get(Calendar.YEAR))
 
     viewModel.addReminder(
         Reminder(
@@ -93,7 +114,8 @@ fun handleAlarmsSetter(
             calendarInstance.get(Calendar.YEAR),
             notificationRepeatInterval,
             isNotificationRepeating,
-            color
+            color,
+            currentChannel
         )
     )
 
@@ -119,11 +141,12 @@ fun handleAlarmsDetail(
     notificationText: String,
     isNotificationRepeating: Boolean,
     notificationRepeatInterval: Long,
-    color: Int
+    color: Int,
+    currentChannel: Int
 ) {
     val intent = Intent(context, FancyTimeBroadcast::class.java)
 
-    println("IsRepeatingPassed $isNotificationRepeating")
+//    println("IsRepeatingPassed $isNotificationRepeating")
 
     intent.putExtra(
         context.getString(R.string.notification_title_extra_name),
@@ -146,6 +169,7 @@ fun handleAlarmsDetail(
         context.getString(R.string.notification_time_extra_name),
         notificationMillis
     )
+
     intent.putExtra(context.getString(R.string.context_extra_name), color)
 
     val pendingIntent =
@@ -164,6 +188,8 @@ fun handleAlarmsDetail(
         pendingIntent
     )
 
+    println("Current notification channel update: $currentChannel")
+
     viewModel.updateReminder(
         Reminder(
             notificationRequestCode,
@@ -177,7 +203,8 @@ fun handleAlarmsDetail(
             calendarInstance.get(Calendar.YEAR),
             notificationRepeatInterval,
             isNotificationRepeating,
-            color
+            color,
+            currentChannel
         )
     )
     Toast.makeText(context, notificationRequestCode.toString(), Toast.LENGTH_SHORT)
