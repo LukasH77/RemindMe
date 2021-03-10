@@ -61,7 +61,9 @@ class SetterFragment : Fragment() {
                 calendar.get(Calendar.MONTH)
             )
             this.putInt(requireContext().getString(R.string.year_key), calendar.get(Calendar.YEAR))
-            this.putInt(requireContext().getString(R.string.color_key), 0xffcfd8dc.toInt())
+            if (preferences.getInt(requireContext().getString(R.string.color_key), 0) == 0) {
+                this.putInt(requireContext().getString(R.string.color_key), 0xffcfd8dc.toInt())
+            }
             this.apply()
         }
 
@@ -128,6 +130,8 @@ class SetterFragment : Fragment() {
         val repeatingIntervalsSpinner = binding.sRepInterval
 
         timePicker.setOnTimeChangedListener { _: TimePicker, _: Int, _: Int ->
+            hideSoftKeyboard(requireContext(), requireView())
+
             val yearIsTooEarly =
                 preferences.getInt(getString(R.string.year_key), 0) < Calendar.getInstance()
                     .get(Calendar.YEAR)
@@ -200,13 +204,22 @@ class SetterFragment : Fragment() {
         timePicker.hour = calendar.get(Calendar.HOUR_OF_DAY)
         timePicker.minute = calendar.get(Calendar.MINUTE)
 
-        binding.ibEditDate.setOnClickListener {
-            datePicker.show()
+        val temp = arrayOf(binding.tvColorPreview, binding.cbRepeating, binding.tvSetDate, binding.tpTimePicker, binding.clMainLayout)
+
+        for (i in temp) {
+            i.setOnClickListener {
+                hideSoftKeyboard(requireContext(), requireView())
+            }
         }
 
-        binding.ibEditColor.setOnClickListener {
-            colorPicker.setColor(preferences.getInt(requireContext().getString(R.string.color_key), 0))
+        binding.ibEditDate.setOnClickListener {
+            datePicker.show()
+            hideSoftKeyboard(requireContext(), requireView())
+        }
+
+        binding.ibEditColor.setOnClickListener {  //main activity cpdListener handles color selection
             colorPicker.show(requireActivity())
+            hideSoftKeyboard(requireContext(), requireView())
         }
 
         binding.bConfirmPick.setOnClickListener {

@@ -125,6 +125,7 @@ class DetailFragment : Fragment() {
 
         binding.ibEditDate.setOnClickListener {
             datePicker.show()
+            hideSoftKeyboard(requireContext(), requireView())
         }
 
         binding.tvRequestCode.text = "Request Code: ${receivedArgs.requestCode}"
@@ -133,6 +134,7 @@ class DetailFragment : Fragment() {
         detailViewModel.selectedReminder.observe(viewLifecycleOwner, Observer {
             it?.let {
                 currentChannel = it.notificationChannel
+                println("Detail current channel: $currentChannel")
 
                 setDay = it.day
                 setMonth = it.month
@@ -171,6 +173,8 @@ class DetailFragment : Fragment() {
         })
 
         timePicker.setOnTimeChangedListener { _: TimePicker, _: Int, _: Int ->
+            hideSoftKeyboard(requireContext(), requireView())
+
             val yearIsTooEarly =
                 preferences.getInt(getString(R.string.year_key), 0) < Calendar.getInstance()
                     .get(Calendar.YEAR)
@@ -221,8 +225,17 @@ class DetailFragment : Fragment() {
 
         repeatingIntervalsSpinner.setSelection(4)
 
+        val temp = arrayOf(binding.tvColorPreview, binding.cbRepeating, binding.tvSetDate, binding.tpTimePicker, binding.clMainLayout)
+
+        for (i in temp) {
+            i.setOnClickListener {
+                hideSoftKeyboard(requireContext(), requireView())
+            }
+        }
+
         binding.ibEditColor.setOnClickListener {
             colorPicker.show(requireActivity())
+            hideSoftKeyboard(requireContext(), requireView())
         }
 
         binding.bConfirmPick.setOnClickListener {

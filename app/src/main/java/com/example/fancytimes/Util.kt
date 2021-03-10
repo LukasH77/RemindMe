@@ -80,11 +80,7 @@ fun handleAlarmsSetter(
     println("Current notification channel set: $currentChannel")
 
     with(preferences.edit()) {
-        if (currentChannel == 9) {
-            this.putInt(context.getString(R.string.notification_channel_count), 0)
-        } else {
-            this.putInt(context.getString(R.string.notification_channel_count), currentChannel + 1)
-        }
+        this.putInt(context.getString(R.string.notification_channel_count), currentChannel + 1)
         this.apply()
     }
 
@@ -124,7 +120,7 @@ fun handleAlarmsSetter(
         this.putInt(notificationRequestCode.toString(), notificationRequestCode)
         this.apply()
     }
-    Toast.makeText(context, notificationRequestCode.toString(), Toast.LENGTH_SHORT)
+    Toast.makeText(context, currentChannel.toString(), Toast.LENGTH_SHORT)
         .show()
 }
 
@@ -207,6 +203,6 @@ fun handleAlarmsDetail(
             currentChannel
         )
     )
-    Toast.makeText(context, notificationRequestCode.toString(), Toast.LENGTH_SHORT)
+    Toast.makeText(context, currentChannel.toString(), Toast.LENGTH_SHORT)
         .show()
 }

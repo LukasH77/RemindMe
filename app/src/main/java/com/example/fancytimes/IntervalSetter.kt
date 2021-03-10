@@ -21,6 +21,7 @@ class IntervalSetter(private val preferences: SharedPreferences) :
             }
             this.apply()
         }
+        hideSoftKeyboard(view!!.context, view)
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {

@@ -87,9 +87,6 @@ class HomeFragment : Fragment() {
         })
 
         addReminder.setOnClickListener {
-
-            hideSoftKeyboard(requireContext(), requireView())
-
             it.findNavController()
                 .navigate(HomeFragmentDirections.actionHomeFragmentToSetterFragment())
         }
@@ -127,10 +124,6 @@ class HomeFragment : Fragment() {
                 }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
         }
 
-        binding.rvReminders.setOnClickListener {
-            hideSoftKeyboard(requireContext(), requireView())
-        }
-
         return binding.root
     }
 
@@ -143,9 +136,10 @@ class HomeFragment : Fragment() {
                 getString(R.string.notification_channel),
                 "Notification Channel",
                 NotificationManager.IMPORTANCE_HIGH
-            ).apply {
-                description = "Reminders"
-            }
+            )
+            channel.enableLights(true)
+            channel.enableVibration(true)
+            channel.apply { description = "Reminders" }
 //            val channel2 = NotificationChannel(
 //                notificationChannels[1],
 //                "Notification Channel",
@@ -226,7 +220,6 @@ class HomeFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        hideSoftKeyboard(requireContext(), requireView())
         return NavigationUI.onNavDestinationSelected(
             item,
             requireView().findNavController()
