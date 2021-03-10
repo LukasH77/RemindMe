@@ -137,7 +137,6 @@ class HomeFragment : Fragment() {
                 "Notification Channel",
                 NotificationManager.IMPORTANCE_HIGH
             )
-            channel.enableLights(true)
             channel.enableVibration(true)
             channel.apply { description = "Reminders" }
 //            val channel2 = NotificationChannel(
