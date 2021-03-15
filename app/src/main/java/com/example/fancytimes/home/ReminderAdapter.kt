@@ -28,6 +28,7 @@ import com.example.fancytimes.R
 import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.ReminderListItemBinding
+import kotlinx.coroutines.selects.select
 import java.util.*
 
 class ReminderAdapter(private val preferences: SharedPreferences?, private val is24hrs: Boolean, private val lifecycleOwner: LifecycleOwner, private val isSelectActive: MutableLiveData<Boolean>, private val isSelectAll: MutableLiveData<Boolean>, private val selectCount: MutableLiveData<Int>) :
@@ -98,6 +99,7 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
             if (it) {
                 holder.checkBox.visibility = View.VISIBLE
                 holder.checkBox.isChecked = false
+                selectCount.value = 0
             } else if (!it) {
                 holder.checkBox.visibility = View.GONE
             }
@@ -106,21 +108,38 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
         isSelectAll.observe(lifecycleOwner, {
             if (it) {
                 if (!holder.checkBox.isChecked) {
+                    println("holder checked")
                     holder.checkBox.isChecked = true
-                } else if (!it) {
-                    if (selectCount.value == this.itemCount) {
+                }
+            } else if (!it) {
+                if (selectCount.value!! >= this.itemCount) {
+                    if (holder.checkBox.isChecked) {
+                        println("holder unchecked")
                         holder.checkBox.isChecked = false
-                        selectCount.value = 0
                     }
+                    selectCount.value = 0  // right here is the problem, the count gets reset from a single list item, meaning the un-checking won't trigger for the rest
                 }
             }
         })
 
         holder.checkBox.setOnClickListener {
-
+            if (holder.checkBox.isChecked) {
+                selectCount.value = selectCount.value?.plus(1)
+                if (selectCount.value!! >= this.itemCount) {
+                    if (isSelectAll.value == false) {
+                        isSelectAll.value = true
+                    }
+                }
+            } else if (!holder.checkBox.isChecked) {
+                selectCount.value = selectCount.value?.minus(1)
+                if (isSelectAll.value == true) {
+                    isSelectAll.value = false
+                }
+            }
         }
 
         holder.removeButton.setOnClickListener {
+            isSelectActive.value = false
             val alarmManager = it.context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             AlertDialog.Builder(it.context).setTitle("Cancel Reminder")
                 .setMessage("Do you really want to cancel this reminder?").setPositiveButton(
@@ -151,6 +170,7 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
         }
 
         holder.editButton.setOnClickListener {
+            isSelectActive.value = false
             it.findNavController()
                 .navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(reminder.requestCode))
         }

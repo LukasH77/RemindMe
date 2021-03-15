@@ -32,4 +32,8 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener {
     }
 
     override fun onDialogDismissed(dialogId: Int) {}
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
 }

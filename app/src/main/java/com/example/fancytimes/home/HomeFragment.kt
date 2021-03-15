@@ -79,42 +79,11 @@ class HomeFragment : Fragment() {
         val addReminder = binding.ibSetReminder
 
         val isSelectActive: MutableLiveData<Boolean> = MutableLiveData()
+        isSelectActive.value = false
         val isSelectAll: MutableLiveData<Boolean> = MutableLiveData()
+        isSelectAll.value = false
         val selectCount: MutableLiveData<Int> = MutableLiveData()
-
-
-        isSelectActive.observe(viewLifecycleOwner, {
-            if (it) {
-                binding.cbAll.visibility = View.VISIBLE
-                binding.cbAll.isChecked = false
-                binding.ibDeleteReminders.setImageResource(R.drawable.cancel_24px)
-                selectCount.value = 0
-            } else if (!it) {
-                binding.cbAll.visibility = View.GONE
-                binding.tvHeader.text = "Reminders"
-                binding.ibDeleteReminders.setImageResource(R.drawable.delete_24px)
-            }
-        })
-
-        selectCount.observe(viewLifecycleOwner, {
-            binding.tvHeader.text = "${selectCount.value} Selected"
-        })
-
-        isSelectAll.observe(viewLifecycleOwner, {
-            if (it) {
-                if (!binding.cbAll.isChecked) {
-                    binding.cbAll.isChecked = true
-                }
-            } else if (!it) {
-                if (binding.cbAll.isChecked) {
-                    binding.cbAll.isChecked = false
-                }
-            }
-        })
-
-        binding.cbAll.setOnCheckedChangeListener {
-
-        }
+        selectCount.value = 0
 
         val reminderAdapter =
             ReminderAdapter(
@@ -133,7 +102,54 @@ class HomeFragment : Fragment() {
             }
         })
 
+        isSelectActive.observe(viewLifecycleOwner, {
+            if (it) {
+                binding.cbAll.visibility = View.VISIBLE
+                binding.cbAll.isChecked = false
+                binding.ibDeleteReminders.setImageResource(R.drawable.cancel_24px)
+            } else if (!it) {
+                binding.cbAll.visibility = View.GONE
+                binding.tvHeader.text = "Reminders"
+                binding.ibDeleteReminders.setImageResource(R.drawable.delete_24px)
+            }
+        })
+
+        selectCount.observe(viewLifecycleOwner, {
+            if (isSelectActive.value == true) {
+                binding.tvHeader.text = "${selectCount.value} Selected"
+            }
+        })
+
+        isSelectAll.observe(viewLifecycleOwner, {
+            if (it) {
+                if (!binding.cbAll.isChecked) {
+                    binding.cbAll.isChecked = true
+                }
+            } else if (!it) {
+                if (binding.cbAll.isChecked) {
+                    binding.cbAll.isChecked = false
+                }
+            }
+        })
+
+        binding.cbAll.setOnCheckedChangeListener { cbAll, isChecked ->
+            println("isChecked = $isChecked")
+            isSelectAll.value = isChecked
+            if (isChecked) {
+                selectCount.value = reminderAdapter.itemCount
+            }
+        }
+
+        binding.ibDeleteReminders.setOnClickListener {
+            if (isSelectActive.value == false) {
+                isSelectActive.value = true
+            } else if (isSelectActive.value == true) {
+                isSelectActive.value = false
+            }
+        }
+
         addReminder.setOnClickListener {
+            isSelectActive.value = false
             it.findNavController()
                 .navigate(HomeFragmentDirections.actionHomeFragmentToSetterFragment())
         }

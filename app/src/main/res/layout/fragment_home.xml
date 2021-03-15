@@ -59,7 +59,7 @@
                 android:layout_marginEnd="2dp"
                 android:layout_marginBottom="2dp"
                 android:text="Confirm"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:backgroundTint="#B50E0E"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
