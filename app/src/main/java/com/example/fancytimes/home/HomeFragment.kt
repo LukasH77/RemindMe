@@ -21,6 +21,8 @@ import com.example.fancytimes.R
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.FragmentHomeBinding
 import com.example.fancytimes.hideSoftKeyboard
+import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.selects.select
 
 class HomeFragment : Fragment() {
 
@@ -76,18 +78,53 @@ class HomeFragment : Fragment() {
 
         val addReminder = binding.ibSetReminder
 
-        var isSelectActive: MutableLiveData<Boolean> = MutableLiveData()
-        isSelectActive.value = false
-        var isSelectAll: MutableLiveData<Boolean> = MutableLiveData()
-        isSelectAll.value = false
+        val isSelectActive: MutableLiveData<Boolean> = MutableLiveData()
+        val isSelectAll: MutableLiveData<Boolean> = MutableLiveData()
+        val selectCount: MutableLiveData<Int> = MutableLiveData()
+
 
         isSelectActive.observe(viewLifecycleOwner, {
-            if (it) binding.bRemoveAll.visibility = View.VISIBLE
-            else binding.bRemoveAll.visibility = View.GONE
+            if (it) {
+                binding.cbAll.visibility = View.VISIBLE
+                binding.cbAll.isChecked = false
+                binding.ibDeleteReminders.setImageResource(R.drawable.cancel_24px)
+                selectCount.value = 0
+            } else if (!it) {
+                binding.cbAll.visibility = View.GONE
+                binding.tvHeader.text = "Reminders"
+                binding.ibDeleteReminders.setImageResource(R.drawable.delete_24px)
+            }
         })
 
+        selectCount.observe(viewLifecycleOwner, {
+            binding.tvHeader.text = "${selectCount.value} Selected"
+        })
+
+        isSelectAll.observe(viewLifecycleOwner, {
+            if (it) {
+                if (!binding.cbAll.isChecked) {
+                    binding.cbAll.isChecked = true
+                }
+            } else if (!it) {
+                if (binding.cbAll.isChecked) {
+                    binding.cbAll.isChecked = false
+                }
+            }
+        })
+
+        binding.cbAll.setOnCheckedChangeListener {
+
+        }
+
         val reminderAdapter =
-            ReminderAdapter(preferences, DateFormat.is24HourFormat(requireContext()), viewLifecycleOwner, isSelectActive, isSelectAll)
+            ReminderAdapter(
+                preferences,
+                DateFormat.is24HourFormat(requireContext()),
+                viewLifecycleOwner,
+                isSelectActive,
+                isSelectAll,
+                selectCount
+            )
         binding.rvReminders.adapter = reminderAdapter
         homeViewModel.reminders.observe(viewLifecycleOwner, {
 //            println(it)
@@ -97,37 +134,36 @@ class HomeFragment : Fragment() {
         })
 
         addReminder.setOnClickListener {
-            binding.cbAll.isChecked = false
             it.findNavController()
                 .navigate(HomeFragmentDirections.actionHomeFragmentToSetterFragment())
         }
 
 
-        binding.ibDeleteReminders.setOnClickListener {
-            isSelectActive.value = !isSelectActive.value!!
-            if (isSelectActive.value!!) {
-                binding.tvHeader.text = "0 Selected"
-                binding.cbAll.visibility = View.VISIBLE
-                binding.ibDeleteReminders.setImageResource(R.drawable.cancel_24px)
-            } else {
-                binding.cbAll.isChecked = false
-                binding.cbAll.visibility = View.GONE
-                binding.ibDeleteReminders.setImageResource(R.drawable.delete_24px)
-                binding.tvHeader.text = "Reminders"
-            }
-        }
-
-        var isChecked = false
-        binding.cbAll.setOnCheckedChangeListener { compoundButton, b ->
-            isChecked = !isChecked
-            if (isChecked) {
-                binding.tvHeader.text = "*all* Selected"
-                isSelectAll.value = true
-            } else {
-                binding.tvHeader.text = "*all* Selected"
-                isSelectAll.value = false
-            }
-        }
+//        binding.ibDeleteReminders.setOnClickListener {
+//            isSelectActive.value = !isSelectActive.value!!
+//            if (isSelectActive.value!!) {
+//                binding.tvHeader.text = "0 Selected"
+//                binding.cbAll.visibility = View.VISIBLE
+//                binding.ibDeleteReminders.setImageResource(R.drawable.cancel_24px)
+//            } else {
+//                binding.cbAll.isChecked = false
+//                binding.cbAll.visibility = View.GONE
+//                binding.ibDeleteReminders.setImageResource(R.drawable.delete_24px)
+//                binding.tvHeader.text = "Reminders"
+//            }
+//        }
+//
+//        var isChecked = false
+//        binding.cbAll.setOnCheckedChangeListener { compoundButton, b ->
+//            isChecked = !isChecked
+//            if (isChecked) {
+//                binding.tvHeader.text = "*all* Selected"
+//                isSelectAll.value = true
+//            } else {
+//                binding.tvHeader.text = "*all* Selected"
+//                isSelectAll.value = false
+//            }
+//        }
 
         binding.bRemoveAll.setOnClickListener {
             if (reminderAdapter.itemCount == 0) return@setOnClickListener

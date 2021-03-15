@@ -30,7 +30,7 @@ import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.ReminderListItemBinding
 import java.util.*
 
-class ReminderAdapter(private val preferences: SharedPreferences?, private val is24hrs: Boolean, private val lifecycleOwner: LifecycleOwner, private val isSelectActive: MutableLiveData<Boolean>, private val isSelectAll: MutableLiveData<Boolean>) :
+class ReminderAdapter(private val preferences: SharedPreferences?, private val is24hrs: Boolean, private val lifecycleOwner: LifecycleOwner, private val isSelectActive: MutableLiveData<Boolean>, private val isSelectAll: MutableLiveData<Boolean>, private val selectCount: MutableLiveData<Int>) :
     ListAdapter<Reminder, ReminderAdapter.ReminderViewHolder>(ReminderDiffCallback()) {
 
     init {
@@ -97,18 +97,27 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
         isSelectActive.observe(lifecycleOwner, {
             if (it) {
                 holder.checkBox.visibility = View.VISIBLE
-            } else {
-                holder.checkBox.visibility = View.GONE
                 holder.checkBox.isChecked = false
+            } else if (!it) {
+                holder.checkBox.visibility = View.GONE
             }
         })
 
         isSelectAll.observe(lifecycleOwner, {
-            holder.checkBox.isChecked = it
+            if (it) {
+                if (!holder.checkBox.isChecked) {
+                    holder.checkBox.isChecked = true
+                } else if (!it) {
+                    if (selectCount.value == this.itemCount) {
+                        holder.checkBox.isChecked = false
+                        selectCount.value = 0
+                    }
+                }
+            }
         })
 
-        holder.checkBox.setOnCheckedChangeListener { compoundButton, b ->
-            reminder.selected = b
+        holder.checkBox.setOnClickListener {
+
         }
 
         holder.removeButton.setOnClickListener {
