@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.PowerManager
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import com.example.fancytimes.database.Reminder
@@ -92,6 +93,14 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
                 .setAutoCancel(true)
         with(NotificationManagerCompat.from(callingContext)) {
             notify(currentChannel, notification.build())
+        }
+
+        val powerManager = callingContext.getSystemService(Context.POWER_SERVICE) as PowerManager
+        val isScreenOn = powerManager.isInteractive
+
+        if (!isScreenOn) {
+            val wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP, "reminders:notificationLock")
+            wakeLock.acquire(2500)
         }
 
         if (isNotificationRepeating) {
