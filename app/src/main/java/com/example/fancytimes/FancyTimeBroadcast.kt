@@ -151,7 +151,8 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
                     notificationRepeatInterval,
                     isNotificationRepeating,
                     notificationColor,
-                    currentChannel
+                    currentChannel,
+                    false
                 )
             )
         } else {

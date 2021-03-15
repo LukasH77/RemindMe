@@ -86,9 +86,43 @@ class HomeFragment : Fragment() {
             }
         })
 
+        reminderAdapter.currentList[0].selected = false
+
         addReminder.setOnClickListener {
+            binding.cbAll.isChecked = false
             it.findNavController()
                 .navigate(HomeFragmentDirections.actionHomeFragmentToSetterFragment())
+        }
+
+
+        binding.cbAll.visibility = View.VISIBLE
+
+        binding.cbAll.visibility = View.GONE
+
+
+        var isSelectActive = false
+        binding.ibDeleteReminders.setOnClickListener {
+            isSelectActive = !isSelectActive
+            if (isSelectActive) {
+                binding.tvHeader.text = "0 Selected"
+                binding.cbAll.visibility = View.VISIBLE
+                binding.ibDeleteReminders.setImageResource(R.drawable.cancel_24px)
+            } else {
+                binding.cbAll.isChecked = false
+                binding.cbAll.visibility = View.GONE
+                binding.ibDeleteReminders.setImageResource(R.drawable.delete_24px)
+                binding.tvHeader.text = "Reminders"
+            }
+        }
+
+        var isChecked = false
+        binding.cbAll.setOnCheckedChangeListener { compoundButton, b ->
+            if (isChecked) {
+                binding.tvHeader.text = "0 Selected"
+            } else {
+                binding.tvHeader.text = "*all* Selected"
+            }
+            isChecked = !isChecked
         }
 
         binding.bRemoveAll.setOnClickListener {
@@ -206,9 +240,9 @@ class HomeFragment : Fragment() {
 //            val channels = arrayOf(channel1, channel2, channel3, channel4, channel5, channel6, channel7, channel8, channel9, channel10)
 
 //            for (channel in channels) {
-                val notificationManager: NotificationManager =
-                    activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                notificationManager.createNotificationChannel(channel)
+            val notificationManager: NotificationManager =
+                activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
 //            }
         }
     }
