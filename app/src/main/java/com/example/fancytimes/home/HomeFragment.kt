@@ -11,6 +11,7 @@ import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -75,9 +76,18 @@ class HomeFragment : Fragment() {
 
         val addReminder = binding.ibSetReminder
 
+        var isSelectActive: MutableLiveData<Boolean> = MutableLiveData()
+        isSelectActive.value = false
+        var isSelectAll: MutableLiveData<Boolean> = MutableLiveData()
+        isSelectAll.value = false
+
+        isSelectActive.observe(viewLifecycleOwner, {
+            if (it) binding.bRemoveAll.visibility = View.VISIBLE
+            else binding.bRemoveAll.visibility = View.GONE
+        })
 
         val reminderAdapter =
-            ReminderAdapter(preferences, DateFormat.is24HourFormat(requireContext()))
+            ReminderAdapter(preferences, DateFormat.is24HourFormat(requireContext()), viewLifecycleOwner, isSelectActive, isSelectAll)
         binding.rvReminders.adapter = reminderAdapter
         homeViewModel.reminders.observe(viewLifecycleOwner, {
 //            println(it)
@@ -86,8 +96,6 @@ class HomeFragment : Fragment() {
             }
         })
 
-        reminderAdapter.currentList[0].selected = false
-
         addReminder.setOnClickListener {
             binding.cbAll.isChecked = false
             it.findNavController()
@@ -95,15 +103,9 @@ class HomeFragment : Fragment() {
         }
 
 
-        binding.cbAll.visibility = View.VISIBLE
-
-        binding.cbAll.visibility = View.GONE
-
-
-        var isSelectActive = false
         binding.ibDeleteReminders.setOnClickListener {
-            isSelectActive = !isSelectActive
-            if (isSelectActive) {
+            isSelectActive.value = !isSelectActive.value!!
+            if (isSelectActive.value!!) {
                 binding.tvHeader.text = "0 Selected"
                 binding.cbAll.visibility = View.VISIBLE
                 binding.ibDeleteReminders.setImageResource(R.drawable.cancel_24px)
@@ -117,12 +119,14 @@ class HomeFragment : Fragment() {
 
         var isChecked = false
         binding.cbAll.setOnCheckedChangeListener { compoundButton, b ->
+            isChecked = !isChecked
             if (isChecked) {
-                binding.tvHeader.text = "0 Selected"
+                binding.tvHeader.text = "*all* Selected"
+                isSelectAll.value = true
             } else {
                 binding.tvHeader.text = "*all* Selected"
+                isSelectAll.value = false
             }
-            isChecked = !isChecked
         }
 
         binding.bRemoveAll.setOnClickListener {

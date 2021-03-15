@@ -17,6 +17,8 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -28,7 +30,7 @@ import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.ReminderListItemBinding
 import java.util.*
 
-class ReminderAdapter(private val preferences: SharedPreferences?, private val is24hrs: Boolean) :
+class ReminderAdapter(private val preferences: SharedPreferences?, private val is24hrs: Boolean, private val lifecycleOwner: LifecycleOwner, private val isSelectActive: MutableLiveData<Boolean>, private val isSelectAll: MutableLiveData<Boolean>) :
     ListAdapter<Reminder, ReminderAdapter.ReminderViewHolder>(ReminderDiffCallback()) {
 
     init {
@@ -92,6 +94,23 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
 
 //        println("Adapter request code: ${reminder.requestCode}")
 
+        isSelectActive.observe(lifecycleOwner, {
+            if (it) {
+                holder.checkBox.visibility = View.VISIBLE
+            } else {
+                holder.checkBox.visibility = View.GONE
+                holder.checkBox.isChecked = false
+            }
+        })
+
+        isSelectAll.observe(lifecycleOwner, {
+            holder.checkBox.isChecked = it
+        })
+
+        holder.checkBox.setOnCheckedChangeListener { compoundButton, b ->
+            reminder.selected = b
+        }
+
         holder.removeButton.setOnClickListener {
             val alarmManager = it.context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             AlertDialog.Builder(it.context).setTitle("Cancel Reminder")
@@ -141,6 +160,7 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
         val removeButton = reminderListItemBinding.ibRemove
         val editButton = reminderListItemBinding.ibEdit
         val listItem = reminderListItemBinding.clListItem
+        val checkBox = reminderListItemBinding.cbSelect
     }
 }
 
