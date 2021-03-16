@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.*
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
@@ -141,6 +142,10 @@ class HomeFragment : Fragment() {
         }
 
         binding.ibDeleteReminders.setOnClickListener {
+            if (reminderAdapter.itemCount == 0) {
+                Toast.makeText(requireContext(), "There are no Reminders to cancel", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             if (isSelectActive.value == false) {
                 isSelectActive.value = true
             } else if (isSelectActive.value == true) {
