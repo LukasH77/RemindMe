@@ -51,6 +51,7 @@ class HomeFragment : Fragment() {
         val isSelectAll: MutableLiveData<Boolean> = MutableLiveData()
         val isDirectSelectAll: MutableLiveData<Boolean> = MutableLiveData()
         val selectCount: MutableLiveData<Int> = MutableLiveData()
+        val isRemovalReady: MutableLiveData<Boolean> = MutableLiveData()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -90,6 +91,7 @@ class HomeFragment : Fragment() {
         isSelectActive.value = false
         isSelectAll.value = false
         selectCount.value = 0
+        isRemovalReady.value = false
 
         val reminderAdapter =
             ReminderAdapter(
@@ -99,7 +101,8 @@ class HomeFragment : Fragment() {
                 isSelectActive,
                 isDirectSelectAll,
                 isSelectAll,
-                selectCount
+                selectCount,
+                isRemovalReady
             )
         binding.rvReminders.adapter = reminderAdapter
         homeViewModel.reminders.observe(viewLifecycleOwner, {
@@ -112,10 +115,12 @@ class HomeFragment : Fragment() {
         isSelectActive.observe(viewLifecycleOwner, {
             if (it) {
                 binding.ibDeleteReminders.setTag(R.string.isSelectActive_from_activity, "active")
+                binding.bRemoveAll.visibility = View.VISIBLE
                 binding.cbAll.visibility = View.VISIBLE
                 binding.ibDeleteReminders.setImageResource(R.drawable.cancel_24px)
             } else if (!it) {
                 binding.ibDeleteReminders.setTag(R.string.isSelectActive_from_activity, "inactive")
+                binding.bRemoveAll.visibility = View.GONE
                 binding.cbAll.visibility = View.GONE
                 binding.tvHeader.text = "Reminders"
                 binding.cbAll.isChecked = false
@@ -128,14 +133,6 @@ class HomeFragment : Fragment() {
                 binding.tvHeader.text = "${selectCount.value} Selected"
             }
         })
-
-//        binding.tvHeader.setOnClickListener {
-//            for (i in reminderAdapter.currentList) {
-//                println("\t\tList Position: ${reminderAdapter.currentList.indexOf(i)}")
-//                println("Request Code: ${i.requestCode}")
-//                println("Selected: ${i.selected}")
-//            }
-//        }
 
         isSelectAll.observe(viewLifecycleOwner, {
             if (it) {
@@ -206,6 +203,12 @@ class HomeFragment : Fragment() {
 
         binding.bRemoveAll.setOnClickListener {
             if (reminderAdapter.itemCount == 0) return@setOnClickListener
+            isRemovalReady.value = true
+            for (i in reminderAdapter.currentList) {
+                println("\t\tList Position: ${reminderAdapter.currentList.indexOf(i)}")
+                println("Request Code: ${i.requestCode}")
+                println("Selected: ${i.selected}")
+            }
 //            AlertDialog.Builder(requireContext()).setTitle("Clear all")
 //                .setMessage("Do you really want to cancel all set reminders?").setPositiveButton(
 //                    "Yes"
@@ -246,7 +249,7 @@ class HomeFragment : Fragment() {
 //                    println("Request code key $requestCodeMax")
                     for (i in reminderAdapter.currentList) {
                         println("selected")
-                        if (i.selected) {
+                        if (i.selected == true) {
                             try {
                                 alarmManager.cancel(
                                     PendingIntent.getBroadcast(
@@ -266,6 +269,7 @@ class HomeFragment : Fragment() {
                             }
                         }
                     }
+                    isSelectActive.value = false
                 }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
         }
         return binding.root

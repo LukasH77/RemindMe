@@ -152,7 +152,7 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
                     isNotificationRepeating,
                     notificationColor,
                     currentChannel,
-                    false
+                    null
                 )
             )
         } else {

@@ -48,6 +48,6 @@ data class Reminder(
     val notificationChannel: Int,
 
     @ColumnInfo
-    var selected: Boolean
+    var selected: Boolean?
 
 )

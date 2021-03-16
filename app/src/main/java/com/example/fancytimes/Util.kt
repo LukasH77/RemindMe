@@ -112,7 +112,7 @@ fun handleAlarmsSetter(
             isNotificationRepeating,
             color,
             currentChannel,
-            false
+            null
         )
     )
 
@@ -202,7 +202,7 @@ fun handleAlarmsDetail(
             isNotificationRepeating,
             color,
             currentChannel,
-            false
+            null
         )
     )
     Toast.makeText(context, currentChannel.toString(), Toast.LENGTH_SHORT)

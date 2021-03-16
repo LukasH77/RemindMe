@@ -38,7 +38,8 @@ class ReminderAdapter(
     private val isSelectActive: MutableLiveData<Boolean>,
     private val isDirectSelectAll: MutableLiveData<Boolean>,
     private val isSelectAll: MutableLiveData<Boolean>,
-    private val selectCount: MutableLiveData<Int>
+    private val selectCount: MutableLiveData<Int>,
+    private val isRemovalReady: MutableLiveData<Boolean>
 ) :
     ListAdapter<Reminder, ReminderAdapter.ReminderViewHolder>(ReminderDiffCallback()) {
 
@@ -126,7 +127,7 @@ class ReminderAdapter(
                 if (holder.checkBox.isChecked) {
                     println("holder unchecked")
                     holder.checkBox.isChecked = false
-                    reminder.selected = false
+//                    reminder.selected = false
                 }
                 if (selectCount.value == 0) {
                     isDirectSelectAll.value = true
@@ -139,16 +140,26 @@ class ReminderAdapter(
                 if (!holder.checkBox.isChecked) {
                     println("holder checked")
                     holder.checkBox.isChecked = true
-                    reminder.selected = true
+//                    reminder.selected = true
                 }
             }
         })
 
+        isRemovalReady.observe(lifecycleOwner, {
+            println("removal ready")
+            if (it) {
+                reminder.selected = holder.checkBox.isChecked
+                isRemovalReady.value = false
+            }
+        })
+
         holder.checkBox.setOnCheckedChangeListener { checkBox, isChecked ->
-            reminder.selected = isChecked
+//            reminder.selected = isChecked
             if (isChecked) {
+//                println(reminder.selected)
                 selectCount.value = selectCount.value?.plus(1)
                 if (selectCount.value!! >= this.itemCount) {
+                    println("error")
                     if (isSelectAll.value == false) {
                         isSelectAll.value = true
                     }
