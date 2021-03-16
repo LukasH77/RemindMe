@@ -114,10 +114,10 @@ class ReminderAdapter(
         isSelectActive.observe(lifecycleOwner, {
             if (it) {
                 holder.checkBox.visibility = View.VISIBLE
-                holder.checkBox.isChecked = false
                 selectCount.value = 0
             } else if (!it) {
                 holder.checkBox.visibility = View.GONE
+                holder.checkBox.isChecked = false
             }
         })
 
@@ -126,6 +126,7 @@ class ReminderAdapter(
                 if (holder.checkBox.isChecked) {
                     println("holder unchecked")
                     holder.checkBox.isChecked = false
+                    reminder.selected = false
                 }
                 if (selectCount.value == 0) {
                     isDirectSelectAll.value = true
@@ -138,11 +139,13 @@ class ReminderAdapter(
                 if (!holder.checkBox.isChecked) {
                     println("holder checked")
                     holder.checkBox.isChecked = true
+                    reminder.selected = true
                 }
             }
         })
 
         holder.checkBox.setOnCheckedChangeListener { checkBox, isChecked ->
+            reminder.selected = isChecked
             if (isChecked) {
                 selectCount.value = selectCount.value?.plus(1)
                 if (selectCount.value!! >= this.itemCount) {

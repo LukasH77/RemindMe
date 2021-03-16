@@ -113,12 +113,12 @@ class HomeFragment : Fragment() {
             if (it) {
                 binding.ibDeleteReminders.setTag(R.string.isSelectActive_from_activity, "active")
                 binding.cbAll.visibility = View.VISIBLE
-                binding.cbAll.isChecked = false
                 binding.ibDeleteReminders.setImageResource(R.drawable.cancel_24px)
             } else if (!it) {
                 binding.ibDeleteReminders.setTag(R.string.isSelectActive_from_activity, "inactive")
                 binding.cbAll.visibility = View.GONE
                 binding.tvHeader.text = "Reminders"
+                binding.cbAll.isChecked = false
                 binding.ibDeleteReminders.setImageResource(R.drawable.delete_24px)
             }
         })
@@ -128,6 +128,14 @@ class HomeFragment : Fragment() {
                 binding.tvHeader.text = "${selectCount.value} Selected"
             }
         })
+
+        binding.tvHeader.setOnClickListener {
+            for (i in reminderAdapter.currentList) {
+                println("\t\tList Position: ${reminderAdapter.currentList.indexOf(i)}")
+                println("Request Code: ${i.requestCode}")
+                println("Selected: ${i.selected}")
+            }
+        }
 
         isSelectAll.observe(viewLifecycleOwner, {
             if (it) {
