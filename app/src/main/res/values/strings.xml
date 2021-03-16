@@ -41,6 +41,8 @@
 
     <string name="notification_channel">channel</string>
 
+    <string name="isSelectActive_from_activity">1</string>
+
 <!--    <string-array name="notificationChannels">-->
 <!--        <item>channel1</item>-->
 <!--        <item>channel2</item>-->

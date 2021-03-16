@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.*
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -45,6 +46,12 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var homeViewModelFactory: HomeViewModelFactory
 
+    companion object {
+        val isSelectActive: MutableLiveData<Boolean> = MutableLiveData()
+        val isSelectAll: MutableLiveData<Boolean> = MutableLiveData()
+        val selectCount: MutableLiveData<Int> = MutableLiveData()
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -79,11 +86,8 @@ class HomeFragment : Fragment() {
 
         val addReminder = binding.ibSetReminder
 
-        val isSelectActive: MutableLiveData<Boolean> = MutableLiveData()
         isSelectActive.value = false
-        val isSelectAll: MutableLiveData<Boolean> = MutableLiveData()
         isSelectAll.value = false
-        val selectCount: MutableLiveData<Int> = MutableLiveData()
         selectCount.value = 0
 
         val reminderAdapter =
@@ -105,10 +109,12 @@ class HomeFragment : Fragment() {
 
         isSelectActive.observe(viewLifecycleOwner, {
             if (it) {
+                binding.ibDeleteReminders.setTag(R.string.isSelectActive_from_activity, "active")
                 binding.cbAll.visibility = View.VISIBLE
                 binding.cbAll.isChecked = false
                 binding.ibDeleteReminders.setImageResource(R.drawable.cancel_24px)
             } else if (!it) {
+                binding.ibDeleteReminders.setTag(R.string.isSelectActive_from_activity, "inactive")
                 binding.cbAll.visibility = View.GONE
                 binding.tvHeader.text = "Reminders"
                 binding.ibDeleteReminders.setImageResource(R.drawable.delete_24px)

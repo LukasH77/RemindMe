@@ -139,12 +139,12 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
         }
 
         holder.removeButton.setOnClickListener {
-            isSelectActive.value = false
             val alarmManager = it.context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             AlertDialog.Builder(it.context).setTitle("Cancel Reminder")
                 .setMessage("Do you really want to cancel this reminder?").setPositiveButton(
                     "Yes"
                 ) { _: DialogInterface, _: Int ->
+                    isSelectActive.value = false
                     val intent = Intent(it.context, FancyTimeBroadcast::class.java)
                     try {
                         alarmManager.cancel(
