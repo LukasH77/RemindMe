@@ -129,13 +129,13 @@ class HomeFragment : Fragment() {
             }
         })
 
-        binding.tvHeader.setOnClickListener {
-            for (i in reminderAdapter.currentList) {
-                println("\t\tList Position: ${reminderAdapter.currentList.indexOf(i)}")
-                println("Request Code: ${i.requestCode}")
-                println("Selected: ${i.selected}")
-            }
-        }
+//        binding.tvHeader.setOnClickListener {
+//            for (i in reminderAdapter.currentList) {
+//                println("\t\tList Position: ${reminderAdapter.currentList.indexOf(i)}")
+//                println("Request Code: ${i.requestCode}")
+//                println("Selected: ${i.selected}")
+//            }
+//        }
 
         isSelectAll.observe(viewLifecycleOwner, {
             if (it) {
@@ -206,6 +206,36 @@ class HomeFragment : Fragment() {
 
         binding.bRemoveAll.setOnClickListener {
             if (reminderAdapter.itemCount == 0) return@setOnClickListener
+//            AlertDialog.Builder(requireContext()).setTitle("Clear all")
+//                .setMessage("Do you really want to cancel all set reminders?").setPositiveButton(
+//                    "Yes"
+//                ) { _: DialogInterface, _: Int ->
+//                    val requestCodeMax =
+//                        preferences!!.getInt(getString(R.string.request_code_key), 0)
+//                    val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
+////                    println("Request code key $requestCodeMax")
+//                    for (i in 0 until requestCodeMax) {
+//                        try {
+//                            alarmManager.cancel(
+//                                PendingIntent.getBroadcast(
+//                                    requireContext(),
+//                                    i,
+//                                    intent,
+//                                    PendingIntent.FLAG_NO_CREATE
+//                                )
+//                            )
+//                        } catch (e: Exception) {
+//                            println("cancel() called with a null PendingIntent")
+//                        }
+//                    }
+//                    homeViewModel.deleteAll()
+//                    with(preferences.edit()) {
+//                        this.clear()
+//                        this.putInt(getString(R.string.request_code_key), 0)
+//                        this.apply()
+//                    }
+//                }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
+
             AlertDialog.Builder(requireContext()).setTitle("Clear all")
                 .setMessage("Do you really want to cancel all set reminders?").setPositiveButton(
                     "Yes"
@@ -214,29 +244,30 @@ class HomeFragment : Fragment() {
                         preferences!!.getInt(getString(R.string.request_code_key), 0)
                     val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
 //                    println("Request code key $requestCodeMax")
-                    for (i in 0 until requestCodeMax) {
-                        try {
-                            alarmManager.cancel(
-                                PendingIntent.getBroadcast(
-                                    requireContext(),
-                                    i,
-                                    intent,
-                                    PendingIntent.FLAG_NO_CREATE
+                    for (i in reminderAdapter.currentList) {
+                        println("selected")
+                        if (i.selected) {
+                            try {
+                                alarmManager.cancel(
+                                    PendingIntent.getBroadcast(
+                                        requireContext(),
+                                        i.requestCode,
+                                        intent,
+                                        PendingIntent.FLAG_NO_CREATE
+                                    )
                                 )
-                            )
-                        } catch (e: Exception) {
-                            println("cancel() called with a null PendingIntent")
+                                homeViewModel.deleteByRequestCode(i.requestCode)
+                            } catch (e: Exception) {
+                                println("cancel() called with a null PendingIntent")
+                            }
+                            with(preferences!!.edit()) {
+                                this.remove(i.requestCode.toString())
+                                this.apply()
+                            }
                         }
-                    }
-                    homeViewModel.deleteAll()
-                    with(preferences.edit()) {
-                        this.clear()
-                        this.putInt(getString(R.string.request_code_key), 0)
-                        this.apply()
                     }
                 }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
         }
-
         return binding.root
     }
 
