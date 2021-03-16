@@ -31,7 +31,15 @@ import com.example.fancytimes.databinding.ReminderListItemBinding
 import kotlinx.coroutines.selects.select
 import java.util.*
 
-class ReminderAdapter(private val preferences: SharedPreferences?, private val is24hrs: Boolean, private val lifecycleOwner: LifecycleOwner, private val isSelectActive: MutableLiveData<Boolean>, private val isDirectSelectAll: MutableLiveData<Boolean>, private val isSelectAll: MutableLiveData<Boolean>, private val selectCount: MutableLiveData<Int>) :
+class ReminderAdapter(
+    private val preferences: SharedPreferences?,
+    private val is24hrs: Boolean,
+    private val lifecycleOwner: LifecycleOwner,
+    private val isSelectActive: MutableLiveData<Boolean>,
+    private val isDirectSelectAll: MutableLiveData<Boolean>,
+    private val isSelectAll: MutableLiveData<Boolean>,
+    private val selectCount: MutableLiveData<Int>
+) :
     ListAdapter<Reminder, ReminderAdapter.ReminderViewHolder>(ReminderDiffCallback()) {
 
     init {
@@ -42,7 +50,7 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
         val inflater = LayoutInflater.from(parent.context)
         val binding = ReminderListItemBinding.inflate(inflater, parent, false)
 
-        return ReminderViewHolder(binding,)
+        return ReminderViewHolder(binding)
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -86,12 +94,20 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
             else -> "*error*"
         }
 
-        val yearText = if (reminder.year == Calendar.getInstance().get(Calendar.YEAR)) "" else ", ${reminder.year}"
+        val yearText = if (reminder.year == Calendar.getInstance()
+                .get(Calendar.YEAR)
+        ) "" else ", ${reminder.year}"
 
         holder.titleField.text = reminder.title
         holder.timeField.text = "$hourText"
-        if (reminder.isRepeating) holder.timeField.setCompoundDrawablesWithIntrinsicBounds(null, null, holder.itemView.context.getDrawable(R.drawable.repeat_24px), null)
-        holder.dateField.text = "$monthText ${if (reminder.day < 10) "0${reminder.day}" else reminder.day}$yearText"
+        if (reminder.isRepeating) holder.timeField.setCompoundDrawablesWithIntrinsicBounds(
+            null,
+            null,
+            holder.itemView.context.getDrawable(R.drawable.repeat_24px),
+            null
+        )
+        holder.dateField.text =
+            "$monthText ${if (reminder.day < 10) "0${reminder.day}" else reminder.day}$yearText"
 
 //        println("Adapter request code: ${reminder.requestCode}")
 
@@ -106,7 +122,15 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
         })
 
         isDirectSelectAll.observe(lifecycleOwner, {
-
+            if (!it) {
+                if (holder.checkBox.isChecked) {
+                    println("holder unchecked")
+                    holder.checkBox.isChecked = false
+                }
+                if (selectCount.value == 0) {
+                    isDirectSelectAll.value = true
+                }
+            }
         })
 
         isSelectAll.observe(lifecycleOwner, {
@@ -115,26 +139,18 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
                     println("holder checked")
                     holder.checkBox.isChecked = true
                 }
-            } else if (!it) {
-                if (selectCount.value!! >= this.itemCount) {
-                    if (holder.checkBox.isChecked) {
-                        println("holder unchecked")
-                        holder.checkBox.isChecked = false
-                    }
-                    selectCount.value = 0  // right here is the problem, the count gets reset from a single list item, meaning the un-checking won't trigger for the rest
-                }
             }
         })
 
-        holder.checkBox.setOnClickListener {
-            if (holder.checkBox.isChecked) {
+        holder.checkBox.setOnCheckedChangeListener { checkBox, isChecked ->
+            if (isChecked) {
                 selectCount.value = selectCount.value?.plus(1)
                 if (selectCount.value!! >= this.itemCount) {
                     if (isSelectAll.value == false) {
                         isSelectAll.value = true
                     }
                 }
-            } else if (!holder.checkBox.isChecked) {
+            } else if (!isChecked) {
                 selectCount.value = selectCount.value?.minus(1)
                 if (isSelectAll.value == true) {
                     isSelectAll.value = false
@@ -186,7 +202,8 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
         holder.editButton.setBackgroundColor(reminder.color)
     }
 
-    class ReminderViewHolder(reminderListItemBinding: ReminderListItemBinding) : RecyclerView.ViewHolder(reminderListItemBinding.root) {
+    class ReminderViewHolder(reminderListItemBinding: ReminderListItemBinding) :
+        RecyclerView.ViewHolder(reminderListItemBinding.root) {
         val titleField = reminderListItemBinding.tvTitle
         val timeField = reminderListItemBinding.tvTime
         val dateField = reminderListItemBinding.tvDate

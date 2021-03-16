@@ -146,6 +146,8 @@ class HomeFragment : Fragment() {
             isSelectAll.value = isChecked
             if (isChecked) {
                 selectCount.value = reminderAdapter.itemCount
+            } else if (selectCount.value!! >= reminderAdapter.itemCount) {
+                isDirectSelectAll.value = false
             }
         }
 
