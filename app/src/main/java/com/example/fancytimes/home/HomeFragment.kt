@@ -49,6 +49,7 @@ class HomeFragment : Fragment() {
     companion object {
         val isSelectActive: MutableLiveData<Boolean> = MutableLiveData()
         val isSelectAll: MutableLiveData<Boolean> = MutableLiveData()
+        val isDirectSelectAll: MutableLiveData<Boolean> = MutableLiveData()
         val selectCount: MutableLiveData<Int> = MutableLiveData()
     }
 
@@ -96,6 +97,7 @@ class HomeFragment : Fragment() {
                 DateFormat.is24HourFormat(requireContext()),
                 viewLifecycleOwner,
                 isSelectActive,
+                isDirectSelectAll,
                 isSelectAll,
                 selectCount
             )

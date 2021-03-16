@@ -31,7 +31,7 @@ import com.example.fancytimes.databinding.ReminderListItemBinding
 import kotlinx.coroutines.selects.select
 import java.util.*
 
-class ReminderAdapter(private val preferences: SharedPreferences?, private val is24hrs: Boolean, private val lifecycleOwner: LifecycleOwner, private val isSelectActive: MutableLiveData<Boolean>, private val isSelectAll: MutableLiveData<Boolean>, private val selectCount: MutableLiveData<Int>) :
+class ReminderAdapter(private val preferences: SharedPreferences?, private val is24hrs: Boolean, private val lifecycleOwner: LifecycleOwner, private val isSelectActive: MutableLiveData<Boolean>, private val isDirectSelectAll: MutableLiveData<Boolean>, private val isSelectAll: MutableLiveData<Boolean>, private val selectCount: MutableLiveData<Int>) :
     ListAdapter<Reminder, ReminderAdapter.ReminderViewHolder>(ReminderDiffCallback()) {
 
     init {
@@ -103,6 +103,10 @@ class ReminderAdapter(private val preferences: SharedPreferences?, private val i
             } else if (!it) {
                 holder.checkBox.visibility = View.GONE
             }
+        })
+
+        isDirectSelectAll.observe(lifecycleOwner, {
+
         })
 
         isSelectAll.observe(lifecycleOwner, {
