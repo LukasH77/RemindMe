@@ -45,9 +45,5 @@ data class Reminder(
     val color: Int,
 
     @ColumnInfo
-    val notificationChannel: Int,
-
-    @ColumnInfo
-    var selected: Boolean?
-
+    val notificationChannel: Int
 )

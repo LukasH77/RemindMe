@@ -96,6 +96,7 @@ class SetterFragment : Fragment() {
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         )
+        datePicker.datePicker.minDate = System.currentTimeMillis()
 
         val colorPicker =
             ColorPickerDialog.newBuilder().setDialogType(ColorPickerDialog.TYPE_PRESETS)

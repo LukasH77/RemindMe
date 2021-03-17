@@ -103,7 +103,8 @@ class HomeFragment : Fragment() {
                 isDirectSelectAll,
                 isSelectAll,
                 selectCount,
-                isRemovalReady
+                isRemovalReady,
+                alarmManager
             )
         binding.rvReminders.adapter = reminderAdapter
         homeViewModel.reminders.observe(viewLifecycleOwner, {
@@ -233,36 +234,35 @@ class HomeFragment : Fragment() {
 //                        this.apply()
 //                    }
 //                }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
-            isRemovalReady.value = true
             AlertDialog.Builder(requireContext()).setTitle("Clear all")
                 .setMessage(if (selectCount.value == 1) "Do you really want to cancel the selected reminder?" else "Do you really want to cancel selected reminders?").setPositiveButton(
                     "Yes"
                 ) { _: DialogInterface, _: Int ->
-
-                    val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
-//                    println("Request code key $requestCodeMax")
-                    for (i in reminderAdapter.currentList) {
-                        println("selected")
-                        if (i.selected == true) {
-                            try {
-                                alarmManager.cancel(
-                                    PendingIntent.getBroadcast(
-                                        requireContext(),
-                                        i.requestCode,
-                                        intent,
-                                        PendingIntent.FLAG_NO_CREATE
-                                    )
-                                )
-                                homeViewModel.deleteByRequestCode(i.requestCode)
-                            } catch (e: Exception) {
-                                println("cancel() called with a null PendingIntent")
-                            }
-                            with(preferences!!.edit()) {
-                                this.remove(i.requestCode.toString())
-                                this.apply()
-                            }
-                        }
-                    }
+                    isRemovalReady.value = true
+//                    val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
+////                    println("Request code key $requestCodeMax")
+//                    for (i in reminderAdapter.currentList) {
+//                        println("selected")
+//                        if (i.selected == true) {
+//                            try {
+//                                alarmManager.cancel(
+//                                    PendingIntent.getBroadcast(
+//                                        requireContext(),
+//                                        i.requestCode,
+//                                        intent,
+//                                        PendingIntent.FLAG_NO_CREATE
+//                                    )
+//                                )
+//                                homeViewModel.deleteByRequestCode(i.requestCode)
+//                            } catch (e: Exception) {
+//                                println("cancel() called with a null PendingIntent")
+//                            }
+//                            with(preferences!!.edit()) {
+//                                this.remove(i.requestCode.toString())
+//                                this.apply()
+//                            }
+//                        }
+//                    }
                     isSelectActive.value = false
                 }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
             isRemovalReady.value = false

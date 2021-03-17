@@ -40,7 +40,8 @@ class ReminderAdapter(
     private val isDirectSelectAll: MutableLiveData<Boolean>,
     private val isSelectAll: MutableLiveData<Boolean>,
     private val selectCount: MutableLiveData<Int>,
-    private val isRemovalReady: MutableLiveData<Boolean>
+    private val isRemovalReady: MutableLiveData<Boolean>,
+    private val alarmManager: AlarmManager
 ) :
     ListAdapter<Reminder, ReminderAdapter.ReminderViewHolder>(ReminderDiffCallback()) {
 
@@ -149,24 +150,48 @@ class ReminderAdapter(
         isRemovalReady.observe(lifecycleOwner, {
             println("removal ready")
             if (it) {
-//                reminder.selected =  holder.checkBox.isChecked
-                viewModel.updateReminder(Reminder(
-                    reminder.requestCode,
-                    reminder.title,
-                    reminder.text,
-                    reminder.timeInMillis,
-                    reminder.minute,
-                    reminder.hour,
-                    reminder.day,
-                    reminder.month,
-                    reminder.year,
-                    reminder.repetition,
-                    reminder.isRepeating,
-                    reminder.color,
-                    reminder.notificationChannel,
-                    holder.checkBox.isChecked
-                ))
-            }
+                val intent = Intent(holder.itemView.context, FancyTimeBroadcast::class.java)
+//                    println("Request code key $requestCodeMax")
+//                for (i in reminderAdapter.currentList) {
+//                    println("selected")
+                    if (holder.checkBox.isChecked) {
+                        try {
+                            alarmManager.cancel(
+                                PendingIntent.getBroadcast(
+                                    holder.itemView.context,
+                                    reminder.requestCode,
+                                    intent,
+                                    PendingIntent.FLAG_NO_CREATE
+                                )
+                            )
+                            viewModel.deleteByRequestCode(reminder.requestCode)
+                        } catch (e: Exception) {
+                            println("cancel() called with a null PendingIntent")
+                        }
+                        with(preferences!!.edit()) {
+                            this.remove(reminder.requestCode.toString())
+                            this.apply()
+                        }
+                    }
+                }
+////                reminder.selected =  holder.checkBox.isChecked
+//                viewModel.updateReminder(Reminder(
+//                    reminder.requestCode,
+//                    reminder.title,
+//                    reminder.text,
+//                    reminder.timeInMillis,
+//                    reminder.minute,
+//                    reminder.hour,
+//                    reminder.day,
+//                    reminder.month,
+//                    reminder.year,
+//                    reminder.repetition,
+//                    reminder.isRepeating,
+//                    reminder.color,
+//                    reminder.notificationChannel,
+//                    holder.checkBox.isChecked
+//                ))
+//            }
         })
 
         holder.checkBox.setOnCheckedChangeListener { checkBox, isChecked ->

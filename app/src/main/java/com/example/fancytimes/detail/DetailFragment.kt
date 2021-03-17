@@ -97,6 +97,7 @@ class DetailFragment : Fragment() {
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         )
+        datePicker.datePicker.minDate = System.currentTimeMillis()
 
         val timePicker = binding.tpTimePicker
         val title = binding.etNotificationTitle
