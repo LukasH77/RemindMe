@@ -235,7 +235,7 @@ class HomeFragment : Fragment() {
 //                }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
             isRemovalReady.value = true
             AlertDialog.Builder(requireContext()).setTitle("Clear all")
-                .setMessage("Do you really want to cancel all set reminders?").setPositiveButton(
+                .setMessage(if (selectCount.value == 1) "Do you really want to cancel the selected reminder?" else "Do you really want to cancel selected reminders?").setPositiveButton(
                     "Yes"
                 ) { _: DialogInterface, _: Int ->
 
