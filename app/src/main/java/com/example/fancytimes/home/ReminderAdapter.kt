@@ -34,6 +34,7 @@ import java.util.*
 class ReminderAdapter(
     private val preferences: SharedPreferences?,
     private val is24hrs: Boolean,
+    private val viewModel: HomeViewModel,
     private val lifecycleOwner: LifecycleOwner,
     private val isSelectActive: MutableLiveData<Boolean>,
     private val isDirectSelectAll: MutableLiveData<Boolean>,
@@ -148,8 +149,23 @@ class ReminderAdapter(
         isRemovalReady.observe(lifecycleOwner, {
             println("removal ready")
             if (it) {
-                reminder.selected = holder.checkBox.isChecked
-                isRemovalReady.value = false
+//                reminder.selected =  holder.checkBox.isChecked
+                viewModel.updateReminder(Reminder(
+                    reminder.requestCode,
+                    reminder.title,
+                    reminder.text,
+                    reminder.timeInMillis,
+                    reminder.minute,
+                    reminder.hour,
+                    reminder.day,
+                    reminder.month,
+                    reminder.year,
+                    reminder.repetition,
+                    reminder.isRepeating,
+                    reminder.color,
+                    reminder.notificationChannel,
+                    holder.checkBox.isChecked
+                ))
             }
         })
 

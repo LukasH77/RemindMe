@@ -13,6 +13,7 @@ class HomeViewModel(private val reminderDao: ReminderDao) : ViewModel() {
     val reminders = reminderDao.getAllReminders()
 
     fun updateReminder(reminder: Reminder) {
+        println("reminder updated")
         scope.launch {
             withContext(Dispatchers.IO) {
                 reminderDao.updateReminder(reminder)
@@ -35,4 +36,11 @@ class HomeViewModel(private val reminderDao: ReminderDao) : ViewModel() {
             }
         }
     }
+//    fun changeSelectedState(requestCode: Int) {
+//        scope.launch {
+//            withContext(Dispatchers.IO) {
+//                reminderDao.
+//            }
+//        }
+//    }
 }

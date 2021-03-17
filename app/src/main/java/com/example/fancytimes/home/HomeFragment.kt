@@ -97,6 +97,7 @@ class HomeFragment : Fragment() {
             ReminderAdapter(
                 preferences,
                 DateFormat.is24HourFormat(requireContext()),
+                homeViewModel,
                 viewLifecycleOwner,
                 isSelectActive,
                 isDirectSelectAll,
@@ -203,12 +204,6 @@ class HomeFragment : Fragment() {
 
         binding.bRemoveAll.setOnClickListener {
             if (reminderAdapter.itemCount == 0) return@setOnClickListener
-            isRemovalReady.value = true
-            for (i in reminderAdapter.currentList) {
-                println("\t\tList Position: ${reminderAdapter.currentList.indexOf(i)}")
-                println("Request Code: ${i.requestCode}")
-                println("Selected: ${i.selected}")
-            }
 //            AlertDialog.Builder(requireContext()).setTitle("Clear all")
 //                .setMessage("Do you really want to cancel all set reminders?").setPositiveButton(
 //                    "Yes"
@@ -238,13 +233,12 @@ class HomeFragment : Fragment() {
 //                        this.apply()
 //                    }
 //                }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
-
+            isRemovalReady.value = true
             AlertDialog.Builder(requireContext()).setTitle("Clear all")
                 .setMessage("Do you really want to cancel all set reminders?").setPositiveButton(
                     "Yes"
                 ) { _: DialogInterface, _: Int ->
-                    val requestCodeMax =
-                        preferences!!.getInt(getString(R.string.request_code_key), 0)
+
                     val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
 //                    println("Request code key $requestCodeMax")
                     for (i in reminderAdapter.currentList) {
@@ -271,6 +265,7 @@ class HomeFragment : Fragment() {
                     }
                     isSelectActive.value = false
                 }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
+            isRemovalReady.value = false
         }
         return binding.root
     }
