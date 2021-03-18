@@ -43,18 +43,18 @@
 
     <string name="isSelectActive_from_activity">1</string>
 
-<!--    <string-array name="notificationChannels">-->
-<!--        <item>channel1</item>-->
-<!--        <item>channel2</item>-->
-<!--        <item>channel3</item>-->
-<!--        <item>channel4</item>-->
-<!--        <item>channel5</item>-->
-<!--        <item>channel6</item>-->
-<!--        <item>channel7</item>-->
-<!--        <item>channel8</item>-->
-<!--        <item>channel9</item>-->
-<!--        <item>channel10</item>-->
-<!--    </string-array>-->
+    <!--    <string-array name="notificationChannels">-->
+    <!--        <item>channel1</item>-->
+    <!--        <item>channel2</item>-->
+    <!--        <item>channel3</item>-->
+    <!--        <item>channel4</item>-->
+    <!--        <item>channel5</item>-->
+    <!--        <item>channel6</item>-->
+    <!--        <item>channel7</item>-->
+    <!--        <item>channel8</item>-->
+    <!--        <item>channel9</item>-->
+    <!--        <item>channel10</item>-->
+    <!--    </string-array>-->
 
     <string-array name="repeatIntervals">
         <item>Every Minute</item>

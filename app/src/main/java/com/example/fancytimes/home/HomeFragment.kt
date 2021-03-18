@@ -91,7 +91,6 @@ class HomeFragment : Fragment() {
         isSelectActive.value = false
         isSelectAll.value = false
         selectCount.value = 0
-        isRemovalReady.value = false
 
         val reminderAdapter =
             ReminderAdapter(
@@ -153,7 +152,9 @@ class HomeFragment : Fragment() {
             isSelectAll.value = isChecked
             if (isChecked) {
                 selectCount.value = reminderAdapter.itemCount
-            } else if (selectCount.value!! >= reminderAdapter.itemCount) {
+            } else if (selectCount.value!! == reminderAdapter.itemCount) {
+                println(selectCount.value)
+                println(reminderAdapter.itemCount)
                 isDirectSelectAll.value = false
             }
         }
@@ -204,7 +205,10 @@ class HomeFragment : Fragment() {
 //        }
 
         binding.bRemoveAll.setOnClickListener {
-            if (reminderAdapter.itemCount == 0) return@setOnClickListener
+            if (selectCount.value == 0) {
+                Toast.makeText(requireContext(), "No reminders selected", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 //            AlertDialog.Builder(requireContext()).setTitle("Clear all")
 //                .setMessage("Do you really want to cancel all set reminders?").setPositiveButton(
 //                    "Yes"
@@ -264,6 +268,17 @@ class HomeFragment : Fragment() {
 //                        }
 //                    }
                     isSelectActive.value = false
+                    println("fragment transaction")
+                    parentFragmentManager.beginTransaction().detach(this).attach(this).commit()
+//                    val homeFragment = parentFragmentManager.findFragmentByTag()
+//                    val fragmentTransaction = parentFragmentManager.beginTransaction()
+//                    println("fragment transaction")
+//                    fragmentTransaction.detach(homeFragment)
+//                    fragmentTransaction.attach(homeFragment)
+//                    fragmentTransaction.commit()
+                    isRemovalReady.value = false
+                    it.findNavController()
+                        .navigate(HomeFragmentDirections.actionHomeFragmentToTrashFragment())
                 }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
             isRemovalReady.value = false
         }

@@ -126,11 +126,13 @@ class ReminderAdapter(
 
         isDirectSelectAll.observe(lifecycleOwner, {
             if (!it) {
+                println("holder observed")
                 if (holder.checkBox.isChecked) {
                     println("holder unchecked")
-                    holder.checkBox.isChecked = false
+
 //                    reminder.selected = false
                 }
+                holder.checkBox.isChecked = false
                 if (selectCount.value == 0) {
                     isDirectSelectAll.value = true
                 }
@@ -139,6 +141,8 @@ class ReminderAdapter(
 
         isSelectAll.observe(lifecycleOwner, {
             if (it) {
+                println("holder")
+                println(this.itemCount)
                 if (!holder.checkBox.isChecked) {
                     println("holder checked")
                     holder.checkBox.isChecked = true
@@ -154,26 +158,29 @@ class ReminderAdapter(
 //                    println("Request code key $requestCodeMax")
 //                for (i in reminderAdapter.currentList) {
 //                    println("selected")
-                    if (holder.checkBox.isChecked) {
-                        try {
-                            alarmManager.cancel(
-                                PendingIntent.getBroadcast(
-                                    holder.itemView.context,
-                                    reminder.requestCode,
-                                    intent,
-                                    PendingIntent.FLAG_NO_CREATE
-                                )
+                if (holder.checkBox.isChecked) {
+                    try {
+                        alarmManager.cancel(
+                            PendingIntent.getBroadcast(
+                                holder.itemView.context,
+                                reminder.requestCode,
+                                intent,
+                                PendingIntent.FLAG_NO_CREATE
                             )
-                            viewModel.deleteByRequestCode(reminder.requestCode)
-                        } catch (e: Exception) {
-                            println("cancel() called with a null PendingIntent")
-                        }
-                        with(preferences!!.edit()) {
-                            this.remove(reminder.requestCode.toString())
-                            this.apply()
-                        }
+                        )
+                        viewModel.deleteByRequestCode(reminder.requestCode)
+                    } catch (e: Exception) {
+                        println("cancel() called with a null PendingIntent")
+                    }
+                    with(preferences!!.edit()) {
+                        this.remove(reminder.requestCode.toString())
+                        this.apply()
                     }
                 }
+            } else if (!it) {
+                println(selectCount.value)
+                println(this.itemCount)
+            }
 ////                reminder.selected =  holder.checkBox.isChecked
 //                viewModel.updateReminder(Reminder(
 //                    reminder.requestCode,
@@ -197,15 +204,19 @@ class ReminderAdapter(
         holder.checkBox.setOnCheckedChangeListener { checkBox, isChecked ->
 //            reminder.selected = isChecked
             if (isChecked) {
-//                println(reminder.selected)
-                selectCount.value = selectCount.value?.plus(1)
-                if (selectCount.value!! >= this.itemCount) {
-                    println("error")
-                    if (isSelectAll.value == false) {
-                        isSelectAll.value = true
+                println("checked")
+                if (selectCount.value!! < this.itemCount) {
+                    selectCount.value = selectCount.value?.plus(1)
+                    if (selectCount.value!! == this.itemCount) {
+                        println("error")
+                        if (isSelectAll.value == false) {
+                            isSelectAll.value = true
+                        }
                     }
                 }
+//                println(reminder.selected)
             } else if (!isChecked) {
+                println("unchecked")
                 selectCount.value = selectCount.value?.minus(1)
                 if (isSelectAll.value == true) {
                     isSelectAll.value = false

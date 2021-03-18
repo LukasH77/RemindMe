@@ -36,6 +36,14 @@ class HomeViewModel(private val reminderDao: ReminderDao) : ViewModel() {
             }
         }
     }
+
+    fun addReminder(reminder: Reminder) {
+        scope.launch{
+            withContext(Dispatchers.IO) {
+                reminderDao.addReminder(reminder)
+            }
+        }
+    }
 //    fun changeSelectedState(requestCode: Int) {
 //        scope.launch {
 //            withContext(Dispatchers.IO) {
