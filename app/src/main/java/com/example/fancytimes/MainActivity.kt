@@ -1,18 +1,16 @@
 package com.example.fancytimes
 
-import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
 import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
 import com.example.fancytimes.home.HomeFragment
-import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
+import kotlinx.android.synthetic.main.fragment_setter.view.*
 
 class MainActivity : AppCompatActivity(), ColorPickerDialogListener {
 
@@ -29,10 +27,21 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener {
     override fun onColorSelected(dialogId: Int, color: Int) {
         val preferences =
             getSharedPreferences(getString(R.string.notification_preferences_key), MODE_PRIVATE)
-        with(preferences.edit()) {
-            this.putInt(getString(R.string.color_key), color)
-            this.apply()
+        val setterFragment = this.findViewById<NestedScrollView>(R.id.svSetterRoot)
+        val isOnScreen = setterFragment != null
+        println("isOnScreen: $isOnScreen")
+        if (isOnScreen) {
+            with(preferences.edit()) {
+                this.putInt(getString(R.string.color_key_setter), color)
+                this.apply()
+            }  // put in selected color
+        } else {
+            with(preferences.edit()) {
+                this.putInt(getString(R.string.color_key_detail), color)
+                this.apply()
+            }  // put in selected color
         }
+        println("${preferences.getInt(getString(R.string.color_key_setter), 0)} \n ${preferences.getInt(getString(R.string.color_key_detail), 0)}")
         this.findViewById<TextView>(R.id.tvColorPreview).setBackgroundColor(color)
     }
 
@@ -41,8 +50,9 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBackPressed() {
         val deletionActivator = this.findViewById<ImageButton>(R.id.ibDeleteReminders)
-        val isOnScreen =  deletionActivator != null
-        val isSelectActive = deletionActivator?.getTag(R.string.isSelectActive_from_activity)?.equals("active")
+        val isOnScreen = deletionActivator != null
+        val isSelectActive =
+            deletionActivator?.getTag(R.string.isSelectActive_from_activity)?.equals("active")
         if (isOnScreen && isSelectActive == true) {
             HomeFragment.isSelectActive.value = false
         } else {

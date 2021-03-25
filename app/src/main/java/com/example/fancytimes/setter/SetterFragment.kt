@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.text.TextUtils
 import android.text.format.DateFormat
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,17 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.core.graphics.toColorInt
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import com.example.fancytimes.*
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.FragmentSetterBinding
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
-import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import java.util.*
 
 class SetterFragment : Fragment() {
@@ -61,9 +55,9 @@ class SetterFragment : Fragment() {
                 calendar.get(Calendar.MONTH)
             )
             this.putInt(requireContext().getString(R.string.year_key), calendar.get(Calendar.YEAR))
-            if (preferences.getInt(requireContext().getString(R.string.color_key), 0) == 0) {
-                this.putInt(requireContext().getString(R.string.color_key), 0xffcfd8dc.toInt())
-            }
+            if (preferences.getInt(requireContext().getString(R.string.color_key_setter), 0) == 0) {
+                this.putInt(requireContext().getString(R.string.color_key_setter), 0xffcfd8dc.toInt())
+            }  // put in grey if not set yet
             this.apply()
         }
 
@@ -118,11 +112,10 @@ class SetterFragment : Fragment() {
 
         binding.tvColorPreview.setBackgroundColor(
             preferences.getInt(
-                requireContext().getString(R.string.color_key),
+                requireContext().getString(R.string.color_key_setter),
                 0
             )
         )
-        colorPicker.setColor(preferences.getInt(requireContext().getString(R.string.color_key), 0))
 
         val timePicker = binding.tpTimePicker
         val notificationTitleField = binding.etNotificationTitle
@@ -219,6 +212,7 @@ class SetterFragment : Fragment() {
         }
 
         binding.ibEditColor.setOnClickListener {  //main activity cpdListener handles color selection
+            colorPicker.setColor(preferences.getInt(requireContext().getString(R.string.color_key_setter), 0))
             colorPicker.show(requireActivity())
             hideSoftKeyboard(requireContext(), requireView())
         }
@@ -237,7 +231,7 @@ class SetterFragment : Fragment() {
                 0
             ) else 0
 
-            val color = preferences.getInt(requireContext().getString(R.string.color_key), 0)
+            val color = preferences.getInt(requireContext().getString(R.string.color_key_setter), 0)
 
             calendar.set(
                 preferences.getInt(getString(R.string.year_key), 0),

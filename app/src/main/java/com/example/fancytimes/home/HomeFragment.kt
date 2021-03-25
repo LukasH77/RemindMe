@@ -161,7 +161,11 @@ class HomeFragment : Fragment() {
 
         binding.ibDeleteReminders.setOnClickListener {
             if (reminderAdapter.itemCount == 0) {
-                Toast.makeText(requireContext(), "There are no Reminders to cancel", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "There are no Reminders to cancel",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
             if (isSelectActive.value == false) {
@@ -239,7 +243,8 @@ class HomeFragment : Fragment() {
 //                    }
 //                }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
             AlertDialog.Builder(requireContext()).setTitle("Clear all")
-                .setMessage(if (selectCount.value == 1) "Do you really want to cancel the selected reminder?" else "Do you really want to cancel selected reminders?").setPositiveButton(
+                .setMessage(if (selectCount.value == 1) "Do you really want to cancel the selected reminder?" else "Do you really want to cancel selected reminders?")
+                .setPositiveButton(
                     "Yes"
                 ) { _: DialogInterface, _: Int ->
                     isRemovalReady.value = true
@@ -285,18 +290,18 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {
 //        val notificationChannels = this.resources.getStringArray(R.array.notificationChannels)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-            val channel = NotificationChannel(
-                getString(R.string.notification_channel),
-                "Notification Channel",
-                NotificationManager.IMPORTANCE_HIGH
-            )
-            channel.enableVibration(true)
-            channel.apply { description = "Reminders" }
+        val channel = NotificationChannel(
+            getString(R.string.notification_channel),
+            "Notification Channel",
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        channel.enableVibration(true)
+        channel.apply {
+            description = "Reminders"
 //            val channel2 = NotificationChannel(
 //                notificationChannels[1],
 //                "Notification Channel",

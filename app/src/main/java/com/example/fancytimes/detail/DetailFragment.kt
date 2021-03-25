@@ -15,7 +15,6 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fancytimes.*
 import com.example.fancytimes.database.ReminderDatabase
@@ -137,19 +136,20 @@ class DetailFragment : Fragment() {
                 currentChannel = it.notificationChannel
                 println("Detail current channel: $currentChannel")
 
+                var color = it.color
+                colorPicker.setColor(color)
+                binding.tvColorPreview.setBackgroundColor(color)
+
                 setDay = it.day
                 setMonth = it.month
                 setYear = it.year
                 with(preferences!!.edit()) {
+                    this.putInt(getString(R.string.color_key_detail), color)
                     this.putInt(requireContext().getString(R.string.day_key), setDay)
                     this.putInt(requireContext().getString(R.string.month_key), setMonth)
                     this.putInt(requireContext().getString(R.string.year_key), setYear)
                     this.apply()
                 }
-
-                binding.tvColorPreview.setBackgroundColor(it.color)
-
-                colorPicker.setColor(it.color)
 
                 binding.tvSetDate.text =
                     "${if (it.day < 10) "0${it.day}" else it.day}.${if (it.month < 9) "0${it.month + 1}" else it.month + 1}.${it.year}  (${it.requestCode})"
@@ -235,6 +235,7 @@ class DetailFragment : Fragment() {
         }
 
         binding.ibEditColor.setOnClickListener {
+            colorPicker.setColor(preferences.getInt(requireContext().getString(R.string.color_key_detail), 0))
             colorPicker.show(requireActivity())
             hideSoftKeyboard(requireContext(), requireView())
         }
@@ -250,7 +251,7 @@ class DetailFragment : Fragment() {
                 0
             )
 
-            val color = preferences.getInt(requireContext().getString(R.string.color_key), 0)
+            val color = preferences.getInt(requireContext().getString(R.string.color_key_detail), 0)
 
             val yearIsTooEarly =
                 preferences.getInt(getString(R.string.year_key), 0) < Calendar.getInstance()

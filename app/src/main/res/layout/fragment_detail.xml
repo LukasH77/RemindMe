@@ -7,155 +7,162 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clMainLayout"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/svDetailRoot"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="2dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tvRequestCode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Request Code"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clMainLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="2dp">
 
-        <TimePicker
-            android:id="@+id/tpTimePicker"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:foregroundGravity="center"
-            android:timePickerMode="spinner"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvRequestCode"
-            app:layout_constraintVertical_bias="0.0"
-            tools:visibility="visible" />
+            <TextView
+                android:id="@+id/tvRequestCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Request Code"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tvSetDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="15dp"
-            app:layout_constraintBottom_toTopOf="@+id/etNotificationTitle"
-            app:layout_constraintEnd_toStartOf="@+id/ibEditDate"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tpTimePicker"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintVertical_chainStyle="packed" />
+            <TimePicker
+                android:id="@+id/tpTimePicker"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:foregroundGravity="center"
+                android:timePickerMode="spinner"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvRequestCode"
+                app:layout_constraintVertical_bias="0.0"
+                tools:visibility="visible" />
 
-        <ImageButton
-            android:id="@+id/ibEditDate"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="#FFFFFF"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:layout_constraintBottom_toBottomOf="@+id/tvSetDate"
-            app:layout_constraintEnd_toEndOf="@+id/ibEditColor"
-            app:layout_constraintStart_toEndOf="@+id/tvColorPreview"
-            app:layout_constraintTop_toTopOf="@+id/tvSetDate"
-            app:srcCompat="@drawable/date_range_24px" />
+            <TextView
+                android:id="@+id/tvSetDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="15dp"
+                app:layout_constraintBottom_toTopOf="@+id/etNotificationTitle"
+                app:layout_constraintEnd_toStartOf="@+id/ibEditDate"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tpTimePicker"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed" />
 
-        <EditText
-            android:id="@+id/etNotificationTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Title"
-            android:maxLength="18"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/etNotificationText"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvSetDate"
-            tools:visibility="visible" />
+            <ImageButton
+                android:id="@+id/ibEditDate"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="#FFFFFF"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:layout_constraintBottom_toBottomOf="@+id/tvSetDate"
+                app:layout_constraintEnd_toEndOf="@+id/ibEditColor"
+                app:layout_constraintStart_toEndOf="@+id/tvColorPreview"
+                app:layout_constraintTop_toTopOf="@+id/tvSetDate"
+                app:srcCompat="@drawable/date_range_24px" />
 
-        <EditText
-            android:id="@+id/etNotificationText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Text"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/tvColorPreview"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etNotificationTitle"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:visibility="visible" />
+            <EditText
+                android:id="@+id/etNotificationTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Title"
+                android:maxLength="18"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/etNotificationText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvSetDate"
+                tools:visibility="visible" />
 
-        <CheckBox
-            android:id="@+id/cbRepeating"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Repeat"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/bConfirmPick"
-            app:layout_constraintEnd_toStartOf="@+id/sRepInterval"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvColorPreview"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:visibility="visible" />
+            <EditText
+                android:id="@+id/etNotificationText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Text"
+                android:isScrollContainer="true"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/tvColorPreview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etNotificationTitle"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:visibility="visible" />
 
-        <TextView
-            android:id="@+id/tvColorPreview"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="2dp"
-            android:layout_marginBottom="2dp"
-            android:padding="13dp"
-            app:layout_constraintBottom_toTopOf="@+id/cbRepeating"
-            app:layout_constraintEnd_toStartOf="@+id/ibEditColor"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etNotificationText"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintVertical_chainStyle="packed" />
+            <CheckBox
+                android:id="@+id/cbRepeating"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Repeat"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/bConfirmPick"
+                app:layout_constraintEnd_toStartOf="@+id/sRepInterval"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvColorPreview"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:visibility="visible" />
 
-        <ImageButton
-            android:id="@+id/ibEditColor"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:background="#FFFFFF"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/tvColorPreview"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tvColorPreview"
-            app:layout_constraintTop_toTopOf="@+id/tvColorPreview"
-            app:srcCompat="@drawable/color_lens_24px" />
+            <TextView
+                android:id="@+id/tvColorPreview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="2dp"
+                android:padding="13dp"
+                app:layout_constraintBottom_toTopOf="@+id/cbRepeating"
+                app:layout_constraintEnd_toStartOf="@+id/ibEditColor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etNotificationText"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed" />
 
-        <Spinner
-            android:id="@+id/sRepInterval"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/cbRepeating"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cbRepeating"
-            app:layout_constraintTop_toTopOf="@+id/cbRepeating" />
+            <ImageButton
+                android:id="@+id/ibEditColor"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:background="#FFFFFF"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tvColorPreview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvColorPreview"
+                app:layout_constraintTop_toTopOf="@+id/tvColorPreview"
+                app:srcCompat="@drawable/color_lens_24px" />
 
-        <Button
-            android:id="@+id/bConfirmPick"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Confirm"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cbRepeating"
-            tools:visibility="visible" />
+            <Spinner
+                android:id="@+id/sRepInterval"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/cbRepeating"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cbRepeating"
+                app:layout_constraintTop_toTopOf="@+id/cbRepeating" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/bConfirmPick"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Confirm"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cbRepeating"
+                tools:visibility="visible" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>
