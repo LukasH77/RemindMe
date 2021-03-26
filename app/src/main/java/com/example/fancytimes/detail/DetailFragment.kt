@@ -155,8 +155,8 @@ class DetailFragment : Fragment() {
                     "${if (it.day < 10) "0${it.day}" else it.day}.${if (it.month < 9) "0${it.month + 1}" else it.month + 1}.${it.year}  (${it.requestCode})"
                 binding.tpTimePicker.minute = it.minute
                 binding.tpTimePicker.hour = it.hour
-                binding.etNotificationTitle.text = SpannableStringBuilder(it.title)
-                binding.etNotificationText.text = SpannableStringBuilder(it.text)
+                title.text = SpannableStringBuilder(it.title)
+                text.text = SpannableStringBuilder(it.text)
                 datePicker.updateDate(it.year, it.month, it.day)
                 if (it.repetition != 0L) {
                     binding.cbRepeating.isChecked = true

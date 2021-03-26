@@ -92,6 +92,8 @@ class SetterFragment : Fragment() {
         )
         datePicker.datePicker.minDate = System.currentTimeMillis()
 
+
+
         val colorPicker =
             ColorPickerDialog.newBuilder().setDialogType(ColorPickerDialog.TYPE_PRESETS)
                 .setPresets(
@@ -218,11 +220,9 @@ class SetterFragment : Fragment() {
         }
 
         binding.bConfirmPick.setOnClickListener {
-            val notificationTitle =
-                if (notificationTitleField.text.isBlank()) notificationTitleField.hint.toString() else notificationTitleField.text.toString()
+            val notificationTitle = notificationTitleField.text.toString()
 
-            val notificationText =
-                if (notificationTextField.text.isBlank()) notificationTextField.hint.toString() else notificationTextField.text.toString()
+            val notificationText = notificationTextField.text.toString()
 
             val isNotificationRepeating = repeatingCheckBox.isChecked
 
