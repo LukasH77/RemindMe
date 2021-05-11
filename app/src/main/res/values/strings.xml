@@ -13,6 +13,7 @@
     <string name="color_extra_name">color</string>
 
     <string name="notification_preferences_key">notificationPreferences</string>
+    <string name="repeat_preference_key">repeatPreference</string>
     <string name="request_code_key">notificationRequestCode</string>
     <string name="repeat_interval_key">repeatInterval</string>
     <string name="notification_channel_count">channelCount</string>

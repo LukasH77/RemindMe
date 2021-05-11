@@ -71,27 +71,24 @@
                 android:id="@+id/etNotificationTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:maxLength="150"
-                android:visibility="visible"
+                android:inputType="textCapSentences|textMultiLine"
                 app:layout_constraintBottom_toTopOf="@+id/etNotificationText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvSetDate"
-                tools:visibility="visible" />
+                app:layout_constraintTop_toBottomOf="@+id/tvSetDate" />
 
             <EditText
                 android:id="@+id/etNotificationText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:isScrollContainer="true"
-                android:visibility="visible"
+                android:inputType="textCapSentences|textMultiLine"
                 app:layout_constraintBottom_toTopOf="@+id/tvColorPreview"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etNotificationTitle"
                 app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintVertical_chainStyle="packed"
-                tools:visibility="visible" />
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <CheckBox
                 android:id="@+id/cbRepeating"

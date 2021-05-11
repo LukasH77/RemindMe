@@ -62,20 +62,18 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="Topic"
-                android:maxLength="150"
-                android:visibility="visible"
+                android:inputType="textCapSentences|textMultiLine"
                 app:layout_constraintBottom_toTopOf="@+id/etNotificationText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvSetDate"
-                tools:visibility="visible" />
+                app:layout_constraintTop_toBottomOf="@+id/tvSetDate" />
 
             <EditText
                 android:id="@+id/etNotificationText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="Details"
-                android:inputType="textMultiLine"
+                android:inputType="textCapSentences|textMultiLine"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/tvColorPreview"
                 app:layout_constraintEnd_toEndOf="parent"

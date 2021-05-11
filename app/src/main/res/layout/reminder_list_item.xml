@@ -48,7 +48,7 @@
             android:layout_marginEnd="2dp"
             android:layout_marginBottom="8dp"
             android:gravity="center|start"
-            android:inputType="textPersonName"
+            android:inputType="textMultiLine"
             android:padding="2dp"
             android:text="Groceries"
             android:textSize="20sp"

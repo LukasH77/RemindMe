@@ -70,6 +70,7 @@ class HomeFragment : Fragment() {
             println("channel count not initialized")
             with(preferences.edit()) {
                 this.putInt(getString(R.string.notification_channel_count), 1)
+                this.putBoolean(getString(R.string.repeat_preference_key), true)
                 this.apply()
             }
         }

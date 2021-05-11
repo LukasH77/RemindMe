@@ -189,9 +189,16 @@ class SetterFragment : Fragment() {
 
         repeatingIntervalsSpinner.setSelection(4)
 
+        repeatingCheckBox.isChecked = preferences.getBoolean(getString(R.string.repeat_preference_key), true)
+        repeatingIntervalsSpinner.visibility = if (repeatingCheckBox.isChecked) View.VISIBLE else View.INVISIBLE
+
         repeatingCheckBox.setOnCheckedChangeListener { _: CompoundButton, checkedState: Boolean ->
             if (checkedState) repeatingIntervalsSpinner.visibility =
                 View.VISIBLE else repeatingIntervalsSpinner.visibility = View.INVISIBLE
+            with(preferences.edit()) {
+                this.putBoolean(getString(R.string.repeat_preference_key), checkedState)
+                this.apply()
+            }
         }
 
         val system24hrs = DateFormat.is24HourFormat(requireContext())
@@ -220,7 +227,7 @@ class SetterFragment : Fragment() {
         }
 
         binding.bConfirmPick.setOnClickListener {
-            val notificationTitle = notificationTitleField.text.toString()
+            val notificationTitle = if (notificationTitleField.text.isBlank()) "Reminder" else notificationTitleField.text.toString()
 
             val notificationText = notificationTextField.text.toString()
 
