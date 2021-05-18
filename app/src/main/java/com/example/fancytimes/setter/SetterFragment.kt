@@ -72,7 +72,7 @@ class SetterFragment : Fragment() {
             requireContext(),
             { _: DatePicker?, year: Int, month: Int, day: Int ->
 //                println("date set")
-                with(preferences!!.edit()) {
+                with(preferences.edit()) {
                     this.putInt(requireContext().getString(R.string.day_key), day)
                     this.putInt(requireContext().getString(R.string.month_key), month)
                     this.putInt(requireContext().getString(R.string.year_key), year)
@@ -185,7 +185,7 @@ class SetterFragment : Fragment() {
             repeatingIntervalsSpinner.adapter = it
         }
 
-        repeatingIntervalsSpinner.onItemSelectedListener = IntervalSetter(preferences!!)
+        repeatingIntervalsSpinner.onItemSelectedListener = IntervalSetter(preferences)
 
         repeatingIntervalsSpinner.setSelection(4)
 
@@ -227,7 +227,7 @@ class SetterFragment : Fragment() {
         }
 
         binding.bConfirmPick.setOnClickListener {
-            val notificationTitle = if (notificationTitleField.text.isBlank()) "Reminder" else notificationTitleField.text.toString()
+            val notificationTitle = if (notificationTitleField.text.isBlank()) getString(R.string.reminder) else notificationTitleField.text.toString()
 
             val notificationText = notificationTextField.text.toString()
 
@@ -285,7 +285,7 @@ class SetterFragment : Fragment() {
                     .get(Calendar.MINUTE)
 
             if (yearIsTooEarly || monthIsTooEarly || dayIsTooEarly) {
-                Toast.makeText(requireContext(), "Invalid date!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.invalid_date), Toast.LENGTH_SHORT).show()
 //                println("Invalid date!")
                 return@setOnClickListener
             }
@@ -295,8 +295,6 @@ class SetterFragment : Fragment() {
                     Calendar.DAY_OF_MONTH,
                     preferences.getInt(getString(R.string.day_key), 0) + 1
                 )
-//                println(preferences.getInt(getString(R.string.day_key), 0))
-                Toast.makeText(requireContext(), "Triggered", Toast.LENGTH_SHORT).show()
             }
 
             handleAlarmsSetter(
@@ -317,9 +315,6 @@ class SetterFragment : Fragment() {
             hideSoftKeyboard(requireContext(), requireView())
 
             requireActivity().onBackPressed()
-
-//            it.findNavController()
-//                .navigate(SetterFragmentDirections.actionSetterFragmentToHomeFragment())
         }
 
         return binding.root

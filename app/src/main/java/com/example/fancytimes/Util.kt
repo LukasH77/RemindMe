@@ -12,7 +12,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.detail.DetailViewModel
-import com.example.fancytimes.home.HomeViewModel
 import com.example.fancytimes.setter.SetterViewModel
 import java.util.*
 

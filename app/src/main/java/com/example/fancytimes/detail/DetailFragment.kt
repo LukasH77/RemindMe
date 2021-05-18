@@ -128,22 +128,20 @@ class DetailFragment : Fragment() {
             hideSoftKeyboard(requireContext(), requireView())
         }
 
-        binding.tvRequestCode.text = "Request Code: ${receivedArgs.requestCode}"
-
         var currentChannel = 5
-        detailViewModel.selectedReminder.observe(viewLifecycleOwner, Observer {
+        detailViewModel.selectedReminder.observe(viewLifecycleOwner, {
             it?.let {
                 currentChannel = it.notificationChannel
                 println("Detail current channel: $currentChannel")
 
-                var color = it.color
+                val color = it.color
                 colorPicker.setColor(color)
                 binding.tvColorPreview.setBackgroundColor(color)
 
                 setDay = it.day
                 setMonth = it.month
                 setYear = it.year
-                with(preferences!!.edit()) {
+                with(preferences.edit()) {
                     this.putInt(getString(R.string.color_key_detail), color)
                     this.putInt(requireContext().getString(R.string.day_key), setDay)
                     this.putInt(requireContext().getString(R.string.month_key), setMonth)
@@ -289,7 +287,7 @@ class DetailFragment : Fragment() {
                     .get(Calendar.MINUTE)
 
             if (yearIsTooEarly || monthIsTooEarly || dayIsTooEarly) {
-                Toast.makeText(requireContext(), "Invalid date!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.invalid_date), Toast.LENGTH_SHORT).show()
 //                println("Invalid date!")
                 return@setOnClickListener
             }
@@ -299,8 +297,6 @@ class DetailFragment : Fragment() {
                     Calendar.DAY_OF_MONTH,
                     preferences.getInt(getString(R.string.day_key), 0) + 1
                 )
-//                println(preferences.getInt(getString(R.string.day_key), 0))
-                Toast.makeText(requireContext(), "Triggered", Toast.LENGTH_SHORT).show()
             }
 
             val isNotificationRepeating = repeatingCheckBox.isChecked

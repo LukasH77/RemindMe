@@ -1,6 +1,5 @@
 package com.example.fancytimes.home
 
-import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.database.ReminderDao
@@ -21,14 +20,6 @@ class HomeViewModel(private val reminderDao: ReminderDao) : ViewModel() {
         }
     }
 
-    fun deleteAll() {
-        scope.launch {
-            withContext(Dispatchers.IO) {
-                reminderDao.deleteAll()
-            }
-        }
-    }
-
     fun deleteByRequestCode(requestCode: Int) {
         scope.launch {
             withContext(Dispatchers.IO) {
@@ -36,19 +27,4 @@ class HomeViewModel(private val reminderDao: ReminderDao) : ViewModel() {
             }
         }
     }
-
-    fun addReminder(reminder: Reminder) {
-        scope.launch{
-            withContext(Dispatchers.IO) {
-                reminderDao.addReminder(reminder)
-            }
-        }
-    }
-//    fun changeSelectedState(requestCode: Int) {
-//        scope.launch {
-//            withContext(Dispatchers.IO) {
-//                reminderDao.
-//            }
-//        }
-//    }
 }

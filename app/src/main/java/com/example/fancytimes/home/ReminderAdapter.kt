@@ -8,15 +8,11 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
-import android.text.Layout
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.findNavController
@@ -28,7 +24,6 @@ import com.example.fancytimes.R
 import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.ReminderListItemBinding
-import kotlinx.coroutines.selects.select
 import java.util.*
 
 class ReminderAdapter(
@@ -59,6 +54,7 @@ class ReminderAdapter(
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: ReminderViewHolder, position: Int) {
         val reminder = getItem(position)
+        val rvContext = holder.itemView.context
 
         // this one's kinda messy, but I think all the string templates save a few if else branches, it's ok
         // it basically just formats the time according to the system time settings (24hours or not) as well as times below 10 (adding a 0)
@@ -82,31 +78,29 @@ class ReminderAdapter(
         }
 
         val monthText = when (reminder.month) {
-            0 -> "Jan"
-            1 -> "Feb"
-            2 -> "Mar"
-            3 -> "Apr"
-            4 -> "May"
-            5 -> "Jun"
-            6 -> "Jul"
-            7 -> "Aug"
-            8 -> "Sept"
-            9 -> "Oct"
-            10 -> "Nov"
-            11 -> "Dec"
-            else -> "*error*"
+            0 -> rvContext.getString(R.string.january)
+            1 -> rvContext.getString(R.string.february)
+            2 -> rvContext.getString(R.string.march)
+            3 -> rvContext.getString(R.string.april)
+            4 -> rvContext.getString(R.string.may)
+            5 -> rvContext.getString(R.string.june)
+            6 -> rvContext.getString(R.string.july)
+            7 -> rvContext.getString(R.string.august)
+            8 -> rvContext.getString(R.string.september)
+            9 -> rvContext.getString(R.string.october)
+            10 -> rvContext.getString(R.string.november)
+            11 -> rvContext.getString(R.string.december)
+            else -> "error"
         }
 
-        val yearText = if (reminder.year == Calendar.getInstance()
-                .get(Calendar.YEAR)
-        ) "" else ", ${reminder.year}"
+        val yearText = if (reminder.year == Calendar.getInstance().get(Calendar.YEAR)) "" else ", ${reminder.year}"
 
         holder.titleField.text = reminder.title
-        holder.timeField.text = "$hourText"
+        holder.timeField.text = hourText
         if (reminder.isRepeating) holder.timeField.setCompoundDrawablesWithIntrinsicBounds(
             null,
             null,
-            holder.itemView.context.getDrawable(R.drawable.repeat_24px),
+            ContextCompat.getDrawable(rvContext, R.drawable.repeat_24px),
             null
         )
         holder.dateField.text =
@@ -154,7 +148,7 @@ class ReminderAdapter(
         isRemovalReady.observe(lifecycleOwner, {
             println("removal ready")
             if (it) {
-                val intent = Intent(holder.itemView.context, FancyTimeBroadcast::class.java)
+                val intent = Intent(rvContext, FancyTimeBroadcast::class.java)
 //                    println("Request code key $requestCodeMax")
 //                for (i in reminderAdapter.currentList) {
 //                    println("selected")
@@ -162,7 +156,7 @@ class ReminderAdapter(
                     try {
                         alarmManager.cancel(
                             PendingIntent.getBroadcast(
-                                holder.itemView.context,
+                                rvContext,
                                 reminder.requestCode,
                                 intent,
                                 PendingIntent.FLAG_NO_CREATE
@@ -181,28 +175,9 @@ class ReminderAdapter(
                 println(selectCount.value)
                 println(this.itemCount)
             }
-////                reminder.selected =  holder.checkBox.isChecked
-//                viewModel.updateReminder(Reminder(
-//                    reminder.requestCode,
-//                    reminder.title,
-//                    reminder.text,
-//                    reminder.timeInMillis,
-//                    reminder.minute,
-//                    reminder.hour,
-//                    reminder.day,
-//                    reminder.month,
-//                    reminder.year,
-//                    reminder.repetition,
-//                    reminder.isRepeating,
-//                    reminder.color,
-//                    reminder.notificationChannel,
-//                    holder.checkBox.isChecked
-//                ))
-//            }
         })
 
-        holder.checkBox.setOnCheckedChangeListener { checkBox, isChecked ->
-//            reminder.selected = isChecked
+        holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 println("checked")
                 if (selectCount.value!! < this.itemCount) {
@@ -214,7 +189,6 @@ class ReminderAdapter(
                         }
                     }
                 }
-//                println(reminder.selected)
             } else if (!isChecked) {
                 println("unchecked")
                 selectCount.value = selectCount.value?.minus(1)
@@ -227,8 +201,8 @@ class ReminderAdapter(
         holder.removeButton.setOnClickListener {
             val alarmManager = it.context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             AlertDialog.Builder(it.context).setTitle("Cancel Reminder")
-                .setMessage("Do you really want to cancel this reminder?").setPositiveButton(
-                    "Yes"
+                .setMessage(context.getString(R.string.cancel_confirmation_specific)).setPositiveButton(
+                    rvContext.getString(R.string.yes)
                 ) { _: DialogInterface, _: Int ->
                     isSelectActive.value = false
                     val intent = Intent(it.context, FancyTimeBroadcast::class.java)
@@ -252,7 +226,7 @@ class ReminderAdapter(
                         println("cancel() called with a null PendingIntent")
                     }
                 }
-                .setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
+                .setNegativeButton(rvContext.getString(R.string.no), null).setIcon(android.R.drawable.ic_dialog_alert).show()
         }
 
         holder.editButton.setOnClickListener {

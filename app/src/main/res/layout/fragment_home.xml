@@ -15,7 +15,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clMain"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="#FFFFFF"
             tools:context=".home.HomeFragment">
 
@@ -59,7 +59,7 @@
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="2dp"
                 android:layout_marginBottom="2dp"
-                android:text="Confirm"
+                android:text="@string/confirm"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -72,19 +72,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#FFFFFF"
+                android:contentDescription="@string/new_reminder_icon"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:padding="25dp"
                 app:layout_constraintBottom_toTopOf="@+id/rvReminders"
                 app:layout_constraintEnd_toStartOf="@+id/ibDeleteReminders"
                 app:layout_constraintStart_toEndOf="@+id/tvHeader"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/notification_add_24px" />
+                app:srcCompat="@drawable/notification_add_24px"
+                tools:ignore="UnusedAttribute" />
 
             <ImageButton
                 android:id="@+id/ibDeleteReminders"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#FFFFFF"
+                android:contentDescription="@string/select_to_delete_icon"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:padding="25dp"
                 android:paddingStart="12dp"
@@ -92,23 +95,25 @@
                 app:layout_constraintBottom_toTopOf="@+id/rvReminders"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/delete_24px" />
+                app:srcCompat="@drawable/delete_24px"
+                tools:ignore="UnusedAttribute" />
 
             <TextView
                 android:id="@+id/tvHeader"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:gravity="center|left"
+                android:gravity="center|start"
                 android:maxLines="1"
-                android:paddingLeft="5dp"
-                android:text="Reminders"
+                android:paddingStart="5dp"
+                android:text="@string/reminders"
                 android:textColor="#000000"
                 android:textSize="30sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/ibSetReminder"
                 app:layout_constraintEnd_toStartOf="@+id/ibSetReminder"
                 app:layout_constraintStart_toEndOf="@+id/cbAll"
-                app:layout_constraintTop_toTopOf="@+id/ibSetReminder" />
+                app:layout_constraintTop_toTopOf="@+id/ibSetReminder"
+                tools:ignore="RtlSymmetry" />
 
             <CheckBox
                 android:id="@+id/cbAll"

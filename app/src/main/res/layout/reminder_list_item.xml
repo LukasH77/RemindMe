@@ -17,7 +17,7 @@
             android:layout_marginBottom="4dp"
             android:gravity="center|start"
             android:padding="2dp"
-            android:text="12:55 AM"
+            tools:text="12:55 AM"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tvTitle"
@@ -31,9 +31,8 @@
             android:layout_height="0dp"
             android:layout_marginEnd="2dp"
             android:gravity="center|end"
-            android:inputType="textPersonName"
             android:padding="2dp"
-            android:text="Jan 25, 2022"
+            tools:text="Jan 25, 2022"
             app:layout_constraintBottom_toBottomOf="@+id/tvTime"
             app:layout_constraintEnd_toStartOf="@+id/ibRemove"
             app:layout_constraintStart_toEndOf="@+id/tvTime"
@@ -50,12 +49,13 @@
             android:gravity="center|start"
             android:inputType="textMultiLine"
             android:padding="2dp"
-            android:text="Groceries"
+            tools:text="Groceries"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ibEdit"
             app:layout_constraintStart_toEndOf="@+id/cbSelect"
-            app:layout_constraintTop_toBottomOf="@+id/tvDate" />
+            app:layout_constraintTop_toBottomOf="@+id/tvDate"
+            tools:ignore="TextViewEdits" />
 
         <ImageButton
             android:id="@+id/ibRemove"
@@ -71,7 +71,9 @@
             app:layout_constraintStart_toEndOf="@+id/tvDate"
             app:layout_constraintTop_toTopOf="@+id/tvDate"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/delete_forever_24px" />
+            app:srcCompat="@drawable/delete_forever_24px"
+            android:contentDescription="@string/delete_reminder_icon"
+            tools:ignore="UnusedAttribute" />
 
         <ImageButton
             android:id="@+id/ibEdit"
@@ -83,7 +85,9 @@
             app:layout_constraintEnd_toEndOf="@+id/ibRemove"
             app:layout_constraintStart_toStartOf="@+id/ibRemove"
             app:layout_constraintTop_toBottomOf="@+id/ibRemove"
-            app:srcCompat="@drawable/edit_24px" />
+            app:srcCompat="@drawable/edit_24px"
+            android:contentDescription="@string/edit_reminder_icon"
+            tools:ignore="UnusedAttribute" />
 
         <TextView
             android:id="@+id/tvLine"

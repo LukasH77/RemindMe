@@ -6,7 +6,7 @@ import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.database.ReminderDao
 import kotlinx.coroutines.*
 
-class DetailViewModel(private val reminderDao: ReminderDao, private val requestCode: Int) : ViewModel() {
+class DetailViewModel(private val reminderDao: ReminderDao, requestCode: Int) : ViewModel() {
     private val job = Job()
     private val scope = CoroutineScope(Dispatchers.Main + job)
 

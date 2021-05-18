@@ -16,7 +16,7 @@ import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.home.HomeViewModel
 import java.util.*
 
-class FancyTimeBroadcast() : BroadcastReceiver() {
+class FancyTimeBroadcast : BroadcastReceiver() {
 
 
     // TODO 2. DONE
@@ -45,7 +45,7 @@ class FancyTimeBroadcast() : BroadcastReceiver() {
             PendingIntent.getActivity(callingContext, 0, notificationClickIntent, 0)
 
         val notificationTitle =
-            callingIntent!!.getStringExtra(callingContext!!.getString(R.string.notification_title_extra_name))
+            callingIntent!!.getStringExtra(callingContext.getString(R.string.notification_title_extra_name))
         val notificationText =
             callingIntent.getStringExtra(callingContext.getString(R.string.notification_text_extra_name))
         val isNotificationRepeating = callingIntent.getBooleanExtra(

@@ -43,9 +43,12 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.2'
+    //noinspection GradleDependency
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.appcompat:appcompat:1.2.0'
+    //noinspection GradleDependency
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    //noinspection GradleDependency
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -53,11 +56,14 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
     //Room
+    //noinspection GradleDependency,GradleDependency,GradleDependency
     implementation "androidx.room:room-runtime:2.2.6"
     kapt "androidx.room:room-compiler:2.2.6"
+    //noinspection GradleDependency
     implementation "androidx.room:room-ktx:2.2.6"
 
     //RecyclerView
+    //noinspection GradleDependency
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0-rc03"
 

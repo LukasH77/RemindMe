@@ -30,7 +30,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                tools:visibility="visible" />
+                tools:visibility="visible"
+                tools:ignore="UnusedAttribute" />
 
             <TextView
                 android:id="@+id/tvSetDate"
@@ -55,24 +56,27 @@
                 app:layout_constraintEnd_toEndOf="@+id/ibEditColor"
                 app:layout_constraintStart_toEndOf="@+id/tvColorPreview"
                 app:layout_constraintTop_toTopOf="@+id/tvSetDate"
-                app:srcCompat="@drawable/date_range_24px" />
+                app:srcCompat="@drawable/date_range_24px"
+                android:contentDescription="@string/calendar_icon"
+                tools:ignore="UnusedAttribute" />
 
             <EditText
                 android:id="@+id/etNotificationTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Topic"
+                android:hint="@string/topic"
                 android:inputType="textCapSentences|textMultiLine"
                 app:layout_constraintBottom_toTopOf="@+id/etNotificationText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvSetDate" />
+                app:layout_constraintTop_toBottomOf="@+id/tvSetDate"
+                tools:ignore="Autofill" />
 
             <EditText
                 android:id="@+id/etNotificationText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Details"
+                android:hint="@string/details"
                 android:inputType="textCapSentences|textMultiLine"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/tvColorPreview"
@@ -81,13 +85,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/etNotificationTitle"
                 app:layout_constraintVertical_bias="0.0"
                 app:layout_constraintVertical_chainStyle="packed"
-                tools:visibility="visible" />
+                tools:visibility="visible"
+                tools:ignore="Autofill" />
 
             <CheckBox
                 android:id="@+id/cbRepeating"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Repeat"
+                android:text="@string/repeat"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/bConfirmPick"
                 app:layout_constraintEnd_toStartOf="@+id/sRepInterval"
@@ -126,7 +131,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tvColorPreview"
                 app:layout_constraintTop_toTopOf="@+id/tvColorPreview"
-                app:srcCompat="@drawable/color_lens_24px" />
+                app:srcCompat="@drawable/color_lens_24px"
+                android:contentDescription="@string/color_palette_icon"
+                tools:ignore="UnusedAttribute" />
 
             <Spinner
                 android:id="@+id/sRepInterval"
@@ -142,7 +149,7 @@
                 android:id="@+id/bConfirmPick"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Confirm"
+                android:text="@string/confirm"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

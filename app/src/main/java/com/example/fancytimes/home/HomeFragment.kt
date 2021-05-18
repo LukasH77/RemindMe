@@ -1,43 +1,29 @@
 package com.example.fancytimes.home
 
-import android.app.*
+import android.app.AlarmManager
+import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
-import android.view.*
-import android.widget.ImageButton
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
-import com.example.fancytimes.FancyTimeBroadcast
 import com.example.fancytimes.R
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.FragmentHomeBinding
-import com.example.fancytimes.hideSoftKeyboard
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.coroutines.selects.select
 
 class HomeFragment : Fragment() {
-
-
-    // TODO 1. DONE
-    //  -> counter preference goes up with each set alarm
-    //  -> each set alarm gets its own preference with the current counter value as key & value
-
-    // TODO 3. DONE
-    //  -> allow manual cancelling of alarms via their preference key, deleting the corresponding preference
-
-    // TODO 4. DONE
-    //  -> visualize all active alarms using a database and recycler view
 
     private lateinit var binding: FragmentHomeBinding
 
@@ -124,7 +110,7 @@ class HomeFragment : Fragment() {
                 binding.ibDeleteReminders.setTag(R.string.isSelectActive_from_activity, "inactive")
                 binding.bRemoveAll.visibility = View.GONE
                 binding.cbAll.visibility = View.GONE
-                binding.tvHeader.text = "Reminders"
+                binding.tvHeader.text = getString(R.string.reminders)
                 binding.cbAll.isChecked = false
                 binding.ibDeleteReminders.setImageResource(R.drawable.delete_24px)
             }
@@ -132,7 +118,7 @@ class HomeFragment : Fragment() {
 
         selectCount.observe(viewLifecycleOwner, {
             if (isSelectActive.value == true) {
-                binding.tvHeader.text = "${selectCount.value} Selected"
+                binding.tvHeader.text = getString(R.string.x_selected, selectCount.value)
             }
         })
 
@@ -148,7 +134,7 @@ class HomeFragment : Fragment() {
             }
         })
 
-        binding.cbAll.setOnCheckedChangeListener { cbAll, isChecked ->
+        binding.cbAll.setOnCheckedChangeListener { _, isChecked ->
             println("isChecked = $isChecked")
             isSelectAll.value = isChecked
             if (isChecked) {
@@ -164,7 +150,7 @@ class HomeFragment : Fragment() {
             if (reminderAdapter.itemCount == 0) {
                 Toast.makeText(
                     requireContext(),
-                    "There are no Reminders to cancel",
+                    getString(R.string.no_reminders_to_cancel),
                     Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
@@ -184,34 +170,38 @@ class HomeFragment : Fragment() {
 
 
 //        binding.ibDeleteReminders.setOnClickListener {
-//            isSelectActive.value = !isSelectActive.value!!
-//            if (isSelectActive.value!!) {
-//                binding.tvHeader.text = "0 Selected"
-//                binding.cbAll.visibility = View.VISIBLE
-//                binding.ibDeleteReminders.setImageResource(R.drawable.cancel_24px)
-//            } else {
-//                binding.cbAll.isChecked = false
-//                binding.cbAll.visibility = View.GONE
-//                binding.ibDeleteReminders.setImageResource(R.drawable.delete_24px)
-//                binding.tvHeader.text = "Reminders"
-//            }
-//        }
-//
-//        var isChecked = false
-//        binding.cbAll.setOnCheckedChangeListener { compoundButton, b ->
-//            isChecked = !isChecked
-//            if (isChecked) {
-//                binding.tvHeader.text = "*all* Selected"
-//                isSelectAll.value = true
-//            } else {
-//                binding.tvHeader.text = "*all* Selected"
-//                isSelectAll.value = false
-//            }
-//        }
+////            isSelectActive.value = !isSelectActive.value!!
+////            if (isSelectActive.value!!) {
+////                binding.tvHeader.text = "0 Selected"
+////                binding.cbAll.visibility = View.VISIBLE
+////                binding.ibDeleteReminders.setImageResource(R.drawable.cancel_24px)
+////            } else {
+////                binding.cbAll.isChecked = false
+////                binding.cbAll.visibility = View.GONE
+////                binding.ibDeleteReminders.setImageResource(R.drawable.delete_24px)
+////                binding.tvHeader.text = "Reminders"
+////            }
+////        }
+////
+////        var isChecked = false
+////        binding.cbAll.setOnCheckedChangeListener { compoundButton, b ->
+////            isChecked = !isChecked
+////            if (isChecked) {
+////                binding.tvHeader.text = "*all* Selected"
+////                isSelectAll.value = true
+////            } else {
+////                binding.tvHeader.text = "*all* Selected"
+////                isSelectAll.value = false
+////            }
+////        }
 
         binding.bRemoveAll.setOnClickListener {
             if (selectCount.value == 0) {
-                Toast.makeText(requireContext(), "No reminders selected", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.no_reminders_selected),
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 //            AlertDialog.Builder(requireContext()).setTitle("Clear all")
@@ -244,9 +234,13 @@ class HomeFragment : Fragment() {
 //                    }
 //                }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
             AlertDialog.Builder(requireContext()).setTitle("Clear all")
-                .setMessage(if (selectCount.value == 1) "Do you really want to cancel the selected reminder?" else "Do you really want to cancel selected reminders?")
+                .setMessage(
+                    if (selectCount.value == 1) getString(R.string.confirm_cancelation_singular) else getString(
+                        R.string.confirm_cancelation_plural
+                    )
+                )
                 .setPositiveButton(
-                    "Yes"
+                    getString(R.string.yes)
                 ) { _: DialogInterface, _: Int ->
                     isRemovalReady.value = true
 //                    val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
@@ -285,7 +279,7 @@ class HomeFragment : Fragment() {
                     isRemovalReady.value = false
                     it.findNavController()
                         .navigate(HomeFragmentDirections.actionHomeFragmentToTrashFragment())
-                }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
+                }.setNegativeButton(getString(R.string.no), null).setIcon(android.R.drawable.ic_dialog_alert).show()
             isRemovalReady.value = false
         }
         return binding.root
@@ -293,7 +287,6 @@ class HomeFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {
-//        val notificationChannels = this.resources.getStringArray(R.array.notificationChannels)
 
         val channel = NotificationChannel(
             getString(R.string.notification_channel),
@@ -303,89 +296,11 @@ class HomeFragment : Fragment() {
         channel.enableVibration(true)
         channel.apply {
             description = "Reminders"
-//            val channel2 = NotificationChannel(
-//                notificationChannels[1],
-//                "Notification Channel",
-//                NotificationManager.IMPORTANCE_HIGH
-//            ).apply {
-//                description = "Reminders"
-//            }
-//            val channel3 = NotificationChannel(
-//                notificationChannels[2],
-//                "Notification Channel",
-//                NotificationManager.IMPORTANCE_HIGH
-//            ).apply {
-//                description = "Reminders"
-//            }
-//            val channel4 = NotificationChannel(
-//                notificationChannels[3],
-//                "Notification Channel",
-//                NotificationManager.IMPORTANCE_HIGH
-//            ).apply {
-//                description = "Reminders"
-//            }
-//            val channel5 = NotificationChannel(
-//                notificationChannels[4],
-//                "Notification Channel",
-//                NotificationManager.IMPORTANCE_HIGH
-//            ).apply {
-//                description = "Reminders"
-//            }
-//            val channel6 = NotificationChannel(
-//                notificationChannels[5],
-//                "Notification Channel",
-//                NotificationManager.IMPORTANCE_HIGH
-//            ).apply {
-//                description = "Reminders"
-//            }
-//            val channel7 = NotificationChannel(
-//                notificationChannels[6],
-//                "Notification Channel",
-//                NotificationManager.IMPORTANCE_HIGH
-//            ).apply {
-//                description = "Reminders"
-//            }
-//            val channel8 = NotificationChannel(
-//                notificationChannels[7],
-//                "Notification Channel",
-//                NotificationManager.IMPORTANCE_HIGH
-//            ).apply {
-//                description = "Reminders"
-//            }
-//            val channel9 = NotificationChannel(
-//                notificationChannels[8],
-//                "Notification Channel",
-//                NotificationManager.IMPORTANCE_HIGH
-//            ).apply {
-//                description = "Reminders"
-//            }
-//            val channel10 = NotificationChannel(
-//                notificationChannels[9],
-//                "Notification Channel",
-//                NotificationManager.IMPORTANCE_HIGH
-//            ).apply {
-//                description = "Reminders"
-//            }
 
-//            val channels = arrayOf(channel1, channel2, channel3, channel4, channel5, channel6, channel7, channel8, channel9, channel10)
-
-//            for (channel in channels) {
             val notificationManager: NotificationManager =
                 activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
 //            }
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.overflow_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return NavigationUI.onNavDestinationSelected(
-            item,
-            requireView().findNavController()
-        ) || super.onOptionsItemSelected(item)
     }
 }

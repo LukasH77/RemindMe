@@ -1,16 +1,15 @@
 package com.example.fancytimes
 
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
 import androidx.navigation.findNavController
 import com.example.fancytimes.home.HomeFragment
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
-import kotlinx.android.synthetic.main.fragment_setter.view.*
 
 class MainActivity : AppCompatActivity(), ColorPickerDialogListener {
 

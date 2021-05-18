@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="repeat">Wiederholen</string>
+    <string name="confirm">Bestätigen</string>
+    <string name="reminders">Erinnerungen</string>
+    <string name="topic">Betreff</string>
+    <string name="details">Beschreibung</string>
+    <string name="calendar_icon">Kalender</string>
+    <string name="color_palette_icon">Farbauswahl</string>
+    <string name="new_reminder_icon">Neue Erinnerung</string>
+    <string name="select_to_delete_icon">Löschauswahl</string>
+    <string name="delete_reminder_icon">Erinnerung Löschen</string>
+    <string name="edit_reminder_icon">Erinnerung bearbeiten</string>
+    <string name="x_selected">%d Ausgewählt</string>
+    <string name="no_reminders_to_cancel">Es sind keine Erinnerungen vorhanden</string>
+    <string name="no_reminders_selected">Es sind keine Erinnerungen ausgewählt</string>
+    <string name="confirm_cancelation_singular">Willst du die ausgewählte Erinnerung wirklich entfernen?</string>
+    <string name="confirm_cancelation_plural">Willst du die ausgewählten Erinnerungen wirklich entfernen?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="january">Jan</string>
+    <string name="february">Feb</string>
+    <string name="march">Mrz</string>
+    <string name="april">Apr</string>
+    <string name="may">Mai</string>
+    <string name="june">Jun</string>
+    <string name="july">Jul</string>
+    <string name="august">Aug</string>
+    <string name="september">Sep</string>
+    <string name="october">Oct</string>
+    <string name="november">Nov</string>
+    <string name="december">Dec</string>
+    <string name="cancel_confirmation_specific">Willst du diese Erinnerung wirklich entfernen?</string>
+    <string name="reminder">Erinnerung</string>
+    <string name="invalid_date">Ungültiges Datum!</string>
+</resources>

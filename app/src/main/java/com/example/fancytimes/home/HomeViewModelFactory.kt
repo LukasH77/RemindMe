@@ -1,6 +1,5 @@
 package com.example.fancytimes.home
 
-import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.fancytimes.database.ReminderDao
