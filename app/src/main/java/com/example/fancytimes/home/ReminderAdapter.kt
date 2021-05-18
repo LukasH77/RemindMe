@@ -200,8 +200,8 @@ class ReminderAdapter(
 
         holder.removeButton.setOnClickListener {
             val alarmManager = it.context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            AlertDialog.Builder(it.context).setTitle("Cancel Reminder")
-                .setMessage(context.getString(R.string.cancel_confirmation_specific)).setPositiveButton(
+            AlertDialog.Builder(it.context).setTitle(rvContext.getString(R.string.cancel_specific_reminder_title))
+                .setMessage(rvContext.getString(R.string.cancel_confirmation_specific)).setPositiveButton(
                     rvContext.getString(R.string.yes)
                 ) { _: DialogInterface, _: Int ->
                     isSelectActive.value = false

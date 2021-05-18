@@ -233,7 +233,7 @@ class HomeFragment : Fragment() {
 //                        this.apply()
 //                    }
 //                }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
-            AlertDialog.Builder(requireContext()).setTitle("Clear all")
+            AlertDialog.Builder(requireContext()).setTitle(getString(R.string.cancel_selected_reminders_title))
                 .setMessage(
                     if (selectCount.value == 1) getString(R.string.confirm_cancelation_singular) else getString(
                         R.string.confirm_cancelation_plural
