@@ -6,10 +6,8 @@ import android.os.Build
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.format.DateFormat
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
@@ -330,5 +328,11 @@ class DetailFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    fun detailKeyUp(keyCode: Int, event: KeyEvent?) {
+        if (keyCode == KeyEvent.KEYCODE_NAVIGATE_NEXT) {
+            println("next key pressed detail")
+        }
     }
 }

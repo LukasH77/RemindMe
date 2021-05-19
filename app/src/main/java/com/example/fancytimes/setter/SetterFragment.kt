@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -45,7 +46,8 @@ class SetterFragment : Fragment() {
 
         val calendar = Calendar.getInstance()
 
-        with(preferences!!.edit()) {
+        with(preferences!!.edit())
+        {
             this.putInt(
                 requireContext().getString(R.string.day_key),
                 calendar.get(Calendar.DAY_OF_MONTH)
@@ -56,7 +58,10 @@ class SetterFragment : Fragment() {
             )
             this.putInt(requireContext().getString(R.string.year_key), calendar.get(Calendar.YEAR))
             if (preferences.getInt(requireContext().getString(R.string.color_key_setter), 0) == 0) {
-                this.putInt(requireContext().getString(R.string.color_key_setter), 0xffcfd8dc.toInt())
+                this.putInt(
+                    requireContext().getString(R.string.color_key_setter),
+                    0xffcfd8dc.toInt()
+                )
             }  // put in grey if not set yet
             this.apply()
         }
@@ -91,7 +96,6 @@ class SetterFragment : Fragment() {
             calendar.get(Calendar.DAY_OF_MONTH)
         )
         datePicker.datePicker.minDate = System.currentTimeMillis()
-
 
 
         val colorPicker =
@@ -189,8 +193,10 @@ class SetterFragment : Fragment() {
 
         repeatingIntervalsSpinner.setSelection(4)
 
-        repeatingCheckBox.isChecked = preferences.getBoolean(getString(R.string.repeat_preference_key), true)
-        repeatingIntervalsSpinner.visibility = if (repeatingCheckBox.isChecked) View.VISIBLE else View.INVISIBLE
+        repeatingCheckBox.isChecked =
+            preferences.getBoolean(getString(R.string.repeat_preference_key), true)
+        repeatingIntervalsSpinner.visibility =
+            if (repeatingCheckBox.isChecked) View.VISIBLE else View.INVISIBLE
 
         repeatingCheckBox.setOnCheckedChangeListener { _: CompoundButton, checkedState: Boolean ->
             if (checkedState) repeatingIntervalsSpinner.visibility =
@@ -207,7 +213,13 @@ class SetterFragment : Fragment() {
         timePicker.hour = calendar.get(Calendar.HOUR_OF_DAY)
         timePicker.minute = calendar.get(Calendar.MINUTE)
 
-        val temp = arrayOf(binding.tvColorPreview, binding.cbRepeating, binding.tvSetDate, binding.tpTimePicker, binding.clMainLayout)
+        val temp = arrayOf(
+            binding.tvColorPreview,
+            binding.cbRepeating,
+            binding.tvSetDate,
+            binding.tpTimePicker,
+            binding.clMainLayout
+        )
 
         for (i in temp) {
             i.setOnClickListener {
@@ -221,13 +233,19 @@ class SetterFragment : Fragment() {
         }
 
         binding.ibEditColor.setOnClickListener {  //main activity cpdListener handles color selection
-            colorPicker.setColor(preferences.getInt(requireContext().getString(R.string.color_key_setter), 0))
+            colorPicker.setColor(
+                preferences.getInt(
+                    requireContext().getString(R.string.color_key_setter),
+                    0
+                )
+            )
             colorPicker.show(requireActivity())
             hideSoftKeyboard(requireContext(), requireView())
         }
 
         binding.bConfirmPick.setOnClickListener {
-            val notificationTitle = if (notificationTitleField.text.isBlank()) getString(R.string.reminder) else notificationTitleField.text.toString()
+            val notificationTitle =
+                if (notificationTitleField.text.isBlank()) getString(R.string.reminder) else notificationTitleField.text.toString()
 
             val notificationText = notificationTextField.text.toString()
 
@@ -285,7 +303,11 @@ class SetterFragment : Fragment() {
                     .get(Calendar.MINUTE)
 
             if (yearIsTooEarly || monthIsTooEarly || dayIsTooEarly) {
-                Toast.makeText(requireContext(), getString(R.string.invalid_date), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.invalid_date),
+                    Toast.LENGTH_SHORT
+                ).show()
 //                println("Invalid date!")
                 return@setOnClickListener
             }
@@ -318,5 +340,12 @@ class SetterFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    fun setterKeyUp(keyCode: Int, event: KeyEvent?) {
+        println("setterKeyDown called")
+        if (keyCode == KeyEvent.KEYCODE_NAVIGATE_NEXT) {
+            println("next key pressed setter")
+        }
     }
 }

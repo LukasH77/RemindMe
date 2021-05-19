@@ -2,13 +2,18 @@ package com.example.fancytimes
 
 import android.os.Build
 import android.os.Bundle
+import android.view.KeyEvent
 import android.widget.ImageButton
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.NestedScrollView
 import androidx.navigation.findNavController
+import com.example.fancytimes.detail.DetailFragment
 import com.example.fancytimes.home.HomeFragment
+import com.example.fancytimes.setter.SetterFragment
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 
 class MainActivity : AppCompatActivity(), ColorPickerDialogListener {
@@ -58,4 +63,19 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener {
             super.onBackPressed()
         }
     }
+
+    /*@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        println("key up")
+        val setterLayout = this.findViewById<NestedScrollView>(R.id.svSetterRoot)
+        val detailLayout = this.findViewById<NestedScrollView>(R.id.svDetailRoot)
+        if (setterLayout != null) {
+            println("setter on screen")
+            SetterFragment().setterKeyUp(keyCode, event)
+        } else if (detailLayout != null) {
+            DetailFragment().detailKeyUp(keyCode, event)
+            println("detail on screen")
+        }
+        return super.onKeyUp(keyCode, event)
+    }*/
 }
