@@ -10,6 +10,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.PowerManager
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.database.ReminderDatabase
@@ -58,7 +59,7 @@ class FancyTimeBroadcast : BroadcastReceiver() {
         )
         val notificationRequestCode = callingIntent.getIntExtra(
             callingContext.getString(R.string.notification_requestCode_extra_name),
-            0
+            -1
         )
         var notificationTime = callingIntent.getLongExtra(
             callingContext.getString(R.string.notification_time_extra_name),
@@ -81,6 +82,11 @@ class FancyTimeBroadcast : BroadcastReceiver() {
 
 //        val notificationChannels = callingContext.resources.getStringArray(R.array.notificationChannels)
 
+        val dismissActionIntent = Intent(callingContext, DismissActionBroadcast::class.java)
+        dismissActionIntent.putExtra(callingContext.getString(R.string.notification_requestCode_extra_name), notificationRequestCode)
+
+        val dismissActonPendingIntent = PendingIntent.getBroadcast(callingContext, notificationRequestCode, dismissActionIntent, 0)
+
         val notification =
             Notification.Builder(
                 callingContext,
@@ -91,6 +97,7 @@ class FancyTimeBroadcast : BroadcastReceiver() {
                 .setContentIntent(notificationClickPendingIntent)
                 .setShowWhen(true)
                 .setAutoCancel(true)
+                .addAction(R.drawable.outline_remove_circle_outline_24, callingContext.getString(R.string.stop_repeating), dismissActonPendingIntent)
         with(NotificationManagerCompat.from(callingContext)) {
             notify(currentChannel, notification.build())
         }

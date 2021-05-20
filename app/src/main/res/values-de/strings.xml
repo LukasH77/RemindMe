@@ -34,7 +34,8 @@
     <string name="cancel_confirmation_specific">Willst du diese Erinnerung wirklich entfernen?</string>
     <string name="reminder">Erinnerung</string>
     <string name="invalid_date">Ungültiges Datum!</string>
-
+    <string name="cancel_specific_reminder_title">Erinnerung entfernen</string>
+    <string name="cancel_selected_reminders_title">Ausgewählte entfernen</string>
 
     <string-array name="repeatIntervals">
         <item>Jede Minute</item>
@@ -45,6 +46,4 @@
         <item>Monatlich</item>
         <item>Jährlich</item>
     </string-array>
-    <string name="cancel_specific_reminder_title">Erinnerung entfernen</string>
-    <string name="cancel_selected_reminders_title">Ausgewählte entfernen</string>
 </resources>

@@ -24,6 +24,10 @@
             android:name=".FancyTimeBroadcast"
             android:enabled="true"
             android:exported="true" />
+        <receiver
+            android:name=".DismissActionBroadcast"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

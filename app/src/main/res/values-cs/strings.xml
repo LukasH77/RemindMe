@@ -1,2 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string-array name="repeatIntervals">
+        <item>Jede Minute</item>
+        <item>Každých 10 minut</item>
+        <item>Každých 30 minut</item>
+        <item>Hodině</item>
+        <item>Denně</item>
+        <item>Měsíčně</item>
+        <item>Ročně</item>
+    </string-array>
+    <string name="stop_repeating">Přestat z opakovat</string>
+</resources>

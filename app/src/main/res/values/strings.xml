@@ -59,6 +59,7 @@
     <string name="invalid_date">Invalid date!</string>
     <string name="cancel_specific_reminder_title">Cancel Reminder</string>
     <string name="cancel_selected_reminders_title">Cancel selected</string>
+    <string name="stop_repeating">Stop Repeating</string>
 
     <string-array name="repeatIntervals">
         <item>Every Minute</item>
