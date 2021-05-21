@@ -10,4 +10,18 @@
         <item>Ročně</item>
     </string-array>
     <string name="stop_repeating">Přestat z opakovat</string>
+    <string name="january">Led</string>
+    <string name="april">Dub</string>
+    <string name="august">Srp</string>
+    <string name="november">Lis</string>
+    <string name="december">Pro</string>
+    <string name="march">Bře</string>
+    <string name="february">Únr</string>
+    <string name="may">Kvě</string>
+    <string name="june">Čvn</string>
+    <string name="july">Čvc</string>
+    <string name="september">Zář</string>
+    <string name="october">Říj</string>
+    <string name="yes">Ano</string>
+    <string name="no">Ne</string>
 </resources>
