@@ -119,8 +119,8 @@ fun handleAlarmsSetter(
         this.putInt(notificationRequestCode.toString(), notificationRequestCode)
         this.apply()
     }
-    Toast.makeText(context, currentChannel.toString(), Toast.LENGTH_SHORT)
-        .show()
+//    Toast.makeText(context, currentChannel.toString(), Toast.LENGTH_SHORT)
+//        .show()
 }
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -202,6 +202,6 @@ fun handleAlarmsDetail(
             currentChannel
         )
     )
-    Toast.makeText(context, currentChannel.toString(), Toast.LENGTH_SHORT)
-        .show()
+//    Toast.makeText(context, currentChannel.toString(), Toast.LENGTH_SHORT)
+//        .show()
 }

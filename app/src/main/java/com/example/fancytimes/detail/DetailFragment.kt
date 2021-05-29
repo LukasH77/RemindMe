@@ -322,6 +322,28 @@ class DetailFragment : Fragment() {
                 currentChannel
             )
 
+            //calculating the exact difference in days, hours, minutes from now until the set reminder
+            //did this "top down", first calculating the days, then the remaining hours and minutes. you could do this the other way around it just came to me like this
+            val diffInDaysExact = (calendar.timeInMillis - Calendar.getInstance().timeInMillis).toDouble() / 1000 / 60 / 60 / 24
+            val diffInDays = diffInDaysExact.toInt()
+            val hoursRestExact = diffInDaysExact % 1 * 24
+            val hoursRest = hoursRestExact.toInt()
+            val minutesRest = (hoursRestExact % 1 * 60).toInt()
+
+            //this is just deciding on a fitting string to tell the user how long it is until the reminder will go off, don't think about it too much
+            when {
+                diffInDays >= 31 -> Toast.makeText(requireContext(), "I'll remind you in more than a month.", Toast.LENGTH_SHORT).show()
+                diffInDays >= 365 -> Toast.makeText(requireContext(), "I'll remind you in more than a year.", Toast.LENGTH_SHORT).show()
+                diffInDays == 0 && hoursRest == 0 && minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in less than a minute.", Toast.LENGTH_SHORT).show()
+                diffInDays == 0 && hoursRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_SHORT).show()
+                diffInDays == 0 && minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $hoursRest ${if (hoursRest > 1) "hours" else "hour"}.", Toast.LENGTH_SHORT).show()
+                diffInDays == 0 -> Toast.makeText(requireContext(), "I'll remind you in $hoursRest ${if (hoursRest > 1) "hours" else "hour"} and $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_SHORT).show()
+                hoursRest == 0 && minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"}", Toast.LENGTH_SHORT).show()
+                hoursRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"} and $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_SHORT).show()
+                minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"} and $hoursRest ${if (hoursRest > 1) "hours" else "hour"}.", Toast.LENGTH_SHORT).show()
+                else -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"}, $hoursRest ${if (hoursRest > 1) "hours" else "hour"} and $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_SHORT).show()
+            }
+
             hideSoftKeyboard(requireContext(), requireView())
 
             requireActivity().onBackPressed()
