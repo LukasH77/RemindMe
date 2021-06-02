@@ -82,26 +82,6 @@ class FancyTimeBroadcast : BroadcastReceiver() {
 
 //        val notificationChannels = callingContext.resources.getStringArray(R.array.notificationChannels)
 
-        val dismissActionIntent = Intent(callingContext, DismissActionBroadcast::class.java)
-        dismissActionIntent.putExtra(callingContext.getString(R.string.notification_requestCode_extra_name), notificationRequestCode)
-
-        val dismissActonPendingIntent = PendingIntent.getBroadcast(callingContext, notificationRequestCode, dismissActionIntent, 0)
-
-        val notification =
-            Notification.Builder(
-                callingContext,
-                callingContext.getString(R.string.notification_channel)
-            ).setSmallIcon(R.drawable.access_time_24px)
-                .setContentTitle(notificationTitle).setContentText(notificationText)
-                .setStyle(Notification.BigTextStyle().bigText(notificationText))
-                .setContentIntent(notificationClickPendingIntent)
-                .setShowWhen(true)
-                .setAutoCancel(true)
-                .addAction(R.drawable.outline_remove_circle_outline_24, callingContext.getString(R.string.stop_repeating), dismissActonPendingIntent)
-        with(NotificationManagerCompat.from(callingContext)) {
-            notify(currentChannel, notification.build())
-        }
-
         val powerManager = callingContext.getSystemService(Context.POWER_SERVICE) as PowerManager
         val isScreenOn = powerManager.isInteractive
 
@@ -111,6 +91,26 @@ class FancyTimeBroadcast : BroadcastReceiver() {
         }
 
         if (isNotificationRepeating) {
+            val dismissActionIntent = Intent(callingContext, DismissActionBroadcast::class.java)
+            dismissActionIntent.putExtra(callingContext.getString(R.string.notification_requestCode_extra_name), notificationRequestCode)
+
+            val dismissActonPendingIntent = PendingIntent.getBroadcast(callingContext, notificationRequestCode, dismissActionIntent, 0)
+
+            val notification =
+                Notification.Builder(
+                    callingContext,
+                    callingContext.getString(R.string.notification_channel)
+                ).setSmallIcon(R.drawable.access_time_24px)
+                    .setContentTitle(notificationTitle).setContentText(notificationText)
+                    .setStyle(Notification.BigTextStyle().bigText(notificationText))
+                    .setContentIntent(notificationClickPendingIntent)
+                    .setShowWhen(true)
+                    .setAutoCancel(true)
+                    .addAction(R.drawable.outline_remove_circle_outline_24, callingContext.getString(R.string.stop_repeating), dismissActonPendingIntent)
+            with(NotificationManagerCompat.from(callingContext)) {
+                notify(currentChannel, notification.build())
+            }
+
             if (notificationRepeatInterval != 1L && notificationRepeatInterval != 2L) {
                 notificationTime += notificationRepeatInterval
                 calendar.timeInMillis = notificationTime
@@ -162,6 +162,19 @@ class FancyTimeBroadcast : BroadcastReceiver() {
                 )
             )
         } else {
+            val notification =
+                Notification.Builder(
+                    callingContext,
+                    callingContext.getString(R.string.notification_channel)
+                ).setSmallIcon(R.drawable.access_time_24px)
+                    .setContentTitle(notificationTitle).setContentText(notificationText)
+                    .setStyle(Notification.BigTextStyle().bigText(notificationText))
+                    .setContentIntent(notificationClickPendingIntent)
+                    .setShowWhen(true)
+                    .setAutoCancel(true)
+            with(NotificationManagerCompat.from(callingContext)) {
+                notify(currentChannel, notification.build())
+            }
             with(preferences.edit()) {
                 this.remove(notificationRequestCode.toString())
                 this.apply()
