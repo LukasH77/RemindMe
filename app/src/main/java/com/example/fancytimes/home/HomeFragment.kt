@@ -6,7 +6,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.DialogInterface
-import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.LayoutInflater
@@ -22,6 +21,7 @@ import com.example.fancytimes.R
 import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.FragmentHomeBinding
+import com.example.fancytimes.refreshReminders
 import java.lang.Exception
 
 class HomeFragment : Fragment() {
@@ -39,6 +39,7 @@ class HomeFragment : Fragment() {
         val isDirectSelectAll: MutableLiveData<Boolean> = MutableLiveData()
         val selectCount: MutableLiveData<Int> = MutableLiveData()
         val isRemovalReady: MutableLiveData<Boolean> = MutableLiveData()
+        var staticReminders: List<Reminder> = listOf()
     }
 
     override fun onCreateView(
@@ -62,8 +63,8 @@ class HomeFragment : Fragment() {
         }
 
 
-        val reminderDao =
-            ReminderDatabase.createInstance(requireContext()).reminderDao
+        val dbInstance = ReminderDatabase.createInstance(requireContext())
+        val reminderDao = dbInstance.reminderDao
 
         homeViewModelFactory = HomeViewModelFactory(reminderDao)
 
@@ -289,14 +290,7 @@ class HomeFragment : Fragment() {
 
 
         binding.tvHeader.setOnClickListener {
-            try {
-                if (homeViewModel.reminders.value == null) throw Exception() else {
-                    println("reminders value is not null")
-                    println(homeViewModel.reminders.value)
-                }
-            } catch (e: Exception) {
-                println("reminders value is null")
-            }
+            refreshReminders(homeViewModel.reminders.value!!, requireContext())
         }
 
 
@@ -320,5 +314,14 @@ class HomeFragment : Fragment() {
             notificationManager.createNotificationChannel(channel)
 //            }
         }
+    }
+
+    fun exportReminderList() {
+        try {
+            staticReminders = homeViewModel.reminders.value!!
+        } catch (e: Exception) {
+            println("exportReminderList failed :(")
+        }
+
     }
 }

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.detail.DetailViewModel
+import com.example.fancytimes.home.HomeFragment
 import com.example.fancytimes.setter.SetterViewModel
 import java.util.*
 

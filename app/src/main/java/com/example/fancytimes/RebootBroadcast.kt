@@ -13,18 +13,8 @@ class RebootBroadcast : BroadcastReceiver() {
 
         // this if-check is only to be safe - it should always be true
         if (callingIntent?.action == Intent.ACTION_BOOT_COMPLETED) {
-            println("action boot completedx")
+            println("action boot completed")
             // TODO can't access the database like this, reminders will be null
-            val reminderDao = ReminderDatabase.createInstance(callingContext!!).reminderDao
-            var reminders: List<Reminder>
-            try {
-                reminders = reminderDao.getAllReminders().value!!
-            } catch (e: Exception) {
-                println("reminders is null")
-                reminders = listOf()
-                println(reminders.isEmpty())
-            }
-            refreshReminders(reminders, callingContext)
         }
     }
 }

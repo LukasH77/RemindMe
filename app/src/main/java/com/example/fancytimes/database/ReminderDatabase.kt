@@ -16,6 +16,7 @@ abstract class ReminderDatabase : RoomDatabase() {
         fun createInstance(context: Context): ReminderDatabase {
             synchronized(this) {
                 if (!::INSTANCE.isInitialized) {
+                    println("db instance created")
                     INSTANCE = Room.databaseBuilder(
                         context.applicationContext,
                         ReminderDatabase::class.java,
