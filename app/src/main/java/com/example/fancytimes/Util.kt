@@ -5,11 +5,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.detail.DetailViewModel
 import com.example.fancytimes.setter.SetterViewModel
@@ -21,7 +18,6 @@ fun hideSoftKeyboard(context: Context, view: View) {
     inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
-@RequiresApi(Build.VERSION_CODES.M)
 fun handleAlarmsSetter(
     context: Context,
     viewModel: SetterViewModel,
@@ -34,7 +30,7 @@ fun handleAlarmsSetter(
     notificationText: String,
     isNotificationRepeating: Boolean,
     notificationRepeatInterval: Long,
-    color: Int
+    notificationColor: Int
 ) {
     val preferences = context.getSharedPreferences(
         context.getString(R.string.notification_preferences_key),
@@ -70,7 +66,7 @@ fun handleAlarmsSetter(
         context.getString(R.string.notification_time_extra_name),
         notificationMillis
     )
-    intent.putExtra(context.getString(R.string.context_extra_name), color)
+    intent.putExtra(context.getString(R.string.context_extra_name), notificationColor)
     intent.putExtra(
         context.getString(R.string.notification_channel_count_extra_name),
         currentChannel
@@ -109,7 +105,7 @@ fun handleAlarmsSetter(
             calendarInstance.get(Calendar.YEAR),
             notificationRepeatInterval,
             isNotificationRepeating,
-            color,
+            notificationColor,
             currentChannel
         )
     )
@@ -123,7 +119,6 @@ fun handleAlarmsSetter(
 //        .show()
 }
 
-@RequiresApi(Build.VERSION_CODES.M)
 fun handleAlarmsDetail(
     context: Context,
     viewModel: DetailViewModel,
@@ -136,7 +131,7 @@ fun handleAlarmsDetail(
     notificationText: String,
     isNotificationRepeating: Boolean,
     notificationRepeatInterval: Long,
-    color: Int,
+    notificationColor: Int,
     currentChannel: Int
 ) {
     val intent = Intent(context, FancyTimeBroadcast::class.java)
@@ -165,7 +160,7 @@ fun handleAlarmsDetail(
         notificationMillis
     )
 
-    intent.putExtra(context.getString(R.string.context_extra_name), color)
+    intent.putExtra(context.getString(R.string.context_extra_name), notificationColor)
 
     val pendingIntent =
         PendingIntent.getBroadcast(
@@ -198,10 +193,70 @@ fun handleAlarmsDetail(
             calendarInstance.get(Calendar.YEAR),
             notificationRepeatInterval,
             isNotificationRepeating,
-            color,
+            notificationColor,
             currentChannel
         )
     )
 //    Toast.makeText(context, currentChannel.toString(), Toast.LENGTH_SHORT)
 //        .show()
+}
+
+fun refreshReminders(reminders: List<Reminder>, context: Context) {
+    println("refresh reminders called")
+    if (reminders.isEmpty()) {
+        println("reminders is empty")
+        return
+    } else {
+        for (reminder in reminders) {
+            val notificationRequestCode = reminder.requestCode
+            val notificationTitle = reminder.title
+            val notificationText = reminder.text
+            val notificationMillis = reminder.timeInMillis
+            val notificationRepeatInterval = reminder.repetition
+            val isNotificationRepeating = reminder.isRepeating
+            val notificationColor = reminder.color
+
+            val intent = Intent(context, FancyTimeBroadcast::class.java)
+
+            intent.putExtra(
+                context.getString(R.string.notification_title_extra_name),
+                notificationTitle
+            )
+            intent.putExtra(context.getString(R.string.notification_text_extra_name), notificationText)
+            intent.putExtra(
+                context.getString(R.string.notification_repeat_extra_name),
+                isNotificationRepeating
+            )
+            intent.putExtra(
+                context.getString(R.string.notification_repeat_interval_extra_name),
+                notificationRepeatInterval
+            )
+            intent.putExtra(
+                context.getString(R.string.notification_requestCode_extra_name),
+                notificationRequestCode
+            )
+            intent.putExtra(
+                context.getString(R.string.notification_time_extra_name),
+                notificationMillis
+            )
+
+            intent.putExtra(context.getString(R.string.context_extra_name), notificationColor)
+
+            val pendingIntent =
+                PendingIntent.getBroadcast(
+                    context,
+                    notificationRequestCode,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                notificationMillis,
+                pendingIntent
+            )
+        }
+    }
 }

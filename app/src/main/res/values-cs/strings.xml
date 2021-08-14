@@ -6,6 +6,7 @@
         <item>Každých 30 minut</item>
         <item>Hodině</item>
         <item>Denně</item>
+        <item>---</item>
         <item>Měsíčně</item>
         <item>Ročně</item>
     </string-array>

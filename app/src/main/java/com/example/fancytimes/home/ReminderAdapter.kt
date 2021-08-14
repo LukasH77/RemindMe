@@ -11,7 +11,6 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
@@ -51,7 +50,6 @@ class ReminderAdapter(
         return ReminderViewHolder(binding)
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: ReminderViewHolder, position: Int) {
         val reminder = getItem(position)
         val rvContext = holder.itemView.context
@@ -77,6 +75,19 @@ class ReminderAdapter(
             }"
         }
 
+        val reminderCalendarInstance = Calendar.getInstance()
+        reminderCalendarInstance.timeInMillis = reminder.timeInMillis
+        val dayOfWeekText = when (reminderCalendarInstance.get(Calendar.DAY_OF_WEEK)) {
+            2 -> rvContext.getString(R.string.monday)
+            3 -> rvContext.getString(R.string.tuesday)
+            4 -> rvContext.getString(R.string.wednesday)
+            5 -> rvContext.getString(R.string.thursday)
+            6 -> rvContext.getString(R.string.friday)
+            7 -> rvContext.getString(R.string.saturday)
+            1 -> rvContext.getString(R.string.sunday)
+            else -> "DoW error"
+        }
+
         val monthText = when (reminder.month) {
             0 -> rvContext.getString(R.string.january)
             1 -> rvContext.getString(R.string.february)
@@ -90,10 +101,13 @@ class ReminderAdapter(
             9 -> rvContext.getString(R.string.october)
             10 -> rvContext.getString(R.string.november)
             11 -> rvContext.getString(R.string.december)
-            else -> "error"
+            else -> "month error"
         }
 
-        val yearText = if (reminder.year == Calendar.getInstance().get(Calendar.YEAR)) "" else ", ${reminder.year}"
+
+        val yearText = if (reminder.year == Calendar.getInstance()
+                .get(Calendar.YEAR)
+        ) "" else "${reminder.year}"
 
         holder.titleField.text = reminder.title
         holder.timeField.text = hourText
@@ -103,10 +117,26 @@ class ReminderAdapter(
             ContextCompat.getDrawable(rvContext, R.drawable.repeat_24px),
             null
         )
-        holder.dateField.text =
-            "$monthText ${if (reminder.day < 10) "0${reminder.day}" else reminder.day}$yearText"
 
-//        println("Adapter request code: ${reminder.requestCode}")
+
+        val currentCalendarInstance = Calendar.getInstance()
+        val isThisYear =
+            currentCalendarInstance.get(Calendar.YEAR) == reminderCalendarInstance.get(Calendar.YEAR)
+        val isToday =
+            isThisYear && currentCalendarInstance.get(Calendar.DAY_OF_YEAR) == reminderCalendarInstance.get(
+                Calendar.DAY_OF_YEAR
+            )
+        val isTomorrow =
+            isThisYear && currentCalendarInstance.get(Calendar.DAY_OF_YEAR) + 1 == reminderCalendarInstance.get(
+                Calendar.DAY_OF_YEAR
+            )
+        holder.dateField.text = when {
+            isToday -> rvContext.getString(R.string.today)
+            isTomorrow -> rvContext.getString(R.string.tomorrow)
+            else -> "$dayOfWeekText, $monthText ${if (reminder.day < 10) "0${reminder.day}" else reminder.day} $yearText"
+        }
+
+
 
         isSelectActive.observe(lifecycleOwner, {
             if (it) {
@@ -200,8 +230,10 @@ class ReminderAdapter(
 
         holder.removeButton.setOnClickListener {
             val alarmManager = it.context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            AlertDialog.Builder(it.context).setTitle(rvContext.getString(R.string.cancel_specific_reminder_title))
-                .setMessage(rvContext.getString(R.string.cancel_confirmation_specific)).setPositiveButton(
+            AlertDialog.Builder(it.context)
+                .setTitle(rvContext.getString(R.string.cancel_specific_reminder_title))
+                .setMessage(rvContext.getString(R.string.cancel_confirmation_specific))
+                .setPositiveButton(
                     rvContext.getString(R.string.yes)
                 ) { _: DialogInterface, _: Int ->
                     isSelectActive.value = false
@@ -215,18 +247,20 @@ class ReminderAdapter(
                                 PendingIntent.FLAG_NO_CREATE
                             )
                         )
-                        HomeViewModel(ReminderDatabase.createInstance(it.context).reminderDao).deleteByRequestCode(
-                            reminder.requestCode
-                        )
                         with(preferences!!.edit()) {
                             this.remove(reminder.requestCode.toString())
                             this.apply()
                         }
                     } catch (e: Exception) {
                         println("cancel() called with a null PendingIntent")
+                    } finally {
+                        HomeViewModel(ReminderDatabase.createInstance(it.context).reminderDao).deleteByRequestCode(
+                            reminder.requestCode
+                        )
                     }
                 }
-                .setNegativeButton(rvContext.getString(R.string.no), null).setIcon(android.R.drawable.ic_dialog_alert).show()
+                .setNegativeButton(rvContext.getString(R.string.no), null)
+                .setIcon(android.R.drawable.ic_dialog_alert).show()
         }
 
         holder.editButton.setOnClickListener {

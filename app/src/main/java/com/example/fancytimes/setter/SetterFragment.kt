@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.fancytimes.*
@@ -26,7 +25,6 @@ class SetterFragment : Fragment() {
     private lateinit var setterViewModelFactory: SetterViewModelFactory
     private lateinit var setterViewModel: SetterViewModel
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -96,6 +94,7 @@ class SetterFragment : Fragment() {
             calendar.get(Calendar.DAY_OF_MONTH)
         )
         datePicker.datePicker.minDate = System.currentTimeMillis()
+        datePicker.datePicker.firstDayOfWeek = Calendar.MONDAY
 
 
         val colorPicker =

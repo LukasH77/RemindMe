@@ -9,22 +9,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.PowerManager
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.home.HomeViewModel
+import java.lang.Exception
 import java.util.*
 
 class FancyTimeBroadcast : BroadcastReceiver() {
 
-
-    // TODO 2. DONE
-    //  -> Non-repeating alarms delete their preference after triggering
-
-
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(callingContext: Context?, callingIntent: Intent?) {
 
         val preferences = callingContext?.getSharedPreferences(
@@ -95,7 +89,7 @@ class FancyTimeBroadcast : BroadcastReceiver() {
             dismissActionIntent.putExtra(callingContext.getString(R.string.notification_requestCode_extra_name), notificationRequestCode)
 
             val dismissActonPendingIntent = PendingIntent.getBroadcast(callingContext, notificationRequestCode, dismissActionIntent, 0)
-
+ 
             val notification =
                 Notification.Builder(
                     callingContext,

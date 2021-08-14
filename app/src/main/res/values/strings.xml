@@ -26,7 +26,7 @@
     <string name="isSelectActive_from_activity" translatable="false">1</string>
     <string name="repeat">Repeat</string>
     <string name="confirm">Confirm</string>
-    <string name="reminders">Reminders</string>
+    <string name="reminders">Reminders v0.992</string>
     <string name="topic">Topic</string>
     <string name="details">Details</string>
     <string name="calendar_icon">Calendar</string>
@@ -54,12 +54,21 @@
     <string name="october">Oct</string>
     <string name="november">Nov</string>
     <string name="december">Dec</string>
+    <string name="monday">Mo</string>
+    <string name="tuesday">Tu</string>
+    <string name="wednesday">We</string>
+    <string name="thursday">Th</string>
+    <string name="friday">Fr</string>
+    <string name="saturday">Sa</string>
+    <string name="sunday">Su</string>
     <string name="cancel_confirmation_specific">Do you really want to cancel this reminder?</string>
     <string name="reminder">Reminder</string>
     <string name="invalid_date">Invalid date!</string>
     <string name="cancel_specific_reminder_title">Cancel Reminder</string>
     <string name="cancel_selected_reminders_title">Cancel selected</string>
     <string name="stop_repeating">Stop Repeating</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
 
     <string-array name="repeatIntervals">
         <item>Every Minute</item>
@@ -67,6 +76,7 @@
         <item>Every 30 Minutes</item>
         <item>Hourly</item>
         <item>Daily</item>
+        <item>Weekly</item>
         <item>Monthly</item>
         <item>Yearly</item>
     </string-array>

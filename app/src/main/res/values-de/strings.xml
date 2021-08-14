@@ -43,7 +43,17 @@
         <item>Alle 30 Minuten</item>
         <item>Stündlich</item>
         <item>Täglich</item>
+        <item>Wöchentlich</item>
         <item>Monatlich</item>
         <item>Jährlich</item>
     </string-array>
+    <string name="monday">Mo</string>
+    <string name="tuesday">Di</string>
+    <string name="wednesday">Mi</string>
+    <string name="thursday">Do</string>
+    <string name="friday">Fr</string>
+    <string name="saturday">Sa</string>
+    <string name="sunday">So</string>
+    <string name="today">Heute</string>
+    <string name="tomorrow">Morgen</string>
 </resources>

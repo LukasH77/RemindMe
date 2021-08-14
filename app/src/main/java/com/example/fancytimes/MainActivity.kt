@@ -6,7 +6,6 @@ import android.view.KeyEvent
 import android.widget.ImageButton
 import android.widget.ScrollView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.NestedScrollView
@@ -51,7 +50,6 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener {
 
     override fun onDialogDismissed(dialogId: Int) {}
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBackPressed() {
         val deletionActivator = this.findViewById<ImageButton>(R.id.ibDeleteReminders)
         val isOnScreen = deletionActivator != null
@@ -63,19 +61,4 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener {
             super.onBackPressed()
         }
     }
-
-    /*@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        println("key up")
-        val setterLayout = this.findViewById<NestedScrollView>(R.id.svSetterRoot)
-        val detailLayout = this.findViewById<NestedScrollView>(R.id.svDetailRoot)
-        if (setterLayout != null) {
-            println("setter on screen")
-            SetterFragment().setterKeyUp(keyCode, event)
-        } else if (detailLayout != null) {
-            DetailFragment().detailKeyUp(keyCode, event)
-            println("detail on screen")
-        }
-        return super.onKeyUp(keyCode, event)
-    }*/
 }

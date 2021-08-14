@@ -13,15 +13,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.fancytimes.R
+import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.FragmentHomeBinding
+import java.lang.Exception
 
 class HomeFragment : Fragment() {
 
@@ -40,7 +41,6 @@ class HomeFragment : Fragment() {
         val isRemovalReady: MutableLiveData<Boolean> = MutableLiveData()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -78,6 +78,8 @@ class HomeFragment : Fragment() {
         isSelectActive.value = false
         isSelectAll.value = false
         selectCount.value = 0
+
+
 
         val reminderAdapter =
             ReminderAdapter(
@@ -282,10 +284,26 @@ class HomeFragment : Fragment() {
                 }.setNegativeButton(getString(R.string.no), null).setIcon(android.R.drawable.ic_dialog_alert).show()
             isRemovalReady.value = false
         }
+
+
+
+
+        binding.tvHeader.setOnClickListener {
+            try {
+                if (homeViewModel.reminders.value == null) throw Exception() else {
+                    println("reminders value is not null")
+                    println(homeViewModel.reminders.value)
+                }
+            } catch (e: Exception) {
+                println("reminders value is null")
+            }
+        }
+
+
+
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {
 
         val channel = NotificationChannel(
