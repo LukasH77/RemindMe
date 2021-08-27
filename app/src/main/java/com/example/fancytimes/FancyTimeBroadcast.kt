@@ -84,6 +84,7 @@ class FancyTimeBroadcast : BroadcastReceiver() {
             wakeLock.acquire(2500)
         }
 
+        println("Current channel: $currentChannel")
         if (isNotificationRepeating) {
             val dismissActionIntent = Intent(callingContext, DismissActionBroadcast::class.java)
             dismissActionIntent.putExtra(callingContext.getString(R.string.notification_requestCode_extra_name), notificationRequestCode)

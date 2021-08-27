@@ -11,19 +11,21 @@ abstract class ReminderDatabase : RoomDatabase() {
 
     companion object {
         @Volatile
-        private lateinit var INSTANCE: ReminderDatabase
+        private var INSTANCE: ReminderDatabase? = null
 
         fun createInstance(context: Context): ReminderDatabase {
             synchronized(this) {
-                if (!::INSTANCE.isInitialized) {
+                var instance = INSTANCE
+                if (instance == null) {
                     println("db instance created")
-                    INSTANCE = Room.databaseBuilder(
+                    instance = Room.databaseBuilder(
                         context.applicationContext,
                         ReminderDatabase::class.java,
                         "Reminder Database"
                     ).fallbackToDestructiveMigration().build()
                 }
-                return INSTANCE
+                INSTANCE = instance
+                return instance
             }
         }
     }

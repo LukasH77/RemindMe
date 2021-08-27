@@ -18,7 +18,10 @@ interface ReminderDao {
     fun getByRequestCode(requestCode:Int): LiveData<Reminder>
 
     @Query("SELECT * FROM Reminder ORDER BY timeInMillis ASC")
-    fun getAllReminders(): LiveData<List<Reminder>>
+    fun getAllRemindersLive(): LiveData<List<Reminder>>
+
+    @Query("SELECT * FROM Reminder ORDER BY timeInMillis ASC")
+    fun getAllReminders(): List<Reminder>
 
     @Query("DELETE FROM Reminder WHERE requestCode = :requestCode")
     fun deleteByRequestCode(requestCode: Int)

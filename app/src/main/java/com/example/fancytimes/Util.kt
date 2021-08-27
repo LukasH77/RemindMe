@@ -8,9 +8,11 @@ import android.content.SharedPreferences
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.example.fancytimes.database.Reminder
+import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.detail.DetailViewModel
 import com.example.fancytimes.home.HomeFragment
 import com.example.fancytimes.setter.SetterViewModel
+import kotlinx.coroutines.*
 import java.util.*
 
 fun hideSoftKeyboard(context: Context, view: View) {
@@ -135,6 +137,11 @@ fun handleAlarmsDetail(
     notificationColor: Int,
     currentChannel: Int
 ) {
+    val preferences = context.getSharedPreferences(
+        context.getString(R.string.notification_preferences_key),
+        Context.MODE_PRIVATE
+    )
+
     val intent = Intent(context, FancyTimeBroadcast::class.java)
 
 //    println("IsRepeatingPassed $isNotificationRepeating")
@@ -160,8 +167,11 @@ fun handleAlarmsDetail(
         context.getString(R.string.notification_time_extra_name),
         notificationMillis
     )
-
     intent.putExtra(context.getString(R.string.context_extra_name), notificationColor)
+    intent.putExtra(
+        context.getString(R.string.notification_channel_count_extra_name),
+        currentChannel
+    )
 
     val pendingIntent =
         PendingIntent.getBroadcast(
@@ -178,8 +188,6 @@ fun handleAlarmsDetail(
         notificationMillis,
         pendingIntent
     )
-
-    println("Current notification channel update: $currentChannel")
 
     viewModel.updateReminder(
         Reminder(
@@ -198,6 +206,7 @@ fun handleAlarmsDetail(
             currentChannel
         )
     )
+
 //    Toast.makeText(context, currentChannel.toString(), Toast.LENGTH_SHORT)
 //        .show()
 }
@@ -209,6 +218,7 @@ fun refreshReminders(reminders: List<Reminder>, context: Context) {
         return
     } else {
         for (reminder in reminders) {
+            val currentChannel = reminder.notificationChannel
             val notificationRequestCode = reminder.requestCode
             val notificationTitle = reminder.title
             val notificationText = reminder.text
@@ -223,7 +233,10 @@ fun refreshReminders(reminders: List<Reminder>, context: Context) {
                 context.getString(R.string.notification_title_extra_name),
                 notificationTitle
             )
-            intent.putExtra(context.getString(R.string.notification_text_extra_name), notificationText)
+            intent.putExtra(
+                context.getString(R.string.notification_text_extra_name),
+                notificationText
+            )
             intent.putExtra(
                 context.getString(R.string.notification_repeat_extra_name),
                 isNotificationRepeating
@@ -240,6 +253,10 @@ fun refreshReminders(reminders: List<Reminder>, context: Context) {
                 context.getString(R.string.notification_time_extra_name),
                 notificationMillis
             )
+            intent.putExtra(
+                context.getString(R.string.notification_channel_count_extra_name),
+                currentChannel
+            )
 
             intent.putExtra(context.getString(R.string.context_extra_name), notificationColor)
 
@@ -248,7 +265,7 @@ fun refreshReminders(reminders: List<Reminder>, context: Context) {
                     context,
                     notificationRequestCode,
                     intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                    0
                 )
 
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager

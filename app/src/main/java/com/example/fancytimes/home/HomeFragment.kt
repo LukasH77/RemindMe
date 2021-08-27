@@ -18,11 +18,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.fancytimes.R
-import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.FragmentHomeBinding
-import com.example.fancytimes.refreshReminders
-import java.lang.Exception
 
 class HomeFragment : Fragment() {
 
@@ -39,7 +36,6 @@ class HomeFragment : Fragment() {
         val isDirectSelectAll: MutableLiveData<Boolean> = MutableLiveData()
         val selectCount: MutableLiveData<Int> = MutableLiveData()
         val isRemovalReady: MutableLiveData<Boolean> = MutableLiveData()
-        var staticReminders: List<Reminder> = listOf()
     }
 
     override fun onCreateView(
@@ -61,7 +57,6 @@ class HomeFragment : Fragment() {
                 this.apply()
             }
         }
-
 
         val dbInstance = ReminderDatabase.createInstance(requireContext())
         val reminderDao = dbInstance.reminderDao
@@ -246,54 +241,17 @@ class HomeFragment : Fragment() {
                     getString(R.string.yes)
                 ) { _: DialogInterface, _: Int ->
                     isRemovalReady.value = true
-//                    val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
-////                    println("Request code key $requestCodeMax")
-//                    for (i in reminderAdapter.currentList) {
-//                        println("selected")
-//                        if (i.selected == true) {
-//                            try {
-//                                alarmManager.cancel(
-//                                    PendingIntent.getBroadcast(
-//                                        requireContext(),
-//                                        i.requestCode,
-//                                        intent,
-//                                        PendingIntent.FLAG_NO_CREATE
-//                                    )
-//                                )
-//                                homeViewModel.deleteByRequestCode(i.requestCode)
-//                            } catch (e: Exception) {
-//                                println("cancel() called with a null PendingIntent")
-//                            }
-//                            with(preferences!!.edit()) {
-//                                this.remove(i.requestCode.toString())
-//                                this.apply()
-//                            }
-//                        }
-//                    }
                     isSelectActive.value = false
                     println("fragment transaction")
+
                     parentFragmentManager.beginTransaction().detach(this).attach(this).commit()
-//                    val homeFragment = parentFragmentManager.findFragmentByTag()
-//                    val fragmentTransaction = parentFragmentManager.beginTransaction()
-//                    println("fragment transaction")
-//                    fragmentTransaction.detach(homeFragment)
-//                    fragmentTransaction.attach(homeFragment)
-//                    fragmentTransaction.commit()
                     isRemovalReady.value = false
+
                     it.findNavController()
                         .navigate(HomeFragmentDirections.actionHomeFragmentToTrashFragment())
                 }.setNegativeButton(getString(R.string.no), null).setIcon(android.R.drawable.ic_dialog_alert).show()
             isRemovalReady.value = false
         }
-
-
-
-
-        binding.tvHeader.setOnClickListener {
-            refreshReminders(homeViewModel.reminders.value!!, requireContext())
-        }
-
-
 
         return binding.root
     }
@@ -312,16 +270,7 @@ class HomeFragment : Fragment() {
             val notificationManager: NotificationManager =
                 activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
-//            }
         }
     }
 
-    fun exportReminderList() {
-        try {
-            staticReminders = homeViewModel.reminders.value!!
-        } catch (e: Exception) {
-            println("exportReminderList failed :(")
-        }
-
-    }
 }

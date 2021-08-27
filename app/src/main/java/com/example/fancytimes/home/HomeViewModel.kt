@@ -9,7 +9,7 @@ class HomeViewModel(private val reminderDao: ReminderDao) : ViewModel() {
     private val job = Job()
     private val scope = CoroutineScope(Dispatchers.Main + job)
 
-    val reminders = reminderDao.getAllReminders()
+    val reminders = reminderDao.getAllRemindersLive()
 
     fun updateReminder(reminder: Reminder) {
         println("reminder updated")

@@ -192,9 +192,10 @@ class ReminderAdapter(
                                 PendingIntent.FLAG_NO_CREATE
                             )
                         )
-                        viewModel.deleteByRequestCode(reminder.requestCode)
                     } catch (e: Exception) {
                         println("cancel() called with a null PendingIntent")
+                    } finally {
+                        viewModel.deleteByRequestCode(reminder.requestCode)
                     }
                     with(preferences!!.edit()) {
                         this.remove(reminder.requestCode.toString())
@@ -254,9 +255,7 @@ class ReminderAdapter(
                     } catch (e: Exception) {
                         println("cancel() called with a null PendingIntent")
                     } finally {
-                        HomeViewModel(ReminderDatabase.createInstance(it.context).reminderDao).deleteByRequestCode(
-                            reminder.requestCode
-                        )
+                        viewModel.deleteByRequestCode(reminder.requestCode)
                     }
                 }
                 .setNegativeButton(rvContext.getString(R.string.no), null)

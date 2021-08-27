@@ -26,7 +26,7 @@
     <string name="isSelectActive_from_activity" translatable="false">1</string>
     <string name="repeat">Repeat</string>
     <string name="confirm">Confirm</string>
-    <string name="reminders">Reminders v0.993</string>
+    <string name="reminders">Reminders</string>
     <string name="topic">Topic</string>
     <string name="details">Details</string>
     <string name="calendar_icon">Calendar</string>
