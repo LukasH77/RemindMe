@@ -138,13 +138,6 @@ class DetailFragment : Fragment() {
                 setDay = it.day
                 setMonth = it.month
                 setYear = it.year
-                with(preferences.edit()) {
-                    this.putInt(getString(R.string.color_key_detail), color)
-                    this.putInt(requireContext().getString(R.string.day_key), setDay)
-                    this.putInt(requireContext().getString(R.string.month_key), setMonth)
-                    this.putInt(requireContext().getString(R.string.year_key), setYear)
-                    this.apply()
-                }
 
                 binding.tvSetDate.text =
                     "${if (it.day < 10) "0${it.day}" else it.day}.${if (it.month < 9) "0${it.month + 1}" else it.month + 1}.${it.year}  (${it.requestCode})"
@@ -153,6 +146,9 @@ class DetailFragment : Fragment() {
                 title.text = SpannableStringBuilder(it.title)
                 text.text = SpannableStringBuilder(it.text)
                 datePicker.updateDate(it.year, it.month, it.day)
+
+                println("it.repetition: ${it.repetition}")
+
                 if (it.repetition != 0L) {
                     binding.cbRepeating.isChecked = true
                     when (it.repetition) {
@@ -161,9 +157,24 @@ class DetailFragment : Fragment() {
                         1800000L -> repeatingIntervalsSpinner.setSelection(2)
                         3600000L -> repeatingIntervalsSpinner.setSelection(3)
                         86400000L -> repeatingIntervalsSpinner.setSelection(4)
-                        1L -> repeatingIntervalsSpinner.setSelection(5)
-                        2L -> repeatingIntervalsSpinner.setSelection(6)
+                        604800000L -> repeatingIntervalsSpinner.setSelection(5)
+                        1L -> repeatingIntervalsSpinner.setSelection(6)
+                        2L -> repeatingIntervalsSpinner.setSelection(7)
                     }
+                }
+
+                with(preferences.edit()) {
+                    this.putInt(getString(R.string.color_key_detail), color)
+                    this.putInt(requireContext().getString(R.string.day_key), setDay)
+                    this.putInt(requireContext().getString(R.string.month_key), setMonth)
+                    this.putInt(requireContext().getString(R.string.year_key), setYear)
+                    if (it.repetition != 0L) {
+                        this.putLong(
+                            requireContext().getString(R.string.repeat_interval_key),
+                            it.repetition!!
+                        )
+                    }
+                    this.apply()
                 }
             }
         })
@@ -218,8 +229,6 @@ class DetailFragment : Fragment() {
                 datePicker.updateDate(setYear, setMonth, setDay)
             }
         }
-
-        repeatingIntervalsSpinner.setSelection(4)
 
         val temp = arrayOf(binding.tvColorPreview, binding.cbRepeating, binding.tvSetDate, binding.tpTimePicker, binding.clMainLayout)
 

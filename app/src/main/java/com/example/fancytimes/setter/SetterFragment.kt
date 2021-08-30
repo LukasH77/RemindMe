@@ -17,6 +17,7 @@ import com.example.fancytimes.*
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.FragmentSetterBinding
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
+import java.lang.Exception
 import java.util.*
 
 class SetterFragment : Fragment() {
@@ -43,6 +44,7 @@ class SetterFragment : Fragment() {
         )
 
         val calendar = Calendar.getInstance()
+        calendar.timeInMillis = calendar.timeInMillis + 1000 * 60 * 60
 
         with(preferences!!.edit())
         {
@@ -54,7 +56,10 @@ class SetterFragment : Fragment() {
                 requireContext().getString(R.string.month_key),
                 calendar.get(Calendar.MONTH)
             )
-            this.putInt(requireContext().getString(R.string.year_key), calendar.get(Calendar.YEAR))
+            this.putInt(
+                requireContext().getString(R.string.year_key),
+                calendar.get(Calendar.YEAR)
+            )
             if (preferences.getInt(requireContext().getString(R.string.color_key_setter), 0) == 0) {
                 this.putInt(
                     requireContext().getString(R.string.color_key_setter),
@@ -128,7 +133,14 @@ class SetterFragment : Fragment() {
         val repeatingCheckBox = binding.cbRepeating
         val repeatingIntervalsSpinner = binding.sRepInterval
 
+        val system24hrs = DateFormat.is24HourFormat(requireContext())
+        timePicker.setIs24HourView(system24hrs)
+
+        timePicker.hour = calendar.get(Calendar.HOUR_OF_DAY)
+        timePicker.minute = calendar.get(Calendar.MINUTE)
+
         timePicker.setOnTimeChangedListener { _: TimePicker, _: Int, _: Int ->
+
             hideSoftKeyboard(requireContext(), requireView())
 
             val yearIsTooEarly =
@@ -205,12 +217,6 @@ class SetterFragment : Fragment() {
                 this.apply()
             }
         }
-
-        val system24hrs = DateFormat.is24HourFormat(requireContext())
-        timePicker.setIs24HourView(system24hrs)
-
-        timePicker.hour = calendar.get(Calendar.HOUR_OF_DAY)
-        timePicker.minute = calendar.get(Calendar.MINUTE)
 
         val temp = arrayOf(
             binding.tvColorPreview,
