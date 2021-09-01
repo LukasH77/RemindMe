@@ -153,9 +153,9 @@ class HomeFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            AlertDialog.Builder(requireContext()).setTitle("Clear all")
-                .setMessage("This will delete all of your reminders!\nAre you sure you want to do this?").setPositiveButton(
-                    "Yes"
+            AlertDialog.Builder(requireContext()).setTitle(getString(R.string.clear_all))
+                .setMessage(requireContext().getString(R.string.delete_all_warning)).setPositiveButton(
+                    requireContext().getString(R.string.yes)
                 ) { _: DialogInterface, _: Int ->
                     homeViewModel.reminders.observe(viewLifecycleOwner) {
                         val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
@@ -179,7 +179,7 @@ class HomeFragment : Fragment() {
                         }
                     }
                     homeViewModel.deleteAll()
-                }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
+                }.setNegativeButton(requireContext().getString(R.string.no), null).setIcon(android.R.drawable.ic_dialog_alert).show()
 //            if (isSelectActive.value == false) {
 //                isSelectActive.value = true
 //            } else if (isSelectActive.value == true) {

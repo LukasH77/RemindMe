@@ -56,4 +56,6 @@
     <string name="sunday">So</string>
     <string name="today">Heute</string>
     <string name="tomorrow">Morgen</string>
+    <string name="clear_all">Alle löschen</string>
+    <string name="delete_all_warning">Diese Aktion löscht alle deine Erinnerungen!\\nBist du dir sicher dass du das willst?</string>
 </resources>
