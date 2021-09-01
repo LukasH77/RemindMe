@@ -1,11 +1,9 @@
 package com.example.fancytimes.home
 
-import android.app.AlarmManager
-import android.app.AlertDialog
-import android.app.NotificationChannel
-import android.app.NotificationManager
+import android.app.*
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.LayoutInflater
@@ -17,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.example.fancytimes.FancyTimeBroadcast
 import com.example.fancytimes.R
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.databinding.FragmentHomeBinding
@@ -153,11 +152,39 @@ class HomeFragment : Fragment() {
                 ).show()
                 return@setOnClickListener
             }
-            if (isSelectActive.value == false) {
-                isSelectActive.value = true
-            } else if (isSelectActive.value == true) {
-                isSelectActive.value = false
-            }
+
+            AlertDialog.Builder(requireContext()).setTitle("Clear all")
+                .setMessage("This will delete all of your reminders!\nAre you sure you want to do this?").setPositiveButton(
+                    "Yes"
+                ) { _: DialogInterface, _: Int ->
+                    homeViewModel.reminders.observe(viewLifecycleOwner) {
+                        val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
+                        for (item in it) {
+                            try {
+                                alarmManager.cancel(
+                                    PendingIntent.getBroadcast(
+                                        requireContext(),
+                                        item.requestCode,
+                                        intent,
+                                        PendingIntent.FLAG_NO_CREATE
+                                    )
+                                )
+                            } catch (e: Exception) {
+                                println("cancel() called with a null PendingIntent")
+                            }
+                            with(preferences.edit()) {
+                                this.remove(item.requestCode.toString())
+                                this.apply()
+                            }
+                        }
+                    }
+                    homeViewModel.deleteAll()
+                }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
+//            if (isSelectActive.value == false) {
+//                isSelectActive.value = true
+//            } else if (isSelectActive.value == true) {
+//                isSelectActive.value = false
+//            }
         }
 
         addReminder.setOnClickListener {
