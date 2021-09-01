@@ -115,7 +115,7 @@ fun handleAlarmsSetter(
 
     with(preferences.edit()) {
         this.putInt(context.getString(R.string.request_code_key), notificationRequestCode + 1)
-        this.putInt(notificationRequestCode.toString(), notificationRequestCode)
+//        this.putInt(notificationRequestCode.toString(), notificationRequestCode)
         this.apply()
     }
 //    Toast.makeText(context, currentChannel.toString(), Toast.LENGTH_SHORT)
@@ -212,9 +212,7 @@ fun handleAlarmsDetail(
 }
 
 fun refreshReminders(reminders: List<Reminder>, context: Context) {
-    println("refresh reminders called")
     if (reminders.isEmpty()) {
-        println("reminders is empty")
         return
     } else {
         for (reminder in reminders) {

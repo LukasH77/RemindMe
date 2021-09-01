@@ -170,10 +170,10 @@ class FancyTimeBroadcast : BroadcastReceiver() {
             with(NotificationManagerCompat.from(callingContext)) {
                 notify(currentChannel, notification.build())
             }
-            with(preferences.edit()) {
-                this.remove(notificationRequestCode.toString())
-                this.apply()
-            }
+//            with(preferences.edit()) {
+//                this.remove(notificationRequestCode.toString())
+//                this.apply()
+//            }
             databaseReference.deleteByRequestCode(
                 notificationRequestCode
             )

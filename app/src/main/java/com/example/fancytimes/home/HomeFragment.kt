@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
 
         createNotificationChannel()
 
-        if (preferences!!.getInt(getString(R.string.notification_channel_count), 1000) == 1000) {
+        if (preferences!!.getInt(getString(R.string.notification_channel_count), -1) == -1) {
             println("channel count not initialized")
             with(preferences.edit()) {
                 this.putInt(getString(R.string.notification_channel_count), 1)

@@ -46,6 +46,14 @@ class SetterFragment : Fragment() {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = calendar.timeInMillis + 1000 * 60 * 60
 
+        val timePicker = binding.tpTimePicker
+        val notificationTitleField = binding.etNotificationTitle
+        val notificationTextField = binding.etNotificationText
+        val repeatingCheckBox = binding.cbRepeating
+        val repeatingIntervalsSpinner = binding.sRepInterval
+
+        val system24hrs = DateFormat.is24HourFormat(requireContext())
+
         with(preferences!!.edit())
         {
             this.putInt(
@@ -60,10 +68,10 @@ class SetterFragment : Fragment() {
                 requireContext().getString(R.string.year_key),
                 calendar.get(Calendar.YEAR)
             )
-            if (preferences.getInt(requireContext().getString(R.string.color_key_setter), 0) == 0) {
+            if (preferences.getInt(requireContext().getString(R.string.color_key_setter), -1) == -1) {
                 this.putInt(
                     requireContext().getString(R.string.color_key_setter),
-                    0xffcfd8dc.toInt()
+                    0xfff2f2f2.toInt()
                 )
             }  // put in grey if not set yet
             this.apply()
@@ -78,7 +86,7 @@ class SetterFragment : Fragment() {
 
         val datePicker = DatePickerDialog(
             requireContext(),
-            { _: DatePicker?, year: Int, month: Int, day: Int ->
+            { datePicker: DatePicker?, year: Int, month: Int, day: Int ->
 //                println("date set")
                 with(preferences.edit()) {
                     this.putInt(requireContext().getString(R.string.day_key), day)
@@ -87,12 +95,59 @@ class SetterFragment : Fragment() {
                     this.apply()
                 }
 
+
+
+
+
                 setDay = preferences.getInt(getString(R.string.day_key), 0)
                 setMonth = preferences.getInt(getString(R.string.month_key), 0)
                 setYear = preferences.getInt(getString(R.string.year_key), 0)
 
-                binding.tvSetDate.text =
-                    "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
+                //check too early here as well in case you set a hour/minute too early then put the date on today - make the dateText update!
+                val yearIsTooEarly =
+                    preferences.getInt(getString(R.string.year_key), 0) < Calendar.getInstance()
+                        .get(Calendar.YEAR)
+
+                val yearIsEqual =
+                    preferences.getInt(getString(R.string.year_key), 0) == Calendar.getInstance()
+                        .get(Calendar.YEAR)
+
+                val monthIsTooEarly = (yearIsTooEarly || yearIsEqual) &&
+                        preferences.getInt(getString(R.string.month_key), 0) < Calendar.getInstance()
+                    .get(Calendar.MONTH)
+
+                val monthIsEqual = yearIsEqual &&
+                        preferences.getInt(getString(R.string.month_key), 0) == Calendar.getInstance()
+                    .get(Calendar.MONTH)
+
+                val dayIsTooEarly = (monthIsTooEarly || monthIsEqual) && preferences.getInt(
+                    getString(R.string.day_key),
+                    0
+                ) < Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+
+                val dayIsEqual = monthIsEqual &&
+                        preferences.getInt(getString(R.string.day_key), 0) == Calendar.getInstance()
+                    .get(Calendar.DAY_OF_MONTH)
+
+                val hourIsTooEarly =
+                    (dayIsEqual || dayIsTooEarly) && timePicker.hour < Calendar.getInstance()
+                        .get(Calendar.HOUR_OF_DAY)
+                val hourIsEqual =
+                    dayIsEqual && timePicker.hour == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+
+                val minuteIsTooEarly =
+                    (hourIsTooEarly || hourIsEqual) && timePicker.minute <= Calendar.getInstance()
+                        .get(Calendar.MINUTE)
+
+
+                if (hourIsTooEarly || minuteIsTooEarly) {
+                    binding.tvSetDate.text =
+                        "${if (setDay < 9) "0${setDay + 1}" else setDay + 1}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
+                    datePicker!!.updateDate(setYear, setMonth, setDay + 1)
+                } else {
+                    binding.tvSetDate.text =
+                        "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
+                }
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
@@ -106,15 +161,15 @@ class SetterFragment : Fragment() {
             ColorPickerDialog.newBuilder().setDialogType(ColorPickerDialog.TYPE_PRESETS)
                 .setPresets(
                     intArrayOf(
-                        0xffeccced.toInt(),
-                        0xffd0cced.toInt(),
-                        0xffccdbed.toInt(),
-                        0xffccede6.toInt(),
-                        0xffccedd0.toInt(),
-                        0xffedeccc.toInt(),
-                        0xffeddccc.toInt(),
-                        0xffedcccc.toInt(),
-                        0xffcfd8dc.toInt(),
+                        0xfff9f3ff.toInt(),
+                        0xfff3f4ff.toInt(),
+                        0xfff3fcff.toInt(),
+                        0xfff2fffe.toInt(),
+                        0xfff3fff3.toInt(),
+                        0xfffefff3.toInt(),
+                        0xfffff8f3.toInt(),
+                        0xfffff3f3.toInt(),
+                        0xfff2f2f2.toInt(),
                         0xffffffff.toInt()
                     )
                 )
@@ -127,13 +182,6 @@ class SetterFragment : Fragment() {
             )
         )
 
-        val timePicker = binding.tpTimePicker
-        val notificationTitleField = binding.etNotificationTitle
-        val notificationTextField = binding.etNotificationText
-        val repeatingCheckBox = binding.cbRepeating
-        val repeatingIntervalsSpinner = binding.sRepInterval
-
-        val system24hrs = DateFormat.is24HourFormat(requireContext())
         timePicker.setIs24HourView(system24hrs)
 
         timePicker.hour = calendar.get(Calendar.HOUR_OF_DAY)
@@ -175,7 +223,7 @@ class SetterFragment : Fragment() {
                 dayIsEqual && timePicker.hour == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
 
             val minuteIsTooEarly =
-                (hourIsTooEarly || hourIsEqual) && timePicker.minute < Calendar.getInstance()
+                (hourIsTooEarly || hourIsEqual) && timePicker.minute <= Calendar.getInstance()
                     .get(Calendar.MINUTE)
 
             if (dayIsTooEarly || monthIsTooEarly || yearIsTooEarly) {
@@ -306,7 +354,7 @@ class SetterFragment : Fragment() {
                 dayIsEqual && timePicker.hour == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
 
             val minuteIsTooEarly =
-                (hourIsTooEarly || hourIsEqual) && timePicker.minute < Calendar.getInstance()
+                (hourIsTooEarly || hourIsEqual) && timePicker.minute <= Calendar.getInstance()
                     .get(Calendar.MINUTE)
 
             if (yearIsTooEarly || monthIsTooEarly || dayIsTooEarly) {
