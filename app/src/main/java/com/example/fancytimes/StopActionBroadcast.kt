@@ -58,6 +58,7 @@ class StopActionBroadcast : BroadcastReceiver() {
         val notification =
             Notification.Builder(
                 callingContext,
+                // TODO
                 callingContext.getString(R.string.notification_channel)
             ).setSmallIcon(R.drawable.access_time_24px)
                 .setContentTitle(notificationTitle).setContentText(notificationText)

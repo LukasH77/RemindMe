@@ -285,6 +285,7 @@ class HomeFragment : Fragment() {
 
     private fun createNotificationChannel() {
 
+        // TODO
         val channel = NotificationChannel(
             getString(R.string.notification_channel),
             "Notification Channel",

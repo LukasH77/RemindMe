@@ -44,7 +44,7 @@ class SetterFragment : Fragment() {
         )
 
         val calendar = Calendar.getInstance()
-//        calendar.timeInMillis = calendar.timeInMillis + 1000 * 60 * 5
+        calendar.timeInMillis = calendar.timeInMillis
 
         val timePicker = binding.tpTimePicker
         val notificationTitleField = binding.etNotificationTitle
