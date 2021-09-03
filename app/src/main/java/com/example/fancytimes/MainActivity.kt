@@ -12,6 +12,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.navigation.findNavController
 import com.example.fancytimes.detail.DetailFragment
 import com.example.fancytimes.home.HomeFragment
+import com.example.fancytimes.home.HomeFragmentDirections
 import com.example.fancytimes.setter.SetterFragment
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 
@@ -20,6 +21,12 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        println(this.intent)
+        if (this.intent.getIntExtra(getString(R.string.notification_click_identifier_extra_name), 0) == 1) {
+            println("clickIdentifier = 1")
+            val clickedNotificationRequestCode = this.intent.getIntExtra(getString(R.string.notification_requestCode_extra_name), 0)
+            findNavController(R.id.nav_host).navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(clickedNotificationRequestCode))
+        }
 //        NavigationUI.setupActionBarWithNavController(this, findNavController(R.id.nav_host))
     }
 

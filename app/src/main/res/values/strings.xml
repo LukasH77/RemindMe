@@ -9,6 +9,7 @@
     <string name="notification_requestCode_extra_name" translatable="false">notificationRequestCode</string>
     <string name="notification_time_extra_name" translatable="false">notificationTime</string>
     <string name="context_extra_name" translatable="false">context</string>
+    <string name="notification_click_identifier_extra_name">notificationClicked</string>
 
     <string name="notification_preferences_key" translatable="false">notificationPreferences</string>
     <string name="repeat_preference_key" translatable="false">repeatPreference</string>
@@ -68,9 +69,13 @@
     <string name="cancel_specific_reminder_title">Cancel Reminder</string>
     <string name="cancel_selected_reminders_title">Cancel selected</string>
     <string name="stop_repeating">Stop Repeating</string>
+    <string name="delete_reminder">Delete Reminder</string>
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
+    <string name="yesterday">Yesterday</string>
     <string name="clear_all">Clear all</string>
+    <string name="repetition_stopped">The reminder will not repeat itself anymore.</string>
+    <string name="reminder_deleted">The reminder has been deleted</string>
 
     <string-array name="repeatIntervals">
         <item>Every Minute</item>

@@ -29,7 +29,12 @@
         </receiver>
 
         <receiver
-            android:name=".DismissActionBroadcast"
+            android:name=".StopActionBroadcast"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver
+            android:name=".DeleteActionBroadcast"
             android:enabled="true"
             android:exported="false" />
 

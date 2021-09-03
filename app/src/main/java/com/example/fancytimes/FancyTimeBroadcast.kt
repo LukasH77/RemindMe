@@ -7,14 +7,11 @@ import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.PowerManager
-import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.database.ReminderDatabase
 import com.example.fancytimes.home.HomeViewModel
-import java.lang.Exception
 import java.util.*
 
 class FancyTimeBroadcast : BroadcastReceiver() {
@@ -29,15 +26,10 @@ class FancyTimeBroadcast : BroadcastReceiver() {
         val databaseReference =
             HomeViewModel(ReminderDatabase.createInstance(callingContext!!).reminderDao)
 
-        with(preferences!!.edit()) {
-            this.remove("requestCode")
-            this.apply()
-        }
-
-        val notificationClickIntent = Intent(callingContext, MainActivity::class.java)
-
-        val notificationClickPendingIntent: PendingIntent =
-            PendingIntent.getActivity(callingContext, 0, notificationClickIntent, 0)
+//        with(preferences!!.edit()) {
+//            this.remove("requestCode")
+//            this.apply()
+//        }
 
         val notificationTitle =
             callingIntent!!.getStringExtra(callingContext.getString(R.string.notification_title_extra_name))
@@ -62,7 +54,7 @@ class FancyTimeBroadcast : BroadcastReceiver() {
         val notificationColor =
             callingIntent.getIntExtra(callingContext.getString(R.string.context_extra_name), 0)
         val currentChannel = callingIntent.getIntExtra(callingContext.getString(R.string.notification_channel_count_extra_name), 0)
-        
+
         println("Current notification channel notify: $currentChannel")
 
         val calendar = Calendar.getInstance()
@@ -84,12 +76,27 @@ class FancyTimeBroadcast : BroadcastReceiver() {
             wakeLock.acquire(2500)
         }
 
+        val notificationClickIntent = Intent(callingContext, MainActivity::class.java)
+        notificationClickIntent.putExtra(callingContext.getString(R.string.notification_click_identifier_extra_name), 1)
+        notificationClickIntent.putExtra(callingContext.getString(R.string.notification_requestCode_extra_name), notificationRequestCode)
+        notificationClickIntent.action = System.currentTimeMillis().toString()
+        val notificationClickPendingIntent: PendingIntent = PendingIntent.getActivity(callingContext, notificationRequestCode, notificationClickIntent, 0)
+
+        val deleteActionIntent = Intent(callingContext, DeleteActionBroadcast::class.java)
+        deleteActionIntent.putExtra(callingContext.getString(R.string.notification_requestCode_extra_name), notificationRequestCode)
+        deleteActionIntent.putExtra(callingContext.getString(R.string.notification_channel_count_extra_name), currentChannel)
+        deleteActionIntent.action = System.currentTimeMillis().toString()
+        val deleteActonPendingIntent = PendingIntent.getBroadcast(callingContext, notificationRequestCode, deleteActionIntent, 0)
+
         println("Current channel: $currentChannel")
         if (isNotificationRepeating) {
-            val dismissActionIntent = Intent(callingContext, DismissActionBroadcast::class.java)
-            dismissActionIntent.putExtra(callingContext.getString(R.string.notification_requestCode_extra_name), notificationRequestCode)
-
-            val dismissActonPendingIntent = PendingIntent.getBroadcast(callingContext, notificationRequestCode, dismissActionIntent, 0)
+            val stopActionIntent = Intent(callingContext, StopActionBroadcast::class.java)
+            stopActionIntent.putExtra(callingContext.getString(R.string.notification_requestCode_extra_name), notificationRequestCode)
+            stopActionIntent.putExtra(callingContext.getString(R.string.notification_title_extra_name), notificationTitle)
+            stopActionIntent.putExtra(callingContext.getString(R.string.notification_text_extra_name), notificationText)
+            stopActionIntent.putExtra(callingContext.getString(R.string.notification_channel_count_extra_name), currentChannel)
+            stopActionIntent.action = System.currentTimeMillis().toString()
+            val stopActonPendingIntent = PendingIntent.getBroadcast(callingContext, notificationRequestCode, stopActionIntent, 0)
  
             val notification =
                 Notification.Builder(
@@ -101,7 +108,8 @@ class FancyTimeBroadcast : BroadcastReceiver() {
                     .setContentIntent(notificationClickPendingIntent)
                     .setShowWhen(true)
                     .setAutoCancel(true)
-                    .addAction(R.drawable.outline_remove_circle_outline_24, callingContext.getString(R.string.stop_repeating), dismissActonPendingIntent)
+                    .addAction(R.drawable.outline_remove_circle_outline_24, callingContext.getString(R.string.stop_repeating), stopActonPendingIntent)
+                    .addAction(R.drawable.outline_remove_circle_outline_24, callingContext.getString(R.string.delete_reminder), deleteActonPendingIntent)
             with(NotificationManagerCompat.from(callingContext)) {
                 notify(currentChannel, notification.build())
             }
@@ -167,16 +175,10 @@ class FancyTimeBroadcast : BroadcastReceiver() {
                     .setContentIntent(notificationClickPendingIntent)
                     .setShowWhen(true)
                     .setAutoCancel(true)
+                    .addAction(R.drawable.outline_remove_circle_outline_24, callingContext.getString(R.string.delete_reminder), deleteActonPendingIntent)
             with(NotificationManagerCompat.from(callingContext)) {
                 notify(currentChannel, notification.build())
             }
-//            with(preferences.edit()) {
-//                this.remove(notificationRequestCode.toString())
-//                this.apply()
-//            }
-            databaseReference.deleteByRequestCode(
-                notificationRequestCode
-            )
         }
     }
 }

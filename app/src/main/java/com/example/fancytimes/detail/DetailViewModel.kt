@@ -18,11 +18,18 @@ class DetailViewModel(private val reminderDao: ReminderDao, requestCode: Int) : 
 
     private fun getByRequestCode(requestCode: Int): LiveData<Reminder> = reminderDao.getByRequestCode(requestCode)
 
-
     fun updateReminder(reminder: Reminder) {
         scope.launch {
             withContext(Dispatchers.IO) {
                 reminderDao.updateReminder(reminder)
+            }
+        }
+    }
+
+    fun deleteByRequestCode(requestCode: Int) {
+        scope.launch {
+            withContext(Dispatchers.IO) {
+                reminderDao.deleteByRequestCode(requestCode)
             }
         }
     }

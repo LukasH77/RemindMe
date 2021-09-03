@@ -109,7 +109,8 @@ fun handleAlarmsSetter(
             notificationRepeatInterval,
             isNotificationRepeating,
             notificationColor,
-            currentChannel
+            currentChannel,
+            //false
         )
     )
 
@@ -203,7 +204,8 @@ fun handleAlarmsDetail(
             notificationRepeatInterval,
             isNotificationRepeating,
             notificationColor,
-            currentChannel
+            currentChannel,
+            //false
         )
     )
 

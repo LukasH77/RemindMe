@@ -118,7 +118,6 @@ class ReminderAdapter(
             null
         )
 
-
         val currentCalendarInstance = Calendar.getInstance()
         val isThisYear =
             currentCalendarInstance.get(Calendar.YEAR) == reminderCalendarInstance.get(Calendar.YEAR)
@@ -130,9 +129,15 @@ class ReminderAdapter(
             isThisYear && currentCalendarInstance.get(Calendar.DAY_OF_YEAR) + 1 == reminderCalendarInstance.get(
                 Calendar.DAY_OF_YEAR
             )
+        val isYesterday =
+            isThisYear && currentCalendarInstance.get(Calendar.DAY_OF_YEAR) - 1 == reminderCalendarInstance.get(
+                Calendar.DAY_OF_YEAR
+            )
+
         holder.dateField.text = when {
             isToday -> rvContext.getString(R.string.today)
             isTomorrow -> rvContext.getString(R.string.tomorrow)
+            isYesterday -> rvContext.getString(R.string.yesterday)
             else -> "$dayOfWeekText, $monthText ${if (reminder.day < 10) "0${reminder.day}" else reminder.day} $yearText"
         }
 

@@ -30,8 +30,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                tools:visibility="visible"
-                tools:ignore="UnusedAttribute" />
+                tools:ignore="UnusedAttribute"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/tvSetDate"
@@ -51,13 +51,13 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="#FFFFFF"
+                android:contentDescription="@string/calendar_icon"
                 android:foreground="?android:attr/selectableItemBackground"
                 app:layout_constraintBottom_toBottomOf="@+id/tvSetDate"
                 app:layout_constraintEnd_toEndOf="@+id/ibEditColor"
                 app:layout_constraintStart_toEndOf="@+id/tvColorPreview"
                 app:layout_constraintTop_toTopOf="@+id/tvSetDate"
                 app:srcCompat="@drawable/date_range_24px"
-                android:contentDescription="@string/calendar_icon"
                 tools:ignore="UnusedAttribute" />
 
             <EditText
@@ -85,8 +85,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/etNotificationTitle"
                 app:layout_constraintVertical_bias="0.0"
                 app:layout_constraintVertical_chainStyle="packed"
-                tools:visibility="visible"
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill"
+                tools:visibility="visible" />
 
             <CheckBox
                 android:id="@+id/cbRepeating"
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/repeat"
                 android:visibility="visible"
-                app:layout_constraintBottom_toTopOf="@+id/bConfirmPick"
+                app:layout_constraintBottom_toTopOf="@+id/ibConfirmPick"
                 app:layout_constraintEnd_toStartOf="@+id/sRepInterval"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -124,6 +124,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:background="#FFFFFF"
+                android:contentDescription="@string/color_palette_icon"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
@@ -132,7 +133,6 @@
                 app:layout_constraintStart_toEndOf="@+id/tvColorPreview"
                 app:layout_constraintTop_toTopOf="@+id/tvColorPreview"
                 app:srcCompat="@drawable/color_lens_24px"
-                android:contentDescription="@string/color_palette_icon"
                 tools:ignore="UnusedAttribute" />
 
             <Spinner
@@ -145,15 +145,17 @@
                 app:layout_constraintStart_toEndOf="@+id/cbRepeating"
                 app:layout_constraintTop_toTopOf="@+id/cbRepeating" />
 
-            <Button
-                android:id="@+id/bConfirmPick"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/confirm"
+            <ImageButton
+                android:id="@+id/ibConfirmPick"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_marginTop="64dp"
+                android:background="#CCFF90"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:src="@drawable/task_alt_black_48dp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cbRepeating"
                 tools:visibility="visible" />

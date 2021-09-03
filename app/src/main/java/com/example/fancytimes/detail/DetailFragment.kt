@@ -1,7 +1,12 @@
 package com.example.fancytimes.detail
 
+import android.app.AlarmManager
+import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.app.PendingIntent
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -12,6 +17,7 @@ import android.widget.*
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fancytimes.*
 import com.example.fancytimes.database.ReminderDatabase
@@ -31,9 +37,10 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val receivedArgs by navArgs<DetailFragmentArgs>()
+        val requestCode = receivedArgs.requestCode
 
         val reminderDao = ReminderDatabase.createInstance(requireContext()).reminderDao
-        val detailViewModelFactory = DetailViewModelFactory(reminderDao, receivedArgs.requestCode)
+        val detailViewModelFactory = DetailViewModelFactory(reminderDao, requestCode)
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
         detailViewModel =
@@ -67,10 +74,8 @@ class DetailFragment : Fragment() {
                         0xfff9f3ff.toInt(),
                         0xfff3f4ff.toInt(),
                         0xfff3fcff.toInt(),
-                        0xfff2fffe.toInt(),
                         0xfff3fff3.toInt(),
                         0xfffefff3.toInt(),
-                        0xfffff8f3.toInt(),
                         0xfffff3f3.toInt(),
                         0xfff2f2f2.toInt(),
                         0xffffffff.toInt()
@@ -133,13 +138,13 @@ class DetailFragment : Fragment() {
                     binding.tvSetDate.text =
                         "${if (setDay < 9) "0${setDay + 1}" else setDay + 1}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear" +
                                 "($currentChannel)" +
-                                ""
+                                "1"
                     datePicker!!.updateDate(setYear, setMonth, setDay + 1)
                 } else {
                     binding.tvSetDate.text =
                         "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear" +
                                 "($currentChannel)" +
-                                ""
+                                "2"
                 }
             },
             calendar.get(Calendar.YEAR),
@@ -175,6 +180,8 @@ class DetailFragment : Fragment() {
             hideSoftKeyboard(requireContext(), requireView())
         }
 
+        // this variable stops the on timeChanged listener to react to the initial time setting
+        var isTimeInitialized = false
         detailViewModel.selectedReminder.observe(viewLifecycleOwner, {
             it?.let {
                 currentChannel = it.notificationChannel
@@ -191,7 +198,7 @@ class DetailFragment : Fragment() {
                 binding.tvSetDate.text =
                     "${if (it.day < 10) "0${it.day}" else it.day}.${if (it.month < 9) "0${it.month + 1}" else it.month + 1}.${it.year}  " +
                             "(${it.notificationChannel})" +
-                            ""
+                            "3"
                 binding.tpTimePicker.minute = it.minute
                 binding.tpTimePicker.hour = it.hour
                 title.text = SpannableStringBuilder(it.title)
@@ -227,11 +234,14 @@ class DetailFragment : Fragment() {
                     }
                     this.apply()
                 }
+
+                isTimeInitialized = true
             }
         })
 
         timePicker.setOnTimeChangedListener { _: TimePicker, _: Int, _: Int ->
             hideSoftKeyboard(requireContext(), requireView())
+            if (!isTimeInitialized) return@setOnTimeChangedListener
 
             val yearIsTooEarly =
                 preferences.getInt(getString(R.string.year_key), 0) < Calendar.getInstance()
@@ -274,13 +284,13 @@ class DetailFragment : Fragment() {
                 binding.tvSetDate.text =
                     "${if (setDay < 9) "0${setDay + 1}" else setDay + 1}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear" +
                             "($currentChannel)" +
-                            ""
+                            "4"
                 datePicker.updateDate(setYear, setMonth, setDay + 1)
             } else {
                 binding.tvSetDate.text =
                     "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear" +
                             "($currentChannel)" +
-                            ""
+                            "5"
                 datePicker.updateDate(setYear, setMonth, setDay)
             }
         }
@@ -299,8 +309,38 @@ class DetailFragment : Fragment() {
             hideSoftKeyboard(requireContext(), requireView())
         }
 
-        binding.bConfirmPick.setOnClickListener {
+        binding.ibDeleteDetail.setOnClickListener {
+            val alarmManager = it.context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            AlertDialog.Builder(it.context)
+                .setTitle(requireContext().getString(R.string.cancel_specific_reminder_title))
+                .setMessage(requireContext().getString(R.string.cancel_confirmation_specific))
+                .setPositiveButton(requireContext().getString(R.string.yes)) { _: DialogInterface, _: Int ->
+                    val intent = Intent(it.context, FancyTimeBroadcast::class.java)
+                    try {
+                        alarmManager.cancel(
+                            PendingIntent.getBroadcast(
+                                it.context,
+                                requestCode,
+                                intent,
+                                PendingIntent.FLAG_NO_CREATE
+                            )
+                        )
+                        with(preferences.edit()) {
+                            this.remove(requestCode.toString())
+                            this.apply()
+                        }
+                    } catch (e: Exception) {
+                        println("cancel() called with a null PendingIntent")
+                    } finally {
+                        detailViewModel.deleteByRequestCode(requestCode)
+                        requireActivity().onBackPressed()
+                    }
+                }
+                .setNegativeButton(requireContext().getString(R.string.no), null)
+                .setIcon(android.R.drawable.ic_dialog_alert).show()
+        }
 
+        binding.ibConfirmPick.setOnClickListener {
             calendar.set(
                 preferences.getInt(getString(R.string.year_key), 0),
                 preferences.getInt(getString(R.string.month_key), 0),
@@ -348,7 +388,7 @@ class DetailFragment : Fragment() {
                     .get(Calendar.MINUTE)
 
             if (yearIsTooEarly || monthIsTooEarly || dayIsTooEarly) {
-                Toast.makeText(requireContext(), getString(R.string.invalid_date), Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.invalid_date), Toast.LENGTH_LONG).show()
 //                println("Invalid date!")
                 return@setOnClickListener
             }
@@ -385,26 +425,27 @@ class DetailFragment : Fragment() {
                 currentChannel
             )
 
-            //calculating the exact difference in days, hours, minutes from now until the set reminder
-            //did this "top down", first calculating the days, then the remaining hours and minutes. you could do this the other way around it just came to me like this
+            // calculating the exact difference in days, hours, minutes from now until the set reminder
+            // did this "top down", first calculating the days, then the remaining hours and minutes. you could do this the other way around it just came to me like this
             val diffInDaysExact = (calendar.timeInMillis - Calendar.getInstance().timeInMillis).toDouble() / 1000 / 60 / 60 / 24
             val diffInDays = diffInDaysExact.toInt()
             val hoursRestExact = diffInDaysExact % 1 * 24
             val hoursRest = hoursRestExact.toInt()
             val minutesRest = (hoursRestExact % 1 * 60).toInt()
 
-            //this is just deciding on a fitting string to tell the user how long it is until the reminder will go off, don't think about it too much
+            // this is just deciding on a fitting string to tell the user how long it is until the reminder will go off, don't think about it too much
+            // TODO translate this!!
             when {
-                diffInDays >= 31 -> Toast.makeText(requireContext(), "I'll remind you in more than a month.", Toast.LENGTH_SHORT).show()
-                diffInDays >= 365 -> Toast.makeText(requireContext(), "I'll remind you in more than a year.", Toast.LENGTH_SHORT).show()
-                diffInDays == 0 && hoursRest == 0 && minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in less than a minute.", Toast.LENGTH_SHORT).show()
-                diffInDays == 0 && hoursRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_SHORT).show()
-                diffInDays == 0 && minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $hoursRest ${if (hoursRest > 1) "hours" else "hour"}.", Toast.LENGTH_SHORT).show()
-                diffInDays == 0 -> Toast.makeText(requireContext(), "I'll remind you in $hoursRest ${if (hoursRest > 1) "hours" else "hour"} and $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_SHORT).show()
-                hoursRest == 0 && minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"}", Toast.LENGTH_SHORT).show()
-                hoursRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"} and $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_SHORT).show()
-                minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"} and $hoursRest ${if (hoursRest > 1) "hours" else "hour"}.", Toast.LENGTH_SHORT).show()
-                else -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"}, $hoursRest ${if (hoursRest > 1) "hours" else "hour"} and $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_SHORT).show()
+                diffInDays >= 31 -> Toast.makeText(requireContext(), "I'll remind you in more than a month.", Toast.LENGTH_LONG).show()
+                diffInDays >= 365 -> Toast.makeText(requireContext(), "I'll remind you in more than a year.", Toast.LENGTH_LONG).show()
+                diffInDays == 0 && hoursRest == 0 && minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in less than a minute.", Toast.LENGTH_LONG).show()
+                diffInDays == 0 && hoursRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_LONG).show()
+                diffInDays == 0 && minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $hoursRest ${if (hoursRest > 1) "hours" else "hour"}.", Toast.LENGTH_LONG).show()
+                diffInDays == 0 -> Toast.makeText(requireContext(), "I'll remind you in $hoursRest ${if (hoursRest > 1) "hours" else "hour"} and $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_LONG).show()
+                hoursRest == 0 && minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"}", Toast.LENGTH_LONG).show()
+                hoursRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"} and $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_LONG).show()
+                minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"} and $hoursRest ${if (hoursRest > 1) "hours" else "hour"}.", Toast.LENGTH_LONG).show()
+                else -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"}, $hoursRest ${if (hoursRest > 1) "hours" else "hour"} and $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_LONG).show()
             }
 
             hideSoftKeyboard(requireContext(), requireView())

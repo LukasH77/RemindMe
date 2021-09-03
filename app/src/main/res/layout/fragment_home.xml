@@ -95,7 +95,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/rvReminders"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/delete_24px"
+                app:srcCompat="@drawable/delete_forever_24px"
                 tools:ignore="UnusedAttribute" />
 
             <TextView

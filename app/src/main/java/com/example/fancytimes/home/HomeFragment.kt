@@ -148,7 +148,7 @@ class HomeFragment : Fragment() {
                 Toast.makeText(
                     requireContext(),
                     getString(R.string.no_reminders_to_cancel),
-                    Toast.LENGTH_SHORT
+                    Toast.LENGTH_LONG
                 ).show()
                 return@setOnClickListener
             }
@@ -225,7 +225,7 @@ class HomeFragment : Fragment() {
                 Toast.makeText(
                     requireContext(),
                     getString(R.string.no_reminders_selected),
-                    Toast.LENGTH_SHORT
+                    Toast.LENGTH_LONG
                 ).show()
                 return@setOnClickListener
             }

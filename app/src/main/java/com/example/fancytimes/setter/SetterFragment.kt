@@ -44,7 +44,7 @@ class SetterFragment : Fragment() {
         )
 
         val calendar = Calendar.getInstance()
-        calendar.timeInMillis = calendar.timeInMillis + 1000 * 60 * 60
+//        calendar.timeInMillis = calendar.timeInMillis + 1000 * 60 * 5
 
         val timePicker = binding.tpTimePicker
         val notificationTitleField = binding.etNotificationTitle
@@ -164,10 +164,8 @@ class SetterFragment : Fragment() {
                         0xfff9f3ff.toInt(),
                         0xfff3f4ff.toInt(),
                         0xfff3fcff.toInt(),
-                        0xfff2fffe.toInt(),
                         0xfff3fff3.toInt(),
                         0xfffefff3.toInt(),
-                        0xfffff8f3.toInt(),
                         0xfffff3f3.toInt(),
                         0xfff2f2f2.toInt(),
                         0xffffffff.toInt()
@@ -297,7 +295,7 @@ class SetterFragment : Fragment() {
             hideSoftKeyboard(requireContext(), requireView())
         }
 
-        binding.bConfirmPick.setOnClickListener {
+        binding.ibConfirmPick.setOnClickListener {
             println("confirmed")
             val notificationTitle =
                 if (notificationTitleField.text.isBlank()) getString(R.string.reminder) else notificationTitleField.text.toString()
@@ -361,7 +359,7 @@ class SetterFragment : Fragment() {
                 Toast.makeText(
                     requireContext(),
                     getString(R.string.invalid_date),
-                    Toast.LENGTH_SHORT
+                    Toast.LENGTH_LONG
                 ).show()
 //                println("Invalid date!")
                 return@setOnClickListener
@@ -399,16 +397,16 @@ class SetterFragment : Fragment() {
 
             //this is just deciding on a fitting string to tell the user how long it is until the reminder will go off, don't think about it too much
             when {
-                diffInDays >= 31 -> Toast.makeText(requireContext(), "I'll remind you in more than a month.", Toast.LENGTH_SHORT).show()
-                diffInDays >= 365 -> Toast.makeText(requireContext(), "I'll remind you in more than a year.", Toast.LENGTH_SHORT).show()
-                diffInDays == 0 && hoursRest == 0 && minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in less than a minute.", Toast.LENGTH_SHORT).show()
-                diffInDays == 0 && hoursRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_SHORT).show()
-                diffInDays == 0 && minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $hoursRest ${if (hoursRest > 1) "hours" else "hour"}.", Toast.LENGTH_SHORT).show()
-                diffInDays == 0 -> Toast.makeText(requireContext(), "I'll remind you in $hoursRest ${if (hoursRest > 1) "hours" else "hour"} and $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_SHORT).show()
-                hoursRest == 0 && minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"}", Toast.LENGTH_SHORT).show()
-                hoursRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"} and $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_SHORT).show()
-                minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"} and $hoursRest ${if (hoursRest > 1) "hours" else "hour"}.", Toast.LENGTH_SHORT).show()
-                else -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"}, $hoursRest ${if (hoursRest > 1) "hours" else "hour"} and $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_SHORT).show()
+                diffInDays >= 31 -> Toast.makeText(requireContext(), "I'll remind you in more than a month.", Toast.LENGTH_LONG).show()
+                diffInDays >= 365 -> Toast.makeText(requireContext(), "I'll remind you in more than a year.", Toast.LENGTH_LONG).show()
+                diffInDays == 0 && hoursRest == 0 && minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in less than a minute.", Toast.LENGTH_LONG).show()
+                diffInDays == 0 && hoursRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_LONG).show()
+                diffInDays == 0 && minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $hoursRest ${if (hoursRest > 1) "hours" else "hour"}.", Toast.LENGTH_LONG).show()
+                diffInDays == 0 -> Toast.makeText(requireContext(), "I'll remind you in $hoursRest ${if (hoursRest > 1) "hours" else "hour"} and $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_LONG).show()
+                hoursRest == 0 && minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"}", Toast.LENGTH_LONG).show()
+                hoursRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"} and $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_LONG).show()
+                minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"} and $hoursRest ${if (hoursRest > 1) "hours" else "hour"}.", Toast.LENGTH_LONG).show()
+                else -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"}, $hoursRest ${if (hoursRest > 1) "hours" else "hour"} and $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_LONG).show()
             }
 
             hideSoftKeyboard(requireContext(), requireView())

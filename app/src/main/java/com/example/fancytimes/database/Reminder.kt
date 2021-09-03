@@ -43,5 +43,8 @@ data class Reminder(
     val color: Int,
 
     @ColumnInfo
-    val notificationChannel: Int
+    val notificationChannel: Int,
+
+//    @ColumnInfo
+//    val isCancelled: Boolean
 )
