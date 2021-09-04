@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener {
         val isOnScreen = setterFragment != null
         println("isOnScreen: $isOnScreen")
         if (isOnScreen) {
+            println("color put: $color")
             with(preferences.edit()) {
                 this.putInt(getString(R.string.color_key_setter), color)
                 this.apply()

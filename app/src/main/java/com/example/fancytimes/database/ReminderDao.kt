@@ -14,6 +14,9 @@ interface ReminderDao {
     @Update
     fun updateReminder(reminder: Reminder)
 
+    @Query("UPDATE Reminder SET isCancelled = :isCancelled WHERE requestCode = :requestCode")
+    fun updateIsCancelled(requestCode: Int, isCancelled: Boolean)
+
     @Query("SELECT * FROM Reminder WHERE requestCode = :requestCode")
     fun getByRequestCode(requestCode:Int): LiveData<Reminder>
 

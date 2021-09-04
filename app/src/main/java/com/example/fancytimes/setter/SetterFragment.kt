@@ -44,7 +44,7 @@ class SetterFragment : Fragment() {
         )
 
         val calendar = Calendar.getInstance()
-        calendar.timeInMillis = calendar.timeInMillis
+        calendar.timeInMillis = calendar.timeInMillis + 1000 * 60
 
         val timePicker = binding.tpTimePicker
         val notificationTitleField = binding.etNotificationTitle
@@ -68,7 +68,8 @@ class SetterFragment : Fragment() {
                 requireContext().getString(R.string.year_key),
                 calendar.get(Calendar.YEAR)
             )
-            if (preferences.getInt(requireContext().getString(R.string.color_key_setter), -1) == -1) {
+            if (preferences.getInt(requireContext().getString(R.string.color_key_setter), 0) == 0) {
+                println("no color preference")
                 this.putInt(
                     requireContext().getString(R.string.color_key_setter),
                     0xfff2f2f2.toInt()
@@ -155,7 +156,6 @@ class SetterFragment : Fragment() {
         )
         datePicker.datePicker.minDate = System.currentTimeMillis()
         datePicker.datePicker.firstDayOfWeek = Calendar.MONDAY
-
 
         val colorPicker =
             ColorPickerDialog.newBuilder().setDialogType(ColorPickerDialog.TYPE_PRESETS)

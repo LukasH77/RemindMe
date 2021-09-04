@@ -118,6 +118,13 @@ class ReminderAdapter(
             null
         )
 
+        if (reminder.isCancelled) holder.dateField.setCompoundDrawablesWithIntrinsicBounds(
+            ContextCompat.getDrawable(rvContext, R.drawable.stop_circle_black_24dp),
+            null,
+            null,
+            null
+        )
+
         val currentCalendarInstance = Calendar.getInstance()
         val isThisYear =
             currentCalendarInstance.get(Calendar.YEAR) == reminderCalendarInstance.get(Calendar.YEAR)

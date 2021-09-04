@@ -168,8 +168,10 @@ class DetailFragment : Fragment() {
         repeatingIntervalsSpinner.onItemSelectedListener = IntervalSetter(preferences!!)
 
         repeatingCheckBox.setOnCheckedChangeListener { _: CompoundButton, checkedState: Boolean ->
-            if (checkedState) repeatingIntervalsSpinner.visibility =
-                View.VISIBLE else repeatingIntervalsSpinner.visibility = View.INVISIBLE
+            if (checkedState) {
+                repeatingIntervalsSpinner.setSelection(4)
+                repeatingIntervalsSpinner.visibility = View.VISIBLE
+            } else repeatingIntervalsSpinner.visibility = View.INVISIBLE
         }
 
 

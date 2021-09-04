@@ -145,20 +145,31 @@
                 app:layout_constraintStart_toEndOf="@+id/cbRepeating"
                 app:layout_constraintTop_toTopOf="@+id/cbRepeating" />
 
+            <TextView
+                android:id="@+id/tvSeparator"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="#B98048"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cbRepeating" />
+
             <ImageButton
                 android:id="@+id/ibConfirmPick"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                android:layout_marginTop="64dp"
-                android:background="#CCFF90"
+                android:layout_marginTop="42dp"
+                android:background="@drawable/round_corner_green"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:src="@drawable/task_alt_black_48dp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cbRepeating"
+                app:layout_constraintTop_toBottomOf="@+id/tvSeparator"
                 tools:visibility="visible" />
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

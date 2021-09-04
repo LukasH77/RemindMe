@@ -48,6 +48,22 @@ class HomeFragment : Fragment() {
 
         createNotificationChannel()
 
+//        if (preferences!!.getInt(getString(R.string.bypass_DnD), -1) == -1) {
+//            AlertDialog.Builder(requireContext())
+//                .setTitle(getString(R.string.allow_DnD_bypass_title))
+//                .setMessage(getString(R.string.allow_DnD_bypass_text))
+//                .setPositiveButton(getString(R.string.yes)) { _: DialogInterface, _: Int ->
+//                    createNotificationChannel()
+//                }.setNegativeButton(getString(R.string.no)) { _: DialogInterface, _: Int ->
+//                    createNotificationChannelRespectDnD()
+//                }
+//                .setIcon(android.R.drawable.ic_dialog_alert).show()
+//            with(preferences.edit()) {
+//                this.putInt(getString(R.string.bypass_DnD), 1)
+//                this.apply()
+//            }
+//        }
+
         if (preferences!!.getInt(getString(R.string.notification_channel_count), -1) == -1) {
             println("channel count not initialized")
             with(preferences.edit()) {
@@ -73,7 +89,6 @@ class HomeFragment : Fragment() {
         isSelectActive.value = false
         isSelectAll.value = false
         selectCount.value = 0
-
 
 
         val reminderAdapter =
@@ -154,7 +169,8 @@ class HomeFragment : Fragment() {
             }
 
             AlertDialog.Builder(requireContext()).setTitle(getString(R.string.clear_all))
-                .setMessage(requireContext().getString(R.string.delete_all_warning)).setPositiveButton(
+                .setMessage(requireContext().getString(R.string.delete_all_warning))
+                .setPositiveButton(
                     requireContext().getString(R.string.yes)
                 ) { _: DialogInterface, _: Int ->
                     homeViewModel.reminders.observe(viewLifecycleOwner) {
@@ -179,7 +195,8 @@ class HomeFragment : Fragment() {
                         }
                     }
                     homeViewModel.deleteAll()
-                }.setNegativeButton(requireContext().getString(R.string.no), null).setIcon(android.R.drawable.ic_dialog_alert).show()
+                }.setNegativeButton(requireContext().getString(R.string.no), null)
+                .setIcon(android.R.drawable.ic_dialog_alert).show()
 //            if (isSelectActive.value == false) {
 //                isSelectActive.value = true
 //            } else if (isSelectActive.value == true) {
@@ -258,7 +275,8 @@ class HomeFragment : Fragment() {
 //                        this.apply()
 //                    }
 //                }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
-            AlertDialog.Builder(requireContext()).setTitle(getString(R.string.cancel_selected_reminders_title))
+            AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.cancel_selected_reminders_title))
                 .setMessage(
                     if (selectCount.value == 1) getString(R.string.confirm_cancelation_singular) else getString(
                         R.string.confirm_cancelation_plural
@@ -276,7 +294,8 @@ class HomeFragment : Fragment() {
 
                     it.findNavController()
                         .navigate(HomeFragmentDirections.actionHomeFragmentToTrashFragment())
-                }.setNegativeButton(getString(R.string.no), null).setIcon(android.R.drawable.ic_dialog_alert).show()
+                }.setNegativeButton(getString(R.string.no), null)
+                .setIcon(android.R.drawable.ic_dialog_alert).show()
             isRemovalReady.value = false
         }
 
@@ -284,14 +303,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun createNotificationChannel() {
-
-        // TODO
         val channel = NotificationChannel(
             getString(R.string.notification_channel),
             "Notification Channel",
             NotificationManager.IMPORTANCE_HIGH
         )
         channel.enableVibration(true)
+//        channel.setBypassDnd(true)
+        channel.enableLights(true)
         channel.apply {
             description = "Reminders"
 
@@ -299,6 +318,49 @@ class HomeFragment : Fragment() {
                 activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
+
+        val channelSilent = NotificationChannel(
+            getString(R.string.notification_channel_silent),
+            "Notification Channel Silent",
+            NotificationManager.IMPORTANCE_LOW
+        )
+//        channelSilent.setBypassDnd(true)
+        channelSilent.apply {
+            description = "Reminders"
+
+            val notificationManager: NotificationManager =
+                activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channelSilent)
+        }
     }
 
+//    private fun createNotificationChannelRespectDnD() {
+//        val channel = NotificationChannel(
+//            getString(R.string.notification_channel),
+//            "Notification Channel",
+//            NotificationManager.IMPORTANCE_HIGH
+//        )
+//        channel.enableVibration(true)
+//        channel.enableLights(true)
+//        channel.apply {
+//            description = "Reminders"
+//
+//            val notificationManager: NotificationManager =
+//                activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//            notificationManager.createNotificationChannel(channel)
+//        }
+//
+//        val channelSilent = NotificationChannel(
+//            getString(R.string.notification_channel_silent),
+//            "Notification Channel Silent",
+//            NotificationManager.IMPORTANCE_LOW
+//        )
+//        channelSilent.apply {
+//            description = "Reminders"
+//
+//            val notificationManager: NotificationManager =
+//                activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//            notificationManager.createNotificationChannel(channelSilent)
+//        }
+//    }
 }
