@@ -13,8 +13,8 @@
     <string name="delete_reminder_icon">Erinnerung Löschen</string>
     <string name="edit_reminder_icon">Erinnerung bearbeiten</string>
     <string name="x_selected">%d Ausgewählt</string>
-    <string name="no_reminders_to_cancel">Es sind keine Erinnerungen vorhanden</string>
-    <string name="no_reminders_selected">Es sind keine Erinnerungen ausgewählt</string>
+    <string name="no_reminders_to_cancel">Es sind keine Erinnerungen vorhanden.</string>
+    <string name="no_reminders_selected">Es sind keine Erinnerungen ausgewählt.</string>
     <string name="confirm_cancelation_singular">Willst du die ausgewählte Erinnerung wirklich entfernen?</string>
     <string name="confirm_cancelation_plural">Willst du die ausgewählten Erinnerungen wirklich entfernen?</string>
     <string name="yes">Ja</string>
@@ -57,9 +57,19 @@
     <string name="today">Heute</string>
     <string name="tomorrow">Morgen</string>
     <string name="clear_all">Alle löschen</string>
-    <string name="delete_all_warning">Diese Aktion löscht alle deine Erinnerungen!\\nBist du dir sicher dass du das willst?</string>
+    <string name="delete_all_warning">Diese Aktion löscht alle deine Erinnerungen! Bist du dir sicher dass du das willst?</string>
     <string name="stop_repeating">Nicht mehr wiederholen</string>
     <string name="delete_reminder">Erinnerung löschen</string>
     <string name="yesterday">Gestern</string>
-    <string name="allow_DnD_bypass_title">"Nicht stören "</string>
+    <string name="more_than_a_month">Ich erinnere dich in mehr als einem Monat.</string>
+    <string name="more_than_a_year">Ich erinnere dich in mehr als einem Jahr.</string>
+    <string name="less_than_a_minute">Ich erinnere dich in weniger als einer Minute.</string>
+    <string name="remind_you_in_start">"Ich erinnere dich in "</string>
+    <string name="remind_you_in_minutes">Minuten</string>
+    <string name="remind_you_in_minute">Minute</string>
+    <string name="remind_you_in_and">" und "</string>
+    <string name="remind_you_in_hour">Stunde</string>
+    <string name="remind_you_in_hours">Stunden</string>
+    <string name="remind_you_in_day">Tag</string>
+    <string name="remind_you_in_days">Tagen</string>
 </resources>

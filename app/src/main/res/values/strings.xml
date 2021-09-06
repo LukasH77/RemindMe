@@ -77,6 +77,17 @@
     <string name="clear_all">Clear all</string>
     <string name="allow_DnD_bypass_title">Allow reminders to bypass do not disturb?</string>
     <string name="allow_DnD_bypass_text">Do you want to allow the app to bypass do not disturb mode with its reminders?</string>
+    <string name="more_than_a_month">I\'ll remind you in more than a month.</string>
+    <string name="more_than_a_year">I\'ll remind you in more than a year.</string>
+    <string name="less_than_a_minute">I\'ll remind you in less than a minute.</string>
+    <string name="remind_you_in_start">"I'll remind you in "</string>
+    <string name="remind_you_in_minutes">minutes</string>
+    <string name="remind_you_in_minute">minute</string>
+    <string name="remind_you_in_and">" and "</string>
+    <string name="remind_you_in_hour">hour</string>
+    <string name="remind_you_in_hours">hours</string>
+    <string name="remind_you_in_day">day</string>
+    <string name="remind_you_in_days">days</string>
 
     <string-array name="repeatIntervals">
         <item>Every Minute</item>

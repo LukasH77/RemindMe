@@ -114,11 +114,17 @@ class SetterFragment : Fragment() {
                         .get(Calendar.YEAR)
 
                 val monthIsTooEarly = (yearIsTooEarly || yearIsEqual) &&
-                        preferences.getInt(getString(R.string.month_key), 0) < Calendar.getInstance()
+                        preferences.getInt(
+                            getString(R.string.month_key),
+                            0
+                        ) < Calendar.getInstance()
                     .get(Calendar.MONTH)
 
                 val monthIsEqual = yearIsEqual &&
-                        preferences.getInt(getString(R.string.month_key), 0) == Calendar.getInstance()
+                        preferences.getInt(
+                            getString(R.string.month_key),
+                            0
+                        ) == Calendar.getInstance()
                     .get(Calendar.MONTH)
 
                 val dayIsTooEarly = (monthIsTooEarly || monthIsEqual) && preferences.getInt(
@@ -134,7 +140,8 @@ class SetterFragment : Fragment() {
                     (dayIsEqual || dayIsTooEarly) && timePicker.hour < Calendar.getInstance()
                         .get(Calendar.HOUR_OF_DAY)
                 val hourIsEqual =
-                    dayIsEqual && timePicker.hour == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+                    dayIsEqual && timePicker.hour == Calendar.getInstance()
+                        .get(Calendar.HOUR_OF_DAY)
 
                 val minuteIsTooEarly =
                     (hourIsTooEarly || hourIsEqual) && timePicker.minute <= Calendar.getInstance()
@@ -389,7 +396,8 @@ class SetterFragment : Fragment() {
 
             //calculating the exact difference in days, hours, minutes from now until the set reminder
             //did this "top down", first calculating the days, then the remaining hours and minutes. you could do this the other way around it just came to me like this
-            val diffInDaysExact = (calendar.timeInMillis - Calendar.getInstance().timeInMillis).toDouble() / 1000 / 60 / 60 / 24
+            val diffInDaysExact =
+                (calendar.timeInMillis - Calendar.getInstance().timeInMillis).toDouble() / 1000 / 60 / 60 / 24
             val diffInDays = diffInDaysExact.toInt()
             val hoursRestExact = diffInDaysExact % 1 * 24
             val hoursRest = hoursRestExact.toInt()
@@ -397,16 +405,82 @@ class SetterFragment : Fragment() {
 
             //this is just deciding on a fitting string to tell the user how long it is until the reminder will go off, don't think about it too much
             when {
-                diffInDays >= 31 -> Toast.makeText(requireContext(), "I'll remind you in more than a month.", Toast.LENGTH_LONG).show()
-                diffInDays >= 365 -> Toast.makeText(requireContext(), "I'll remind you in more than a year.", Toast.LENGTH_LONG).show()
-                diffInDays == 0 && hoursRest == 0 && minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in less than a minute.", Toast.LENGTH_LONG).show()
-                diffInDays == 0 && hoursRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_LONG).show()
-                diffInDays == 0 && minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $hoursRest ${if (hoursRest > 1) "hours" else "hour"}.", Toast.LENGTH_LONG).show()
-                diffInDays == 0 -> Toast.makeText(requireContext(), "I'll remind you in $hoursRest ${if (hoursRest > 1) "hours" else "hour"} and $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_LONG).show()
-                hoursRest == 0 && minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"}", Toast.LENGTH_LONG).show()
-                hoursRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"} and $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_LONG).show()
-                minutesRest == 0 -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"} and $hoursRest ${if (hoursRest > 1) "hours" else "hour"}.", Toast.LENGTH_LONG).show()
-                else -> Toast.makeText(requireContext(), "I'll remind you in $diffInDays ${if (diffInDays > 1) "days" else "day"}, $hoursRest ${if (hoursRest > 1) "hours" else "hour"} and $minutesRest ${if (minutesRest > 1) "minutes" else "minute"}.", Toast.LENGTH_LONG).show()
+                diffInDays >= 31 -> Toast.makeText(
+                    requireContext(),
+                    getString(R.string.more_than_a_month),
+                    Toast.LENGTH_LONG
+                ).show()
+
+                diffInDays >= 365 -> Toast.makeText(
+                    requireContext(),
+                    getString(R.string.more_than_a_year),
+                    Toast.LENGTH_LONG
+                ).show()
+
+                diffInDays == 0 && hoursRest == 0 && minutesRest == 0 -> Toast.makeText(
+                    requireContext(),
+                    getString(R.string.less_than_a_minute),
+                    Toast.LENGTH_LONG
+                ).show()
+
+                diffInDays == 0 && hoursRest == 0 -> Toast.makeText(
+                    requireContext(),
+                    getString(R.string.remind_you_in_start) + minutesRest + " " + (if (minutesRest > 1) getString(
+                        R.string.remind_you_in_minutes
+                    ) else getString(R.string.remind_you_in_minute)) + ".", Toast.LENGTH_LONG
+                ).show()
+
+                diffInDays == 0 && minutesRest == 0 -> Toast.makeText(
+                    requireContext(),
+                    getString(R.string.remind_you_in_start) + hoursRest + " " + (if (hoursRest > 1) getString(
+                        R.string.remind_you_in_hours
+                    ) else getString(R.string.remind_you_in_hour)) + ".", Toast.LENGTH_LONG
+                ).show()
+
+                diffInDays == 0 -> Toast.makeText(
+                    requireContext(),
+                    getString(R.string.remind_you_in_start) + hoursRest + " " + (if (hoursRest > 1) getString(
+                        R.string.remind_you_in_hours
+                    ) else getString(R.string.remind_you_in_hour)) + getString(R.string.remind_you_in_and) + minutesRest + " " + (if (minutesRest > 1) getString(
+                        R.string.remind_you_in_minutes
+                    ) else getString(R.string.remind_you_in_minute)) + ".", Toast.LENGTH_LONG
+                ).show()
+
+                hoursRest == 0 && minutesRest == 0 -> Toast.makeText(
+                    requireContext(),
+                    getString(R.string.remind_you_in_start) + diffInDays + " " + if (diffInDays > 1) getString(
+                        R.string.remind_you_in_days
+                    ) else getString(R.string.remind_you_in_day), Toast.LENGTH_LONG
+                ).show()
+
+                hoursRest == 0 -> Toast.makeText(
+                    requireContext(),
+                    getString(R.string.remind_you_in_start) + diffInDays + " " + (if (diffInDays > 1) getString(
+                        R.string.remind_you_in_days
+                    ) else getString(R.string.remind_you_in_day)) + getString(R.string.remind_you_in_and) + minutesRest + " " + (if (minutesRest > 1) getString(
+                        R.string.remind_you_in_minutes
+                    ) else getString(R.string.remind_you_in_minute)) + ".", Toast.LENGTH_LONG
+                ).show()
+
+                minutesRest == 0 -> Toast.makeText(
+                    requireContext(),
+                    getString(R.string.remind_you_in_start) + diffInDays + " " + (if (diffInDays > 1) getString(
+                        R.string.remind_you_in_days
+                    ) else getString(R.string.remind_you_in_day)) + getString(R.string.remind_you_in_and) + hoursRest + " " + (if (hoursRest > 1) getString(
+                        R.string.remind_you_in_hours
+                    ) else getString(R.string.remind_you_in_hour)) + ".", Toast.LENGTH_LONG
+                ).show()
+
+                else -> Toast.makeText(
+                    requireContext(),
+                    getString(R.string.remind_you_in_start) + diffInDays + " " + (if (diffInDays > 1) getString(
+                        R.string.remind_you_in_days
+                    ) else getString(R.string.remind_you_in_day)) + ", " + hoursRest + " " + (if (hoursRest > 1) getString(
+                        R.string.remind_you_in_hours
+                    ) else getString(R.string.remind_you_in_hour)) + getString(R.string.remind_you_in_and) + minutesRest + " " + (if (minutesRest > 1) getString(
+                        R.string.remind_you_in_minutes
+                    ) else getString(R.string.remind_you_in_minute)) + ".", Toast.LENGTH_LONG
+                ).show()
             }
 
             hideSoftKeyboard(requireContext(), requireView())
