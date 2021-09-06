@@ -9,7 +9,7 @@
     <string name="notification_requestCode_extra_name" translatable="false">notificationRequestCode</string>
     <string name="notification_time_extra_name" translatable="false">notificationTime</string>
     <string name="context_extra_name" translatable="false">context</string>
-    <string name="notification_click_identifier_extra_name">notificationClicked</string>
+    <string name="notification_click_identifier_extra_name" translatable="false">notificationClicked</string>
 
     <string name="notification_preferences_key" translatable="false">notificationPreferences</string>
     <string name="repeat_preference_key" translatable="false">repeatPreference</string>
@@ -21,10 +21,9 @@
     <string name="year_key" translatable="false">year</string>
     <string name="color_key_setter" translatable="false">colorSetter</string>
     <string name="color_key_detail" translatable="false">colorDetail</string>
-    <string name="bypass_DnD">bypassDnD</string>
 
     <string name="notification_channel" translatable="false">channel</string>
-    <string name="notification_channel_silent">channelSilent</string>
+    <string name="notification_channel_silent" translatable="false">channelSilent</string>
 
     <string name="isSelectActive_from_activity" translatable="false">1</string>
     <string name="repeat">Repeat</string>
@@ -76,8 +75,6 @@
     <string name="tomorrow">Tomorrow</string>
     <string name="yesterday">Yesterday</string>
     <string name="clear_all">Clear all</string>
-    <string name="repetition_stopped">The reminder will not repeat itself anymore.</string>
-    <string name="reminder_deleted">The reminder has been deleted</string>
     <string name="allow_DnD_bypass_title">Allow reminders to bypass do not disturb?</string>
     <string name="allow_DnD_bypass_text">Do you want to allow the app to bypass do not disturb mode with its reminders?</string>
 

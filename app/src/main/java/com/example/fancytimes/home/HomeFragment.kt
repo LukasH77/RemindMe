@@ -48,22 +48,6 @@ class HomeFragment : Fragment() {
 
         createNotificationChannel()
 
-//        if (preferences!!.getInt(getString(R.string.bypass_DnD), -1) == -1) {
-//            AlertDialog.Builder(requireContext())
-//                .setTitle(getString(R.string.allow_DnD_bypass_title))
-//                .setMessage(getString(R.string.allow_DnD_bypass_text))
-//                .setPositiveButton(getString(R.string.yes)) { _: DialogInterface, _: Int ->
-//                    createNotificationChannel()
-//                }.setNegativeButton(getString(R.string.no)) { _: DialogInterface, _: Int ->
-//                    createNotificationChannelRespectDnD()
-//                }
-//                .setIcon(android.R.drawable.ic_dialog_alert).show()
-//            with(preferences.edit()) {
-//                this.putInt(getString(R.string.bypass_DnD), 1)
-//                this.apply()
-//            }
-//        }
-
         if (preferences!!.getInt(getString(R.string.notification_channel_count), -1) == -1) {
             println("channel count not initialized")
             with(preferences.edit()) {
@@ -309,7 +293,6 @@ class HomeFragment : Fragment() {
             NotificationManager.IMPORTANCE_HIGH
         )
         channel.enableVibration(true)
-//        channel.setBypassDnd(true)
         channel.enableLights(true)
         channel.apply {
             description = "Reminders"
@@ -324,7 +307,6 @@ class HomeFragment : Fragment() {
             "Notification Channel Silent",
             NotificationManager.IMPORTANCE_LOW
         )
-//        channelSilent.setBypassDnd(true)
         channelSilent.apply {
             description = "Reminders"
 
@@ -334,33 +316,4 @@ class HomeFragment : Fragment() {
         }
     }
 
-//    private fun createNotificationChannelRespectDnD() {
-//        val channel = NotificationChannel(
-//            getString(R.string.notification_channel),
-//            "Notification Channel",
-//            NotificationManager.IMPORTANCE_HIGH
-//        )
-//        channel.enableVibration(true)
-//        channel.enableLights(true)
-//        channel.apply {
-//            description = "Reminders"
-//
-//            val notificationManager: NotificationManager =
-//                activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//            notificationManager.createNotificationChannel(channel)
-//        }
-//
-//        val channelSilent = NotificationChannel(
-//            getString(R.string.notification_channel_silent),
-//            "Notification Channel Silent",
-//            NotificationManager.IMPORTANCE_LOW
-//        )
-//        channelSilent.apply {
-//            description = "Reminders"
-//
-//            val notificationManager: NotificationManager =
-//                activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//            notificationManager.createNotificationChannel(channelSilent)
-//        }
-//    }
 }

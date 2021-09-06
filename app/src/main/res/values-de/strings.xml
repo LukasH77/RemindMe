@@ -58,4 +58,8 @@
     <string name="tomorrow">Morgen</string>
     <string name="clear_all">Alle löschen</string>
     <string name="delete_all_warning">Diese Aktion löscht alle deine Erinnerungen!\\nBist du dir sicher dass du das willst?</string>
+    <string name="stop_repeating">Nicht mehr wiederholen</string>
+    <string name="delete_reminder">Erinnerung löschen</string>
+    <string name="yesterday">Gestern</string>
+    <string name="allow_DnD_bypass_title">"Nicht stören "</string>
 </resources>
