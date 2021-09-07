@@ -140,15 +140,15 @@ class DetailFragment : Fragment() {
 
                 if (hourIsTooEarly || minuteIsTooEarly) {
                     binding.tvSetDate.text =
-                        "${if (setDay < 9) "0${setDay + 1}" else setDay + 1}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear" +
-                                "($currentChannel)" +
-                                "1"
+                        "${if (setDay < 9) "0${setDay + 1}" else setDay + 1}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
+//                                "($currentChannel)" +
+//                                "1"
                     datePicker!!.updateDate(setYear, setMonth, setDay + 1)
                 } else {
                     binding.tvSetDate.text =
-                        "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear" +
-                                "($currentChannel)" +
-                                "2"
+                        "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
+//                                "($currentChannel)" +
+//                                "2"
                 }
             },
             calendar.get(Calendar.YEAR),
@@ -202,9 +202,9 @@ class DetailFragment : Fragment() {
                 setYear = it.year
 
                 binding.tvSetDate.text =
-                    "${if (it.day < 10) "0${it.day}" else it.day}.${if (it.month < 9) "0${it.month + 1}" else it.month + 1}.${it.year}  " +
-                            "(${it.notificationChannel})" +
-                            "3"
+                    "${if (it.day < 10) "0${it.day}" else it.day}.${if (it.month < 9) "0${it.month + 1}" else it.month + 1}.${it.year}  "
+//                            "(${it.notificationChannel})" +
+//                            "3"
                 binding.tpTimePicker.minute = it.minute
                 binding.tpTimePicker.hour = it.hour
                 title.text = SpannableStringBuilder(it.title)
@@ -288,15 +288,15 @@ class DetailFragment : Fragment() {
                 return@setOnTimeChangedListener
             } else if (hourIsTooEarly || minuteIsTooEarly) {
                 binding.tvSetDate.text =
-                    "${if (setDay < 9) "0${setDay + 1}" else setDay + 1}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear" +
-                            "($currentChannel)" +
-                            "4"
+                    "${if (setDay < 9) "0${setDay + 1}" else setDay + 1}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
+//                            "($currentChannel)" +
+//                            "4"
                 datePicker.updateDate(setYear, setMonth, setDay + 1)
             } else {
                 binding.tvSetDate.text =
-                    "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear" +
-                            "($currentChannel)" +
-                            "5"
+                    "${if (setDay < 10) "0$setDay" else setDay}.${if (setMonth < 9) "0${setMonth + 1}" else setMonth + 1}.$setYear"
+//                            "($currentChannel)" +
+//                            "5"
                 datePicker.updateDate(setYear, setMonth, setDay)
             }
         }
