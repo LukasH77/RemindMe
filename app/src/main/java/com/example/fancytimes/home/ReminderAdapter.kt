@@ -29,12 +29,12 @@ class ReminderAdapter(
     private val preferences: SharedPreferences?,
     private val is24hrs: Boolean,
     private val viewModel: HomeViewModel,
-    private val lifecycleOwner: LifecycleOwner,
-    private val isSelectActive: MutableLiveData<Boolean>,
-    private val isDirectSelectAll: MutableLiveData<Boolean>,
-    private val isSelectAll: MutableLiveData<Boolean>,
-    private val selectCount: MutableLiveData<Int>,
-    private val isRemovalReady: MutableLiveData<Boolean>,
+//    private val lifecycleOwner: LifecycleOwner,
+//    private val isSelectActive: MutableLiveData<Boolean>,
+//    private val isDirectSelectAll: MutableLiveData<Boolean>,
+//    private val isSelectAll: MutableLiveData<Boolean>,
+//    private val selectCount: MutableLiveData<Int>,
+//    private val isRemovalReady: MutableLiveData<Boolean>,
     private val alarmManager: AlarmManager
 ) :
     ListAdapter<Reminder, ReminderAdapter.ReminderViewHolder>(ReminderDiffCallback()) {
@@ -150,96 +150,96 @@ class ReminderAdapter(
 
 
 
-        isSelectActive.observe(lifecycleOwner, {
-            if (it) {
-                holder.checkBox.visibility = View.VISIBLE
-                selectCount.value = 0
-            } else if (!it) {
-                holder.checkBox.visibility = View.GONE
-                holder.checkBox.isChecked = false
-            }
-        })
+//        isSelectActive.observe(lifecycleOwner, {
+//            if (it) {
+//                holder.checkBox.visibility = View.VISIBLE
+//                selectCount.value = 0
+//            } else if (!it) {
+//                holder.checkBox.visibility = View.GONE
+//                holder.checkBox.isChecked = false
+//            }
+//        })
+//
+//        isDirectSelectAll.observe(lifecycleOwner, {
+//            if (!it) {
+//                println("holder observed")
+//                if (holder.checkBox.isChecked) {
+//                    println("holder unchecked")
+//
+////                    reminder.selected = false
+//                }
+//                holder.checkBox.isChecked = false
+//                if (selectCount.value == 0) {
+//                    isDirectSelectAll.value = true
+//                }
+//            }
+//        })
+//
+//        isSelectAll.observe(lifecycleOwner, {
+//            if (it) {
+//                println("holder")
+//                println(this.itemCount)
+//                if (!holder.checkBox.isChecked) {
+//                    println("holder checked")
+//                    holder.checkBox.isChecked = true
+////                    reminder.selected = true
+//                }
+//            }
+//        })
+//
+//        isRemovalReady.observe(lifecycleOwner, {
+//            println("removal ready")
+//            if (it) {
+//                val intent = Intent(rvContext, FancyTimeBroadcast::class.java)
+////                    println("Request code key $requestCodeMax")
+////                for (i in reminderAdapter.currentList) {
+////                    println("selected")
+//                if (holder.checkBox.isChecked) {
+//                    try {
+//                        alarmManager.cancel(
+//                            PendingIntent.getBroadcast(
+//                                rvContext,
+//                                reminder.requestCode,
+//                                intent,
+//                                PendingIntent.FLAG_NO_CREATE
+//                            )
+//                        )
+//                    } catch (e: Exception) {
+//                        println("cancel() called with a null PendingIntent")
+//                    } finally {
+//                        viewModel.deleteByRequestCode(reminder.requestCode)
+//                    }
+//                    with(preferences!!.edit()) {
+//                        this.remove(reminder.requestCode.toString())
+//                        this.apply()
+//                    }
+//                }
+//            } else if (!it) {
+//                println(selectCount.value)
+//                println(this.itemCount)
+//            }
+//        })
 
-        isDirectSelectAll.observe(lifecycleOwner, {
-            if (!it) {
-                println("holder observed")
-                if (holder.checkBox.isChecked) {
-                    println("holder unchecked")
-
-//                    reminder.selected = false
-                }
-                holder.checkBox.isChecked = false
-                if (selectCount.value == 0) {
-                    isDirectSelectAll.value = true
-                }
-            }
-        })
-
-        isSelectAll.observe(lifecycleOwner, {
-            if (it) {
-                println("holder")
-                println(this.itemCount)
-                if (!holder.checkBox.isChecked) {
-                    println("holder checked")
-                    holder.checkBox.isChecked = true
-//                    reminder.selected = true
-                }
-            }
-        })
-
-        isRemovalReady.observe(lifecycleOwner, {
-            println("removal ready")
-            if (it) {
-                val intent = Intent(rvContext, FancyTimeBroadcast::class.java)
-//                    println("Request code key $requestCodeMax")
-//                for (i in reminderAdapter.currentList) {
-//                    println("selected")
-                if (holder.checkBox.isChecked) {
-                    try {
-                        alarmManager.cancel(
-                            PendingIntent.getBroadcast(
-                                rvContext,
-                                reminder.requestCode,
-                                intent,
-                                PendingIntent.FLAG_NO_CREATE
-                            )
-                        )
-                    } catch (e: Exception) {
-                        println("cancel() called with a null PendingIntent")
-                    } finally {
-                        viewModel.deleteByRequestCode(reminder.requestCode)
-                    }
-                    with(preferences!!.edit()) {
-                        this.remove(reminder.requestCode.toString())
-                        this.apply()
-                    }
-                }
-            } else if (!it) {
-                println(selectCount.value)
-                println(this.itemCount)
-            }
-        })
-
-        holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                println("checked")
-                if (selectCount.value!! < this.itemCount) {
-                    selectCount.value = selectCount.value?.plus(1)
-                    if (selectCount.value!! == this.itemCount) {
-                        println("error")
-                        if (isSelectAll.value == false) {
-                            isSelectAll.value = true
-                        }
-                    }
-                }
-            } else if (!isChecked) {
-                println("unchecked")
-                selectCount.value = selectCount.value?.minus(1)
-                if (isSelectAll.value == true) {
-                    isSelectAll.value = false
-                }
-            }
-        }
+//        holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
+//            if (isChecked) {
+//                println("checked")
+//                if (selectCount.value!! < this.itemCount) {
+//                    selectCount.value = selectCount.value?.plus(1)
+//                    if (selectCount.value!! == this.itemCount) {
+//                        println("error")
+//                        if (isSelectAll.value == false) {
+//                            isSelectAll.value = true
+//                        }
+//                    }
+//                }
+//            } else if (!isChecked) {
+//                println("unchecked")
+//                selectCount.value = selectCount.value?.minus(1)
+//                if (isSelectAll.value == true) {
+//                    isSelectAll.value = false
+//                }
+//            }
+//        }
 
         holder.removeButton.setOnClickListener {
             val alarmManager = it.context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -249,7 +249,7 @@ class ReminderAdapter(
                 .setPositiveButton(
                     rvContext.getString(R.string.yes)
                 ) { _: DialogInterface, _: Int ->
-                    isSelectActive.value = false
+//                    isSelectActive.value = false
                     val intent = Intent(it.context, FancyTimeBroadcast::class.java)
                     try {
                         alarmManager.cancel(
@@ -275,7 +275,7 @@ class ReminderAdapter(
         }
 
         holder.editButton.setOnClickListener {
-            isSelectActive.value = false
+//            isSelectActive.value = false
             it.findNavController()
                 .navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(reminder.requestCode))
         }
@@ -295,7 +295,7 @@ class ReminderAdapter(
         val removeButton = reminderListItemBinding.ibRemove
         val editButton = reminderListItemBinding.ibEdit
         val listItem = reminderListItemBinding.clListItem
-        val checkBox = reminderListItemBinding.cbSelect
+//        val checkBox = reminderListItemBinding.cbSelect
     }
 }
 

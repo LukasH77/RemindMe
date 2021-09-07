@@ -29,18 +29,28 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var homeViewModelFactory: HomeViewModelFactory
 
-    companion object {
-        val isSelectActive: MutableLiveData<Boolean> = MutableLiveData()
-        val isSelectAll: MutableLiveData<Boolean> = MutableLiveData()
-        val isDirectSelectAll: MutableLiveData<Boolean> = MutableLiveData()
-        val selectCount: MutableLiveData<Int> = MutableLiveData()
-        val isRemovalReady: MutableLiveData<Boolean> = MutableLiveData()
-    }
+//    companion object {
+
+    // All of these were used for a multi-delete feature which broke during testing. The way I'm handling it doesn't work with RecyclerView.
+    // I knew that recycling could fuck things up but my knowledge wasn't deep enough to understand when and where. And it still isn't to fix this, I'm also out of time.
+    // I'm sad because this took some time to build..still I learned from the process.
+    // I anticipated RecyclerView to mix up the data from my view holders, it didn't so I though it would be fine.
+    // What I didn't really understand is that the RV would never recycle my database data, it recycles the view holders.
+    // So when I turn the view holders clickable during "select-mode" THAT will be recycled, the isClicked state. Probably also the Clickable state if that wasn't applied to all of them.
+    // Well, better luck next time^^ I probably won't fix this but I'll leave the code in. Gotta release now.
+    // The remaining feature is "delete all" or delete one by one. A bit of a QOL downgrade. I didn't use it that often anyway, still it was pretty cool.
+
+//        val isSelectActive: MutableLiveData<Boolean> = MutableLiveData()
+//        val isSelectAll: MutableLiveData<Boolean> = MutableLiveData()
+//        val isDirectSelectAll: MutableLiveData<Boolean> = MutableLiveData()
+//        val selectCount: MutableLiveData<Int> = MutableLiveData()
+//        val isRemovalReady: MutableLiveData<Boolean> = MutableLiveData()
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val preferences = activity?.getSharedPreferences(
             getString(R.string.notification_preferences_key),
             Context.MODE_PRIVATE
@@ -70,9 +80,9 @@ class HomeFragment : Fragment() {
 
         val addReminder = binding.ibSetReminder
 
-        isSelectActive.value = false
-        isSelectAll.value = false
-        selectCount.value = 0
+//        isSelectActive.value = false
+//        isSelectAll.value = false
+//        selectCount.value = 0
 
 
         val reminderAdapter =
@@ -80,12 +90,12 @@ class HomeFragment : Fragment() {
                 preferences,
                 DateFormat.is24HourFormat(requireContext()),
                 homeViewModel,
-                viewLifecycleOwner,
-                isSelectActive,
-                isDirectSelectAll,
-                isSelectAll,
-                selectCount,
-                isRemovalReady,
+//                viewLifecycleOwner,
+//                isSelectActive,
+//                isDirectSelectAll,
+//                isSelectAll,
+//                selectCount,
+//                isRemovalReady,
                 alarmManager
             )
         binding.rvReminders.adapter = reminderAdapter
@@ -96,51 +106,51 @@ class HomeFragment : Fragment() {
             }
         })
 
-        isSelectActive.observe(viewLifecycleOwner, {
-            if (it) {
-                binding.ibDeleteReminders.setTag(R.string.isSelectActive_from_activity, "active")
-                binding.bRemoveAll.visibility = View.VISIBLE
-                binding.cbAll.visibility = View.VISIBLE
-                binding.ibDeleteReminders.setImageResource(R.drawable.cancel_24px)
-            } else if (!it) {
-                binding.ibDeleteReminders.setTag(R.string.isSelectActive_from_activity, "inactive")
-                binding.bRemoveAll.visibility = View.GONE
-                binding.cbAll.visibility = View.GONE
-                binding.tvHeader.text = getString(R.string.reminders)
-                binding.cbAll.isChecked = false
-                binding.ibDeleteReminders.setImageResource(R.drawable.delete_24px)
-            }
-        })
+//        isSelectActive.observe(viewLifecycleOwner, {
+//            if (it) {
+//                binding.ibDeleteReminders.setTag(R.string.isSelectActive_from_activity, "active")
+//                binding.bRemoveAll.visibility = View.VISIBLE
+//                binding.cbAll.visibility = View.VISIBLE
+//                binding.ibDeleteReminders.setImageResource(R.drawable.cancel_24px)
+//            } else if (!it) {
+//                binding.ibDeleteReminders.setTag(R.string.isSelectActive_from_activity, "inactive")
+//                binding.bRemoveAll.visibility = View.GONE
+//                binding.cbAll.visibility = View.GONE
+//                binding.tvHeader.text = getString(R.string.reminders)
+//                binding.cbAll.isChecked = false
+//                binding.ibDeleteReminders.setImageResource(R.drawable.delete_24px)
+//            }
+//        })
 
-        selectCount.observe(viewLifecycleOwner, {
-            if (isSelectActive.value == true) {
-                binding.tvHeader.text = getString(R.string.x_selected, selectCount.value)
-            }
-        })
+//        selectCount.observe(viewLifecycleOwner, {
+//            if (isSelectActive.value == true) {
+//                binding.tvHeader.text = getString(R.string.x_selected, selectCount.value)
+//            }
+//        })
 
-        isSelectAll.observe(viewLifecycleOwner, {
-            if (it) {
-                if (!binding.cbAll.isChecked) {
-                    binding.cbAll.isChecked = true
-                }
-            } else if (!it) {
-                if (binding.cbAll.isChecked) {
-                    binding.cbAll.isChecked = false
-                }
-            }
-        })
+//        isSelectAll.observe(viewLifecycleOwner, {
+//            if (it) {
+//                if (!binding.cbAll.isChecked) {
+//                    binding.cbAll.isChecked = true
+//                }
+//            } else if (!it) {
+//                if (binding.cbAll.isChecked) {
+//                    binding.cbAll.isChecked = false
+//                }
+//            }
+//        })
 
-        binding.cbAll.setOnCheckedChangeListener { _, isChecked ->
-            println("isChecked = $isChecked")
-            isSelectAll.value = isChecked
-            if (isChecked) {
-                selectCount.value = reminderAdapter.itemCount
-            } else if (selectCount.value!! == reminderAdapter.itemCount) {
-                println(selectCount.value)
-                println(reminderAdapter.itemCount)
-                isDirectSelectAll.value = false
-            }
-        }
+//        binding.cbAll.setOnCheckedChangeListener { _, isChecked ->
+//            println("isChecked = $isChecked")
+//            isSelectAll.value = isChecked
+//            if (isChecked) {
+//                selectCount.value = reminderAdapter.itemCount
+//            } else if (selectCount.value!! == reminderAdapter.itemCount) {
+//                println(selectCount.value)
+//                println(reminderAdapter.itemCount)
+//                isDirectSelectAll.value = false
+//            }
+//        }
 
         binding.ibDeleteReminders.setOnClickListener {
             if (reminderAdapter.itemCount == 0) {
@@ -189,7 +199,7 @@ class HomeFragment : Fragment() {
         }
 
         addReminder.setOnClickListener {
-            isSelectActive.value = false
+//            isSelectActive.value = false
             it.findNavController()
                 .navigate(HomeFragmentDirections.actionHomeFragmentToSetterFragment())
         }
@@ -221,67 +231,67 @@ class HomeFragment : Fragment() {
 ////            }
 ////        }
 
-        binding.bRemoveAll.setOnClickListener {
-            if (selectCount.value == 0) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.no_reminders_selected),
-                    Toast.LENGTH_LONG
-                ).show()
-                return@setOnClickListener
-            }
-//            AlertDialog.Builder(requireContext()).setTitle("Clear all")
-//                .setMessage("Do you really want to cancel all set reminders?").setPositiveButton(
-//                    "Yes"
+//        binding.bRemoveAll.setOnClickListener {
+//            if (selectCount.value == 0) {
+//                Toast.makeText(
+//                    requireContext(),
+//                    getString(R.string.no_reminders_selected),
+//                    Toast.LENGTH_LONG
+//                ).show()
+//                return@setOnClickListener
+//            }
+////            AlertDialog.Builder(requireContext()).setTitle("Clear all")
+////                .setMessage("Do you really want to cancel all set reminders?").setPositiveButton(
+////                    "Yes"
+////                ) { _: DialogInterface, _: Int ->
+////                    val requestCodeMax =
+////                        preferences!!.getInt(getString(R.string.request_code_key), 0)
+////                    val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
+//////                    println("Request code key $requestCodeMax")
+////                    for (i in 0 until requestCodeMax) {
+////                        try {
+////                            alarmManager.cancel(
+////                                PendingIntent.getBroadcast(
+////                                    requireContext(),
+////                                    i,
+////                                    intent,
+////                                    PendingIntent.FLAG_NO_CREATE
+////                                )
+////                            )
+////                        } catch (e: Exception) {
+////                            println("cancel() called with a null PendingIntent")
+////                        }
+////                    }
+////                    homeViewModel.deleteAll()
+////                    with(preferences.edit()) {
+////                        this.clear()
+////                        this.putInt(getString(R.string.request_code_key), 0)
+////                        this.apply()
+////                    }
+////                }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
+//            AlertDialog.Builder(requireContext())
+//                .setTitle(getString(R.string.cancel_selected_reminders_title))
+//                .setMessage(
+//                    if (selectCount.value == 1) getString(R.string.confirm_cancelation_singular) else getString(
+//                        R.string.confirm_cancelation_plural
+//                    )
+//                )
+//                .setPositiveButton(
+//                    getString(R.string.yes)
 //                ) { _: DialogInterface, _: Int ->
-//                    val requestCodeMax =
-//                        preferences!!.getInt(getString(R.string.request_code_key), 0)
-//                    val intent = Intent(requireContext(), FancyTimeBroadcast::class.java)
-////                    println("Request code key $requestCodeMax")
-//                    for (i in 0 until requestCodeMax) {
-//                        try {
-//                            alarmManager.cancel(
-//                                PendingIntent.getBroadcast(
-//                                    requireContext(),
-//                                    i,
-//                                    intent,
-//                                    PendingIntent.FLAG_NO_CREATE
-//                                )
-//                            )
-//                        } catch (e: Exception) {
-//                            println("cancel() called with a null PendingIntent")
-//                        }
-//                    }
-//                    homeViewModel.deleteAll()
-//                    with(preferences.edit()) {
-//                        this.clear()
-//                        this.putInt(getString(R.string.request_code_key), 0)
-//                        this.apply()
-//                    }
-//                }.setNegativeButton("No", null).setIcon(android.R.drawable.ic_dialog_alert).show()
-            AlertDialog.Builder(requireContext())
-                .setTitle(getString(R.string.cancel_selected_reminders_title))
-                .setMessage(
-                    if (selectCount.value == 1) getString(R.string.confirm_cancelation_singular) else getString(
-                        R.string.confirm_cancelation_plural
-                    )
-                )
-                .setPositiveButton(
-                    getString(R.string.yes)
-                ) { _: DialogInterface, _: Int ->
-                    isRemovalReady.value = true
-                    isSelectActive.value = false
-                    println("fragment transaction")
-
-                    parentFragmentManager.beginTransaction().detach(this).attach(this).commit()
-                    isRemovalReady.value = false
-
-                    it.findNavController()
-                        .navigate(HomeFragmentDirections.actionHomeFragmentToTrashFragment())
-                }.setNegativeButton(getString(R.string.no), null)
-                .setIcon(android.R.drawable.ic_dialog_alert).show()
-            isRemovalReady.value = false
-        }
+//                    isRemovalReady.value = true
+//                    isSelectActive.value = false
+//                    println("fragment transaction")
+//
+//                    parentFragmentManager.beginTransaction().detach(this).attach(this).commit()
+//                    isRemovalReady.value = false
+//
+//                    it.findNavController()
+//                        .navigate(HomeFragmentDirections.actionHomeFragmentToTrashFragment())
+//                }.setNegativeButton(getString(R.string.no), null)
+//                .setIcon(android.R.drawable.ic_dialog_alert).show()
+//            isRemovalReady.value = false
+//        }
 
         return binding.root
     }
