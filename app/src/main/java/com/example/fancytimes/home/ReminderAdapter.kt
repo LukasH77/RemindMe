@@ -40,7 +40,7 @@ class ReminderAdapter(
     ListAdapter<Reminder, ReminderAdapter.ReminderViewHolder>(ReminderDiffCallback()) {
 
     init {
-        println("Adapter init")
+//        println("Adapter init")
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReminderViewHolder {
@@ -265,7 +265,7 @@ class ReminderAdapter(
                             this.apply()
                         }
                     } catch (e: Exception) {
-                        println("cancel() called with a null PendingIntent")
+//                        println("cancel() called with a null PendingIntent")
                     } finally {
                         viewModel.deleteByRequestCode(reminder.requestCode)
                     }

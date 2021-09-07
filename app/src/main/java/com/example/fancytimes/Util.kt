@@ -75,7 +75,7 @@ fun handleAlarmsSetter(
         currentChannel
     )
 
-    println("Current notification channel set: $currentChannel")
+//    println("Current notification channel set: $currentChannel")
 
     with(preferences.edit()) {
         this.putInt(context.getString(R.string.notification_channel_count), currentChannel + 1)

@@ -15,7 +15,7 @@ class RefreshWorker(private val workerContext: Context, params: WorkerParameters
             refreshReminders(reminders, workerContext)
             Result.success()
         } catch (e: Exception) {
-            println("Worker failed")
+//            println("Worker failed")
             Result.failure()
         }
     }

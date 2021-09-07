@@ -48,7 +48,7 @@ class StopActionBroadcast : BroadcastReceiver() {
                 )
             )
         } catch (e: Exception) {
-            println("error in DismissActionBroadcast")
+//            println("error in DismissActionBroadcast")
         }
 
         val deleteActionIntent = Intent(callingContext, DeleteActionBroadcast::class.java)

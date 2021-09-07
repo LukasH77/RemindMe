@@ -191,7 +191,7 @@ class DetailFragment : Fragment() {
         detailViewModel.selectedReminder.observe(viewLifecycleOwner, {
             it?.let {
                 currentChannel = it.notificationChannel
-                println("Detail current channel: $currentChannel")
+//                println("Detail current channel: $currentChannel")
 
                 val color = it.color
                 colorPicker.setColor(color)
@@ -211,7 +211,7 @@ class DetailFragment : Fragment() {
                 text.text = SpannableStringBuilder(it.text)
                 datePicker.updateDate(it.year, it.month, it.day)
 
-                println("it.repetition: ${it.repetition}")
+//                println("it.repetition: ${it.repetition}")
 
                 if (it.repetition != 0L) {
                     binding.cbRepeating.isChecked = true
@@ -347,7 +347,7 @@ class DetailFragment : Fragment() {
                             this.apply()
                         }
                     } catch (e: Exception) {
-                        println("cancel() called with a null PendingIntent")
+//                        println("cancel() called with a null PendingIntent")
                     } finally {
                         detailViewModel.deleteByRequestCode(requestCode)
                         requireActivity().onBackPressed()

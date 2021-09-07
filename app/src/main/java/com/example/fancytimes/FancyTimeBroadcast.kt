@@ -48,7 +48,7 @@ class FancyTimeBroadcast : BroadcastReceiver() {
             0
         )
 
-        println("Current notification channel notify: $currentChannel")
+//        println("Current notification channel notify: $currentChannel")
 
         val calendar = Calendar.getInstance()
 
@@ -106,7 +106,7 @@ class FancyTimeBroadcast : BroadcastReceiver() {
             0
         )
 
-        println("Current channel: $currentChannel")
+//        println("Current channel: $currentChannel")
         if (isNotificationRepeating) {
             val stopActionIntent = Intent(callingContext, StopActionBroadcast::class.java)
             stopActionIntent.putExtra(

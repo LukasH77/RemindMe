@@ -21,9 +21,9 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        println(this.intent)
+//        println(this.intent)
         if (this.intent.getIntExtra(getString(R.string.notification_click_identifier_extra_name), 0) == 1) {
-            println("clickIdentifier = 1")
+//            println("clickIdentifier = 1")
             val clickedNotificationRequestCode = this.intent.getIntExtra(getString(R.string.notification_requestCode_extra_name), 0)
             findNavController(R.id.nav_host).navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(clickedNotificationRequestCode))
         }
@@ -39,9 +39,9 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener {
             getSharedPreferences(getString(R.string.notification_preferences_key), MODE_PRIVATE)
         val setterFragment = this.findViewById<NestedScrollView>(R.id.svSetterRoot)
         val isOnScreen = setterFragment != null
-        println("isOnScreen: $isOnScreen")
+//        println("isOnScreen: $isOnScreen")
         if (isOnScreen) {
-            println("color put: $color")
+//            println("color put: $color")
             with(preferences.edit()) {
                 this.putInt(getString(R.string.color_key_setter), color)
                 this.apply()
@@ -52,21 +52,21 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener {
                 this.apply()
             }  // put in selected color
         }
-        println("${preferences.getInt(getString(R.string.color_key_setter), 0)} \n ${preferences.getInt(getString(R.string.color_key_detail), 0)}")
+//        println("${preferences.getInt(getString(R.string.color_key_setter), 0)} \n ${preferences.getInt(getString(R.string.color_key_detail), 0)}")
         this.findViewById<TextView>(R.id.tvColorPreview).setBackgroundColor(color)
     }
 
     override fun onDialogDismissed(dialogId: Int) {}
 
-    override fun onBackPressed() {
-        val deletionActivator = this.findViewById<ImageButton>(R.id.ibDeleteReminders)
-        val isOnScreen = deletionActivator != null
-        val isSelectActive =
-            deletionActivator?.getTag(R.string.isSelectActive_from_activity)?.equals("active")
-        if (isOnScreen && isSelectActive == true) {
-            HomeFragment.isSelectActive.value = false
-        } else {
-            super.onBackPressed()
-        }
-    }
+//    override fun onBackPressed() {
+//        val deletionActivator = this.findViewById<ImageButton>(R.id.ibDeleteReminders)
+//        val isOnScreen = deletionActivator != null
+//        val isSelectActive =
+//            deletionActivator?.getTag(R.string.isSelectActive_from_activity)?.equals("active")
+//        if (isOnScreen && isSelectActive == true) {
+//            HomeFragment.isSelectActive.value = false
+//        } else {
+//            super.onBackPressed()
+//        }
+//    }
 }

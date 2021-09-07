@@ -69,7 +69,7 @@ class SetterFragment : Fragment() {
                 calendar.get(Calendar.YEAR)
             )
             if (preferences.getInt(requireContext().getString(R.string.color_key_setter), 0) == 0) {
-                println("no color preference")
+//                println("no color preference")
                 this.putInt(
                     requireContext().getString(R.string.color_key_setter),
                     0xfff2f2f2.toInt()
@@ -286,7 +286,7 @@ class SetterFragment : Fragment() {
         }
 
         binding.ibEditDate.setOnClickListener {
-            println("edit date")
+//            println("edit date")
             datePicker.show()
             hideSoftKeyboard(requireContext(), requireView())
         }
@@ -303,7 +303,7 @@ class SetterFragment : Fragment() {
         }
 
         binding.ibConfirmPick.setOnClickListener {
-            println("confirmed")
+//            println("confirmed")
             val notificationTitle =
                 if (notificationTitleField.text.isBlank()) getString(R.string.reminder) else notificationTitleField.text.toString()
 
@@ -489,12 +489,5 @@ class SetterFragment : Fragment() {
         }
 
         return binding.root
-    }
-
-    fun setterKeyUp(keyCode: Int, event: KeyEvent?) {
-        println("setterKeyDown called")
-        if (keyCode == KeyEvent.KEYCODE_NAVIGATE_NEXT) {
-            println("next key pressed setter")
-        }
     }
 }

@@ -40,7 +40,7 @@ class DeleteActionBroadcast : BroadcastReceiver() {
                 )
             )
         } catch (e: Exception) {
-            println("error in DismissActionBroadcast")
+//            println("error in DismissActionBroadcast")
         }
     }
 }

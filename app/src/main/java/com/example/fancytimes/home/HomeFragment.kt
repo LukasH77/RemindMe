@@ -59,7 +59,7 @@ class HomeFragment : Fragment() {
         createNotificationChannel()
 
         if (preferences!!.getInt(getString(R.string.notification_channel_count), -1) == -1) {
-            println("channel count not initialized")
+//            println("channel count not initialized")
             with(preferences.edit()) {
                 this.putInt(getString(R.string.notification_channel_count), 1)
                 this.putBoolean(getString(R.string.repeat_preference_key), true)
@@ -180,7 +180,7 @@ class HomeFragment : Fragment() {
                                     )
                                 )
                             } catch (e: Exception) {
-                                println("cancel() called with a null PendingIntent")
+//                                println("cancel() called with a null PendingIntent")
                             }
                             with(preferences.edit()) {
                                 this.remove(item.requestCode.toString())
