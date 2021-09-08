@@ -1,13 +1,14 @@
 package com.example.fancytimes
 
 import android.app.AlarmManager
-import android.app.Notification
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.PowerManager
+import android.view.WindowManager
+import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.fancytimes.database.Reminder
 import com.example.fancytimes.database.ReminderDatabase
@@ -20,7 +21,7 @@ class FancyTimeBroadcast : BroadcastReceiver() {
 
         val databaseReference =
             HomeViewModel(ReminderDatabase.createInstance(callingContext!!).reminderDao)
-
+//
         val notificationTitle =
             callingIntent!!.getStringExtra(callingContext.getString(R.string.notification_title_extra_name))
         val notificationText =
@@ -66,7 +67,7 @@ class FancyTimeBroadcast : BroadcastReceiver() {
 
         if (!isScreenOn) {
             val wakeLock = powerManager.newWakeLock(
-                PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
+                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or PowerManager.ACQUIRE_CAUSES_WAKEUP,
                 "reminders:notificationLock"
             )
             wakeLock.acquire(2500)
@@ -134,12 +135,12 @@ class FancyTimeBroadcast : BroadcastReceiver() {
             )
 
             val notification =
-                Notification.Builder(
+                NotificationCompat.Builder(
                     callingContext,
                     callingContext.getString(R.string.notification_channel)
                 ).setSmallIcon(R.drawable.access_time_24px)
                     .setContentTitle(notificationTitle).setContentText(notificationText)
-                    .setStyle(Notification.BigTextStyle().bigText(notificationText))
+                    .setStyle(NotificationCompat.BigTextStyle().bigText(notificationText))
                     .setContentIntent(notificationClickPendingIntent)
                     .setShowWhen(true)
                     .setAutoCancel(true)
@@ -210,12 +211,12 @@ class FancyTimeBroadcast : BroadcastReceiver() {
             )
         } else {
             val notification =
-                Notification.Builder(
+                NotificationCompat.Builder(
                     callingContext,
                     callingContext.getString(R.string.notification_channel)
                 ).setSmallIcon(R.drawable.access_time_24px)
                     .setContentTitle(notificationTitle).setContentText(notificationText)
-                    .setStyle(Notification.BigTextStyle().bigText(notificationText))
+                    .setStyle(NotificationCompat.BigTextStyle().bigText(notificationText))
                     .setContentIntent(notificationClickPendingIntent)
                     .setShowWhen(true)
                     .setAutoCancel(true)
