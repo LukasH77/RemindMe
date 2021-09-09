@@ -1,4 +1,4 @@
-# Remind Me
+# Remind Me :alarm_clock:
 
 This is my second self-made Android app. It's a relatively simple reminder app, at least in comparison to what else is out there. Nevertheless, it's been quite a lot of work developing it all alone especially with my still very limited amount of experience. 
 
