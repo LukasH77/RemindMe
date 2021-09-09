@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Remind Me</string>
+    <string name="app_name">Remind Me</string>
 
     <string name="notification_text_extra_name" translatable="false">notificationText</string>
     <string name="notification_title_extra_name" translatable="false">notificationTitle</string>
