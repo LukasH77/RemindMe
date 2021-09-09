@@ -111,19 +111,37 @@ class ReminderAdapter(
 
         holder.titleField.text = reminder.title
         holder.timeField.text = hourText
-        if (reminder.isRepeating) holder.timeField.setCompoundDrawablesWithIntrinsicBounds(
-            null,
-            null,
-            ContextCompat.getDrawable(rvContext, R.drawable.repeat_24px),
-            null
-        )
+        if (reminder.isRepeating) {
+            holder.timeField.setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                null,
+                ContextCompat.getDrawable(rvContext, R.drawable.repeat_24px),
+                null
+            )
+        } else {
+            holder.timeField.setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                null,
+                null,
+                null
+            )
+        }
 
-        if (reminder.isCancelled) holder.dateField.setCompoundDrawablesWithIntrinsicBounds(
-            ContextCompat.getDrawable(rvContext, R.drawable.stop_circle_black_24dp),
-            null,
-            null,
-            null
-        )
+        if (reminder.isCancelled) {
+            holder.dateField.setCompoundDrawablesWithIntrinsicBounds(
+                ContextCompat.getDrawable(rvContext, R.drawable.stop_circle_black_24dp),
+                null,
+                null,
+                null
+            )
+        } else {
+            holder.dateField.setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                null,
+                null,
+                null
+            )
+        }
 
         val currentCalendarInstance = Calendar.getInstance()
         val isThisYear =

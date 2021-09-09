@@ -22,7 +22,7 @@ class StopActionBroadcast : BroadcastReceiver() {
         val databaseReference =
             HomeViewModel(ReminderDatabase.createInstance(callingContext!!).reminderDao)
 
-        val alarmManager = callingContext!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmManager = callingContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val notificationRequestCode = callingIntent!!.getIntExtra(
             callingContext.getString(R.string.notification_requestCode_extra_name),
@@ -110,6 +110,6 @@ class StopActionBroadcast : BroadcastReceiver() {
             notify(currentChannel, notification.build())
         }
 
-        databaseReference.updateIsCancelled(notificationRequestCode)
+        databaseReference.updateIsCancelled(notificationRequestCode, true)
     }
 }
