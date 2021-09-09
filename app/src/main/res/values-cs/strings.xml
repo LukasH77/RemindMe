@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="repeatIntervals">
-        <item>Jede Minute</item>
-        <item>Každých 10 minut</item>
+        <item>---</item>
+        <item>---</item>
         <item>Každých 30 minut</item>
         <item>Hodině</item>
         <item>Denně</item>

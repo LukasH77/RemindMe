@@ -216,8 +216,8 @@ class DetailFragment : Fragment() {
                 if (it.repetition != 0L) {
                     binding.cbRepeating.isChecked = true
                     when (it.repetition) {
-                        60000L -> repeatingIntervalsSpinner.setSelection(0)
-                        600000L -> repeatingIntervalsSpinner.setSelection(1)
+                        300000L -> repeatingIntervalsSpinner.setSelection(0)
+                        900000L -> repeatingIntervalsSpinner.setSelection(1)
                         1800000L -> repeatingIntervalsSpinner.setSelection(2)
                         3600000L -> repeatingIntervalsSpinner.setSelection(3)
                         86400000L -> repeatingIntervalsSpinner.setSelection(4)

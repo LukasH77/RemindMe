@@ -67,7 +67,7 @@ class FancyTimeBroadcast : BroadcastReceiver() {
 
         if (!isScreenOn) {
             val wakeLock = powerManager.newWakeLock(
-                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or PowerManager.ACQUIRE_CAUSES_WAKEUP,
+                PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
                 "reminders:notificationLock"
             )
             wakeLock.acquire(2500)

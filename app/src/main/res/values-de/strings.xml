@@ -4,7 +4,7 @@
     <string name="repeat">Wiederholen</string>
     <string name="confirm">Bestätigen</string>
     <string name="reminders">Erinnerungen</string>
-    <string name="topic">Betreff</string>
+    <string name="topic">Titel</string>
     <string name="details">Beschreibung</string>
     <string name="calendar_icon">Kalender</string>
     <string name="color_palette_icon">Farbauswahl</string>
@@ -38,8 +38,8 @@
     <string name="cancel_selected_reminders_title">Ausgewählte entfernen</string>
 
     <string-array name="repeatIntervals">
-        <item>Jede Minute</item>
-        <item>Alle 10 Minuten</item>
+        <item>Alle 5 Minuten</item>
+        <item>Alle 15 Minuten</item>
         <item>Alle 30 Minuten</item>
         <item>Stündlich</item>
         <item>Täglich</item>
