@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="repeatIntervals">
-        <item>---</item>
-        <item>---</item>
+        <item>Každých 5 minut</item>
+        <item>Každých 15 minut</item>
         <item>Každých 30 minut</item>
         <item>Hodině</item>
         <item>Denně</item>
-        <item>---</item>
+        <item>Týdně</item>
         <item>Měsíčně</item>
         <item>Ročně</item>
     </string-array>
@@ -25,4 +25,50 @@
     <string name="october">Říj</string>
     <string name="yes">Ano</string>
     <string name="no">Ne</string>
+    <string name="monday">Po</string>
+    <string name="tuesday">Ut</string>
+    <string name="wednesday">St</string>
+    <string name="thursday">Ct</string>
+    <string name="friday">Pa</string>
+    <string name="saturday">So</string>
+    <string name="sunday">Ne</string>
+    <string name="remind_you_in_day">den</string>
+    <string name="remind_you_in_days">dny</string>
+    <string name="remind_you_in_hour">hodina</string>
+    <string name="remind_you_in_hours">hodiny</string>
+    <string name="remind_you_in_and">" a "</string>
+    <string name="remind_you_in_minute">minuta</string>
+    <string name="remind_you_in_minutes">minut</string>
+    <string name="today">Dneska</string>
+    <string name="tomorrow">Zítra</string>
+    <string name="yesterday">Včera</string>
+    <string name="clear_all">Vymazat vše</string>
+    <string name="delete_reminder">Smazat připomenutí</string>
+    <string name="cancel_selected_reminders_title">Odstranit vybrané</string>
+    <string name="cancel_specific_reminder_title">Odstranit připomenutí</string>
+    <string name="invalid_date">Neplatné datum!</string>
+    <string name="reminder">Paměť</string>
+    <string name="cancel_confirmation_specific">Opravdu chcete odstranit toto připomenutí?</string>
+    <string name="more_than_a_month">Z pamatuju tě za více než měsíc.</string>
+    <string name="more_than_a_year">Z pamatuju tě za více než rok.</string>
+    <string name="less_than_a_minute">Z pamatuju tě za méně než minutu.</string>
+    <string name="remind_you_in_start">"Z pamatuju tě za "</string>
+    <string name="repeat">Opakovat</string>
+    <string name="confirm">Potvrdit</string>
+    <string name="reminders">Vzpomínky</string>
+    <string name="topic">Titul</string>
+    <string name="details">Popis</string>
+    <string name="calendar_icon">Kalendář</string>
+    <string name="color_palette_icon">Výběr barev</string>
+    <string name="new_reminder_icon">Nové připomenutí</string>
+    <string name="delete_reminder_icon">Smazat připomenutí</string>
+    <string name="edit_reminder_icon">Upravit připomenutí</string>
+    <string name="x_selected">%d Vybrané</string>
+    <string name="no_reminders_to_cancel">Nejsou žádné vzpomínky k dispozici.</string>
+    <string name="no_reminders_selected">Nejsou vybrány žádné paměti.</string>
+    <string name="confirm_cancelation_singular">Opravdu chcete odstranit vybrané připomenutí?</string>
+    <string name="confirm_cancelation_plural">Opravdu chcete odebrat vybrané paměti?</string>
+    <string name="delete_all_warning">Tato akce vymaže všechny vaše vzpomínky! Jste si jisti, že to chcete?</string>
+    <string name="select_to_delete_icon">Vyberte pro odstranění</string>
+    <string name="app_name">Připomeň Mě</string>
 </resources>
