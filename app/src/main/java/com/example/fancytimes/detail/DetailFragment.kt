@@ -213,15 +213,20 @@ class DetailFragment : Fragment() {
 
 //                println("it.repetition: ${it.repetition}")
 
+                val oneSecondInMillis = 1000L
+                val oneMinuteInMillis = oneSecondInMillis * 60
+                val oneHourInMillis = oneMinuteInMillis * 60
+                val oneDayInMillis = oneHourInMillis * 24
+                val oneWeekInMillis = oneDayInMillis * 7
                 if (it.repetition != 0L) {
                     binding.cbRepeating.isChecked = true
                     when (it.repetition) {
-                        300000L -> repeatingIntervalsSpinner.setSelection(0)
-                        900000L -> repeatingIntervalsSpinner.setSelection(1)
-                        1800000L -> repeatingIntervalsSpinner.setSelection(2)
-                        3600000L -> repeatingIntervalsSpinner.setSelection(3)
-                        86400000L -> repeatingIntervalsSpinner.setSelection(4)
-                        604800000L -> repeatingIntervalsSpinner.setSelection(5)
+                        oneMinuteInMillis * 5 -> repeatingIntervalsSpinner.setSelection(0)
+                        oneMinuteInMillis * 15 -> repeatingIntervalsSpinner.setSelection(1)
+                        oneMinuteInMillis * 30 -> repeatingIntervalsSpinner.setSelection(2)
+                        oneHourInMillis -> repeatingIntervalsSpinner.setSelection(3)
+                        oneDayInMillis -> repeatingIntervalsSpinner.setSelection(4)
+                        oneWeekInMillis -> repeatingIntervalsSpinner.setSelection(5)
                         1L -> repeatingIntervalsSpinner.setSelection(6)
                         2L -> repeatingIntervalsSpinner.setSelection(7)
                     }

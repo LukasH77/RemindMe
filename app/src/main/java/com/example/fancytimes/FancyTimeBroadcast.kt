@@ -1,6 +1,7 @@
 package com.example.fancytimes
 
 import android.app.AlarmManager
+import android.app.Notification
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.BroadcastReceiver
@@ -135,12 +136,12 @@ class FancyTimeBroadcast : BroadcastReceiver() {
             )
 
             val notification =
-                NotificationCompat.Builder(
+                Notification/*Compat*/.Builder(
                     callingContext,
                     callingContext.getString(R.string.notification_channel)
                 ).setSmallIcon(R.drawable.access_time_24px)
                     .setContentTitle(notificationTitle).setContentText(notificationText)
-                    .setStyle(NotificationCompat.BigTextStyle().bigText(notificationText))
+                    .setStyle(Notification/*Compat*/.BigTextStyle().bigText(notificationText))
                     .setContentIntent(notificationClickPendingIntent)
                     .setShowWhen(true)
                     .setAutoCancel(true)
@@ -211,12 +212,12 @@ class FancyTimeBroadcast : BroadcastReceiver() {
             )
         } else {
             val notification =
-                NotificationCompat.Builder(
+                Notification/*Compat*/.Builder(
                     callingContext,
                     callingContext.getString(R.string.notification_channel)
                 ).setSmallIcon(R.drawable.access_time_24px)
                     .setContentTitle(notificationTitle).setContentText(notificationText)
-                    .setStyle(NotificationCompat.BigTextStyle().bigText(notificationText))
+                    .setStyle(Notification/*Compat*/.BigTextStyle().bigText(notificationText))
                     .setContentIntent(notificationClickPendingIntent)
                     .setShowWhen(true)
                     .setAutoCancel(true)
