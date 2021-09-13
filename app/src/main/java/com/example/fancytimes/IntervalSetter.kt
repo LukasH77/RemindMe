@@ -15,14 +15,16 @@ class IntervalSetter(private val preferences: SharedPreferences) :
         val oneWeekInMillis = oneDayInMillis * 7
         with(preferences.edit()) {
             when (pos) {
-                0 -> this.putLong(view!!.context.getString(R.string.repeat_interval_key), oneMinuteInMillis * 5) // 5 minutes
-                1 -> this.putLong(view!!.context.getString(R.string.repeat_interval_key), oneMinuteInMillis * 15) // 15 minutes
-                2 -> this.putLong(view!!.context.getString(R.string.repeat_interval_key), oneMinuteInMillis * 30) // 30 minutes
-                3 -> this.putLong(view!!.context.getString(R.string.repeat_interval_key), oneHourInMillis) // 1 hour
-                4 -> this.putLong(view!!.context.getString(R.string.repeat_interval_key), oneDayInMillis) // 1 day
+                // 0 -> this.putLong(view!!.context.getString(R.string.repeat_interval_key), oneMinuteInMillis * 5) // 5 minutes
+                0 -> this.putLong(view!!.context.getString(R.string.repeat_interval_key), oneMinuteInMillis * 15) // 15 minutes
+                1 -> this.putLong(view!!.context.getString(R.string.repeat_interval_key), oneMinuteInMillis * 30) // 30 minutes
+                2 -> this.putLong(view!!.context.getString(R.string.repeat_interval_key), oneHourInMillis) // 1 hour
+                3 -> this.putLong(view!!.context.getString(R.string.repeat_interval_key), oneDayInMillis) // 1 day
+                4 -> this.putLong(view!!.context.getString(R.string.repeat_interval_key), oneDayInMillis * 2) // 2 days
                 5 -> this.putLong(view!!.context.getString(R.string.repeat_interval_key), oneWeekInMillis) // 1 week
-                6 -> this.putLong(view!!.context.getString(R.string.repeat_interval_key), 1) // 1 month
-                7 -> this.putLong(view!!.context.getString(R.string.repeat_interval_key), 2) // 1 year
+                6 -> this.putLong(view!!.context.getString(R.string.repeat_interval_key), oneWeekInMillis * 2) // 2 weeks
+                7 -> this.putLong(view!!.context.getString(R.string.repeat_interval_key), 1) // 1 month
+                8 -> this.putLong(view!!.context.getString(R.string.repeat_interval_key), 2) // 1 year
                 else -> this.putLong(view!!.context.getString(R.string.repeat_interval_key), 0)  // error
             }
             this.apply()

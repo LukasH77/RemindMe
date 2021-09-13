@@ -38,12 +38,13 @@
     <string name="cancel_selected_reminders_title">Ausgewählte entfernen</string>
 
     <string-array name="repeatIntervals">
-        <item>Alle 5 Minuten</item>
         <item>Alle 15 Minuten</item>
         <item>Alle 30 Minuten</item>
         <item>Stündlich</item>
         <item>Täglich</item>
+        <item>Alle 2 Tage</item>
         <item>Wöchentlich</item>
+        <item>Alle 2 Wochen</item>
         <item>Monatlich</item>
         <item>Jährlich</item>
     </string-array>

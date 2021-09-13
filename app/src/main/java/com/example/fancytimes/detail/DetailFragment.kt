@@ -173,7 +173,7 @@ class DetailFragment : Fragment() {
 
         repeatingCheckBox.setOnCheckedChangeListener { _: CompoundButton, checkedState: Boolean ->
             if (checkedState) {
-                repeatingIntervalsSpinner.setSelection(4)
+                repeatingIntervalsSpinner.setSelection(3)
                 repeatingIntervalsSpinner.visibility = View.VISIBLE
             } else repeatingIntervalsSpinner.visibility = View.INVISIBLE
         }
@@ -221,14 +221,16 @@ class DetailFragment : Fragment() {
                 if (it.repetition != 0L) {
                     binding.cbRepeating.isChecked = true
                     when (it.repetition) {
-                        oneMinuteInMillis * 5 -> repeatingIntervalsSpinner.setSelection(0)
-                        oneMinuteInMillis * 15 -> repeatingIntervalsSpinner.setSelection(1)
-                        oneMinuteInMillis * 30 -> repeatingIntervalsSpinner.setSelection(2)
-                        oneHourInMillis -> repeatingIntervalsSpinner.setSelection(3)
-                        oneDayInMillis -> repeatingIntervalsSpinner.setSelection(4)
+                        // oneMinuteInMillis * 5 -> repeatingIntervalsSpinner.setSelection(0)
+                        oneMinuteInMillis * 15 -> repeatingIntervalsSpinner.setSelection(0)
+                        oneMinuteInMillis * 30 -> repeatingIntervalsSpinner.setSelection(1)
+                        oneHourInMillis -> repeatingIntervalsSpinner.setSelection(2)
+                        oneDayInMillis -> repeatingIntervalsSpinner.setSelection(3)
+                        oneDayInMillis * 2 -> repeatingIntervalsSpinner.setSelection(4)
                         oneWeekInMillis -> repeatingIntervalsSpinner.setSelection(5)
-                        1L -> repeatingIntervalsSpinner.setSelection(6)
-                        2L -> repeatingIntervalsSpinner.setSelection(7)
+                        oneWeekInMillis * 2 -> repeatingIntervalsSpinner.setSelection(6)
+                        1L -> repeatingIntervalsSpinner.setSelection(7)
+                        2L -> repeatingIntervalsSpinner.setSelection(8)
                     }
                 }
 

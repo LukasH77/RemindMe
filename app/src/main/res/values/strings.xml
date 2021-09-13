@@ -90,12 +90,13 @@
     <string name="remind_you_in_days">days</string>
 
     <string-array name="repeatIntervals">
-        <item>Every 5 Minutes</item>
         <item>Every 15 Minutes</item>
         <item>Every 30 Minutes</item>
         <item>Hourly</item>
         <item>Daily</item>
+        <item>Every 2 Days</item>
         <item>Weekly</item>
+        <item>Every 2 Weeks</item>
         <item>Monthly</item>
         <item>Yearly</item>
     </string-array>

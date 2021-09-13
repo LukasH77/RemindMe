@@ -92,12 +92,12 @@ class StopActionBroadcast : BroadcastReceiver() {
         notificationManager.cancel(currentChannel)
 
         val notification =
-            Notification/*Compat*/.Builder(
+            NotificationCompat.Builder(
                 callingContext,
                 callingContext.getString(R.string.notification_channel_silent)
             ).setSmallIcon(R.drawable.access_time_24px)
                 .setContentTitle(notificationTitle).setContentText(notificationText)
-                .setStyle(Notification/*Compat*/.BigTextStyle().bigText(notificationText))
+                .setStyle(NotificationCompat.BigTextStyle().bigText(notificationText))
                 .setContentIntent(notificationClickPendingIntent)
                 .setShowWhen(true)
                 .setAutoCancel(true)

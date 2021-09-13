@@ -136,12 +136,12 @@ class FancyTimeBroadcast : BroadcastReceiver() {
             )
 
             val notification =
-                Notification/*Compat*/.Builder(
+                NotificationCompat.Builder(
                     callingContext,
                     callingContext.getString(R.string.notification_channel)
                 ).setSmallIcon(R.drawable.access_time_24px)
                     .setContentTitle(notificationTitle).setContentText(notificationText)
-                    .setStyle(Notification/*Compat*/.BigTextStyle().bigText(notificationText))
+                    .setStyle(NotificationCompat.BigTextStyle().bigText(notificationText))
                     .setContentIntent(notificationClickPendingIntent)
                     .setShowWhen(true)
                     .setAutoCancel(true)
@@ -161,6 +161,7 @@ class FancyTimeBroadcast : BroadcastReceiver() {
 
             if (notificationRepeatInterval != 1L && notificationRepeatInterval != 2L) {
                 notificationTime += notificationRepeatInterval
+                while (notificationTime <= Calendar.getInstance().timeInMillis) notificationTime += notificationRepeatInterval
                 calendar.timeInMillis = notificationTime
             } else {
                 if (notificationRepeatInterval == 1L) {
@@ -212,12 +213,12 @@ class FancyTimeBroadcast : BroadcastReceiver() {
             )
         } else {
             val notification =
-                Notification/*Compat*/.Builder(
+                NotificationCompat.Builder(
                     callingContext,
                     callingContext.getString(R.string.notification_channel)
                 ).setSmallIcon(R.drawable.access_time_24px)
                     .setContentTitle(notificationTitle).setContentText(notificationText)
-                    .setStyle(Notification/*Compat*/.BigTextStyle().bigText(notificationText))
+                    .setStyle(NotificationCompat.BigTextStyle().bigText(notificationText))
                     .setContentIntent(notificationClickPendingIntent)
                     .setShowWhen(true)
                     .setAutoCancel(true)

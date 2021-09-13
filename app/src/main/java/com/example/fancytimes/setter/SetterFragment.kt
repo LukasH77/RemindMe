@@ -255,7 +255,7 @@ class SetterFragment : Fragment() {
 
         repeatingIntervalsSpinner.onItemSelectedListener = IntervalSetter(preferences)
 
-        repeatingIntervalsSpinner.setSelection(4)
+        repeatingIntervalsSpinner.setSelection(3)
 
         repeatingCheckBox.isChecked =
             preferences.getBoolean(getString(R.string.repeat_preference_key), true)

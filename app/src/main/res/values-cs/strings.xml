@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="repeatIntervals">
-        <item>Každých 5 minut</item>
         <item>Každých 15 minut</item>
         <item>Každých 30 minut</item>
         <item>Hodině</item>
+        <item>Každých 2 Hodiny</item>
         <item>Denně</item>
         <item>Týdně</item>
+        <item>Každých 2 Týdny</item>
         <item>Měsíčně</item>
         <item>Ročně</item>
     </string-array>
