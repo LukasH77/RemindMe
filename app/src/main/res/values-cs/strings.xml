@@ -50,10 +50,10 @@
     <string name="invalid_date">Neplatné datum!</string>
     <string name="reminder">Paměť</string>
     <string name="cancel_confirmation_specific">Opravdu chcete odstranit toto připomenutí?</string>
-    <string name="more_than_a_month">Z pamatuju tě za více než měsíc.</string>
-    <string name="more_than_a_year">Z pamatuju tě za více než rok.</string>
-    <string name="less_than_a_minute">Z pamatuju tě za méně než minutu.</string>
-    <string name="remind_you_in_start">"Z pamatuju tě za "</string>
+    <string name="more_than_a_month">Připomenu vám to za více než měsíc.</string>
+    <string name="more_than_a_year">Připomenu vám to za více než rok.</string>
+    <string name="less_than_a_minute">Připomenu vám to za méně než minutu.</string>
+    <string name="remind_you_in_start">"Připomenu vám to za "</string>
     <string name="repeat">Opakovat</string>
     <string name="confirm">Potvrdit</string>
     <string name="reminders">Vzpomínky</string>
