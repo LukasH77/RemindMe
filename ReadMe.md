@@ -5,7 +5,7 @@ This is my second self-made Android app. It's a relatively simple reminder app, 
 So what's in it? Probably what you'd expect, maybe even a bit less - take a look:
 * You can set reminders, obviously. 
 * Customize them with date, time, title, text, color and repitition. 
-* They are represented as a list (RecyclerView) on the home screen. This is also my first in action Room database - I tried it once before with the dice app though that didn't really work out back then :smile:
+* They are represented as a list (RecyclerView) on the main screen. This is also my first in action 'Room' database - I tried it once before with the dice app though that didn't really work out back then :smile:
 * Edit them.
 * Delete them. I wanted to include a multi-delete feature but the way RecyclerView works made the way I wanted my feature to work inconvenient - I noticed it too late, should've just used ListView, maybe I'll still adapt it to that in an later update. For now it's either delete one by one or delete everything. I personally don't find my self deleting a lot - mostly I do it directly from the notification.
 * When a reminder is triggered you get a notification, from there you have a bunch of actions like stop repeating (if it's a repeating reminder), delete and edit.
